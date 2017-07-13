@@ -1,0 +1,5 @@
+# SquiDSA
+
+Set `PYTHONPATH` to the directory containing squidsa:
+
+export PYTHONPATH=/home/dkc/clients/zodiac
