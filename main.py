@@ -7,9 +7,9 @@ from squidsa.parser import Environment, BoardParser
 from squidsa.test.runner import SquidsaTextTestRunner
 
 
-def main(env_name, test_names, skipConnection):
     env = Environment(env_name)
     incomplete_links = env.trim_incomplete_links()
+def main(env_name, test_names, dry_run):
 
     for l in incomplete_links:
         print("Link {} is not connected to both ends".format(l))
@@ -41,11 +41,9 @@ def main(env_name, test_names, skipConnection):
 
     print("-"*70)
 
-    if not skipConnection:
-        env.connect()
+    env.connect(dry_run)
     runner.run(suite)
-    if not skipConnection:
-        env.disconnect()
+    env.disconnect(dry_run)
 
 def usage():
     print("./main.py [environment [test-names]]".format(sys.argv[0]))
@@ -74,14 +72,14 @@ if __name__ == "__main__":
         elif sys.argv[1] == "--self-test":
             env_name = "env-example"
             test_names = ["sanity", ]
-            skipConnection = True
+            dry_run = True
         elif len(sys.argv) == 2:
             env_name = sys.argv[1]
             test_names = None
-            skipConnection = False
+            dry_run = False
         else:
             env_name = sys.argv[1]
             test_names = sys.argv[2:]
-            skipConnection = False
+            dry_run = False
 
-    main(env_name, test_names, skipConnection)
+    main(env_name, test_names, dry_run)
