@@ -1,6 +1,6 @@
 
-__all__ = ['Environment', 'EnvironmentParser', 'SwitchParser', 'BoardParser' ]
+__all__ = [ 'EnvironmentParser', 'SwitchParser', 'BoardParser' ]
 
-from .env import Environment, EnvironmentParser
+from .env import EnvironmentParser
 from .board import BoardParser
 from .switch import SwitchParser

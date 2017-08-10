@@ -4,7 +4,6 @@ import configparser
 import paramiko
 
 from squidsa.helper.resources import Resource
-from squidsa.bench.control import SutControl, HostControl
 from .board import BoardParser
 
 class LinkParser:
@@ -79,63 +78,3 @@ class EnvironmentParser:
             self.links[link_name] = LinkParser()
         return self.links[link_name]
 
-class Environment:
-    """
-    Class holding information about the environment used for tests
-    """
-
-    def __init__(self, env_name):
-        self.env = EnvironmentParser(env_name)
-        self.board = BoardParser(self.env.board_name)
-        self.host = HostControl()
-        username = getattr(self.env, "ssh_username", None)
-        password = getattr(self.env, "ssh_password", None)
-        keyfile = getattr(self.env, "ssh_keyfile", None)
-        self.sut = SutControl(self.env.ssh, username=username,
-                              password=password, keyfile=keyfile)
-
-    def connect(self):
-        self.sut.connect()
-
-    def disconnect(self):
-        self.sut.disconnect()
-
-
-    def trim_incomplete_links(self):
-        """
-        Remove links from the environment that are not connected to both ends.
-
-        This function returns the list of links that were not connected to both
-        ends, and remove them from its internal list so that next call to
-        `get_links` won't return them anymore.
-        """
-        incomplete_links = list()
-        for link_name, link in self.env.links.items():
-            if link.is_incomplete():
-                incomplete_links.append(link_name)
-
-        self.links = {link_name: link for link_name, link in self.env.links.items() if
-                        link.is_incomplete() is False}
-        return incomplete_links
-
-
-    def get_links(self):
-        return self.links.keys()
-
-
-    def get_link_interface(self, link_name, side):
-        if side == "host":
-            return self.links[link_name].host
-        elif side == "machine":
-            return self.links[link_name].sut
-        else:
-            raise ValueError("Invalid side value")
-
-
-    def get_interface_info(self, link_name, side="machine"):
-        if side == "host":
-            raise NotImplementedError("Getting information for host side not implemented yet")
-        elif side != "machine":
-            raise ValueError("Unknow side")
-
-        return self.board.get_interface_info(link_name)
