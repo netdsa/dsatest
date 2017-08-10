@@ -3,13 +3,13 @@
 import sys
 import unittest
 
-from squidsa.parser import Environment, BoardParser
+from squidsa.bench import Bench
 from squidsa.test.runner import SquidsaTextTestRunner
 
 
-    env = Environment(env_name)
-    incomplete_links = env.trim_incomplete_links()
 def main(env_name, test_names, dry_run):
+    env = Bench(env_name)
+    incomplete_links = env.incomplete_links
 
     for l in incomplete_links:
         print("Link {} is not connected to both ends".format(l))
