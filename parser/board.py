@@ -89,8 +89,8 @@ class BoardParser:
     def get_interface_info(self, if_name):
         for i in self.interfaces:
             if i.name == if_name:
-                return i
-        return None
+                return (i.switch, i.port)
+        raise ValueError("{} is not a know interface".format(if_name))
 
 
     def get_interface_infos(self, group=GROUP_ALL):

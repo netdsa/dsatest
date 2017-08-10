@@ -1,7 +1,7 @@
 
 import unittest
 
-from squidsa.parser import InterfaceInfo, SwitchParser
+from squidsa.parser import SwitchParser
 
 class TestSanity(unittest.TestCase):
 
@@ -35,16 +35,13 @@ class TestSanity(unittest.TestCase):
             self.skipTest("Empty link list")
 
         for l in links:
-            info = self.env.get_interface_info(l)
-            self.assertIsInstance(info, InterfaceInfo)
+            ret = self.env.get_interface_info(l)
+            self.assertEquals(len(ret), 2)
+            switch, port = ret
             with self.assertRaises(NotImplementedError):
                 self.env.get_interface_info(l, "host")
             with self.assertRaises(ValueError):
                 self.env.get_interface_info(l, "foobar")
 
-            self.assertTrue(hasattr(info, "name"))
-            self.assertIsInstance(info.name, str)
-            self.assertTrue(hasattr(info, "switch"))
-            self.assertIsInstance(info.switch, SwitchParser)
-            self.assertTrue(hasattr(info, "port"))
-            self.assertIsInstance(info.port, str)
+            self.assertIsInstance(switch, SwitchParser)
+            self.assertIsInstance(port, str)
