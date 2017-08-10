@@ -12,14 +12,9 @@ class Link:
     Class representing a connection between two machines
     """
 
-    SIDE_HOST       = 1
-    SIDE_MACHINE    = 2
-
     def __init__(self):
-        self.names = dict({
-            Link.SIDE_HOST: None,
-            Link.SIDE_MACHINE: None,
-            })
+        self.host = None
+        self.sut = None
 
     def set_interface_name(self, side, if_name):
         if not side in self.names.keys():
@@ -27,12 +22,11 @@ class Link:
         self.names[side] = if_name
 
     def is_incomplete(self):
-        return None in self.names.values()
+        return self.host is None or self.sut is None
 
     def __repr__(self):
         return "<Link host: '{0}', machine '{1}'>".format(
-                self.names[Link.SIDE_HOST],
-                self.names[Link.SIDE_MACHINE])
+                self.host, self.sut)
 
 
 class EnvironmentParser:
@@ -71,13 +65,13 @@ class EnvironmentParser:
             if not key.startswith(self.LINK_IDENTIFIER):
                 continue
             link = self.get_link(key)
-            link.set_interface_name(Link.SIDE_HOST, val)
+            link.host = val
 
         for key, val in self.config["machine"].items():
             if not key.startswith(self.LINK_IDENTIFIER):
                 continue
             link = self.get_link(key)
-            link.set_interface_name(Link.SIDE_MACHINE, val)
+            link.sut = val
 
 
     def get_link(self, link_name):
@@ -131,12 +125,11 @@ class Environment:
 
     def get_link_interface(self, link_name, side):
         if side == "host":
-            key = Link.SIDE_HOST
+            return self.links[link_name].host
         elif side == "machine":
-            key = Link.SIDE_MACHINE
+            return self.links[link_name].sut
         else:
             raise ValueError("Invalid side value")
-        return self.links[link_name].names[key]
 
 
     def get_interface_info(self, link_name, side="machine"):
