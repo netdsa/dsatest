@@ -1,4 +1,5 @@
 
+import re
 import subprocess
 
 import paramiko
@@ -105,7 +106,7 @@ class SutControl(Control):
         self.exit_code = None
         command += '; echo exit code $? ; exit\n'
         _, stdout, stderr = self.ssh_client.exec_command(command)
-        results = stdout.read()
+        results = str(stdout.read())
         self.error = stderr.read()
 
         pattern = re.compile('exit code ([a-z0-9]+)')
