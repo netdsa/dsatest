@@ -7,7 +7,7 @@ from squidsa.helper.resources import Resource
 from squidsa.control import SutControl, HostControl
 from .board import BoardParser
 
-class Link:
+class LinkParser:
     """
     Class representing a connection between two machines
     """
@@ -76,7 +76,7 @@ class EnvironmentParser:
 
     def get_link(self, link_name):
         if not link_name in self.links.keys():
-            self.links[link_name] = Link()
+            self.links[link_name] = LinkParser()
         return self.links[link_name]
 
 class Environment:
