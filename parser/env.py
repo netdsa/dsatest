@@ -24,13 +24,15 @@ class LinkParser:
         return self.host is None or self.sut is None
 
     def __repr__(self):
-        return "<Link host: '{0}', machine '{1}'>".format(
+        return "<Link host: '{0}', sut '{1}'>".format(
                 self.host, self.sut)
 
 
 class EnvironmentParser:
 
     LINK_IDENTIFIER = "link"
+    HOST_IDENTIFIER = "host"
+    SUT_IDENTIFIER = "sut"
 
     def __init__(self, env_name):
         self.config = configparser.ConfigParser()
@@ -44,29 +46,34 @@ class EnvironmentParser:
 
         # TODO: improve parsing to make it more robust
         sections = self.config.sections()
-        if not "host" in sections or not "machine" in sections:
+        if (not self.HOST_IDENTIFIER in sections or
+                not self.SUT_IDENTIFIER in sections):
             raise ValueError("Missing sections")
 
-        self.board_name = self.config["machine"]["board"]
-        self.ssh = self.config["machine"]["ssh"]
-        if "ssh_password" in self.config["machine"]:
-            self.ssh_password = self.config["machine"]["ssh_password"]
-        if "ssh_keyfile" in self.config["machine"]:
-            self.ssh_keyfile = self.config["machine"]["ssh_keyfile"]
-        if "ssh_username" in self.config["machine"]:
-            self.ssh_username = self.config["machine"]["ssh_username"]
+        sut_section = self.config[self.SUT_IDENTIFIER]
+        self.board_name = sut_section["board"]
+        self.ssh = sut_section["ssh"]
+        if "ssh_password" in sut_section:
+            self.ssh_password = sut_section["ssh_password"]
+        if "ssh_keyfile" in sut_section:
+            self.ssh_keyfile = sut_section["ssh_keyfile"]
+        if "ssh_username" in sut_section:
+            self.ssh_username = sut_section["ssh_username"]
 
         self.create_links()
 
 
     def create_links(self):
-        for key, val in self.config["host"].items():
+        host_section = self.config[self.HOST_IDENTIFIER]
+        sut_section = self.config[self.SUT_IDENTIFIER]
+        for key, val in host_section.items():
             if not key.startswith(self.LINK_IDENTIFIER):
                 continue
             link = self.get_link(key)
             link.host = val
 
-        for key, val in self.config["machine"].items():
+        sut_section = self.config[self.SUT_IDENTIFIER]
+        for key, val in sut_section.items():
             if not key.startswith(self.LINK_IDENTIFIER):
                 continue
             link = self.get_link(key)

@@ -51,7 +51,7 @@ environment-example.cfg
 [host]
 link0 = enp0s31f6
 
-[machine]
+[sut]
 ssh = 192.168.0.116
 board = board-example   ; refer to the board configuration file
 link0 = eth8            ; Because the board is running Buildroot, it
@@ -59,7 +59,7 @@ link0 = eth8            ; Because the board is running Buildroot, it
 link0 = eth9
 ```
 
-Here, the machine and the host are connected with one cable.
+Here, the sut and the host are connected with one cable.
 
      board                             host
  +------------+                 +---------------+
