@@ -80,7 +80,9 @@ class BoardParser:
         if switch_name is None or len(interfaces) == 0:
             raise ValueError("Missing switch name or port information")
 
-        s = SwitchParser(switch_name)
+        # Make the switch name to be "model#id"
+        full_switch_name = switch_name + "#" + switch_id
+        s = SwitchParser(full_switch_name)
         for i in interfaces:
             i.switch = s
         self.interfaces.extend(interfaces)
