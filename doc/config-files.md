@@ -24,9 +24,9 @@ board being tested. For instance, consider the following situation:
      Switch Chip                       External Interfaces
     +-----------+                              |
     |     port0 |----> to CPU                  |
-    |     port1 |-----------------------[ Connector LAN0 ]
+    |     port1 |--------------------------[ link0 ]
     |     port2 |----> Non connected           |
-    |     port3 |-----------------------[ Connector LAN1 ]
+    |     port3 |--------------------------[ link1 ]
     +-----------+                              |
 
 Only port1 and port3 can be connected to the test machine, but we still want to
@@ -37,8 +37,8 @@ ports:
 board-example.cfg
 ```
 [switch0]
-port1 = if0
-port3 = if1
+port1 = link0
+port3 = link1
 ```
 
 ## Environment Configurations
@@ -49,24 +49,24 @@ environment: how machine are connected and what are the names of the interfaces
 environment-example.cfg
 ```
 [host]
-if0 = enp0s31f6
+link0 = enp0s31f6
 
 [machine]
 ssh = 192.168.0.116
-board = board-example ; refer to the board configuration file
-if0 = eth8            ; Because the board is running Buildroot, it
-                      ; could be named enp0xxx with another distro
-if1 = eth9
+board = board-example   ; refer to the board configuration file
+link0 = eth8            ; Because the board is running Buildroot, it
+                        ; could be named enp0xxx with another distribution
+link0 = eth9
 ```
 
 Here, the machine and the host are connected with one cable.
 
      board                             host
  +------------+                 +---------------+
- |            |      cable      |               |
- |    eth8 [ if0 ]<--------->[ if0 ] enp0s31f6  |
- |            |                 |               |
- |    eth9 [ if1 ]              |               |
+ |            |       cable     |               |
+ |          [ eth8 ]<------>[ enp0s31f6 ]       |
+ |            |       link0     |               |
+ |          [ eth9 ]            |               |
  |            |                 |               |
  +------------+                 +---------------+
 

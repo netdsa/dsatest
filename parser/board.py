@@ -10,7 +10,7 @@ from .switch import SwitchParser
 class InterfaceInfo:
     """
     Represents an interface (a physical connector) on a board. Each interface
-    has an abstract name ("ifXXX"), and holds information about the switch it
+    has an abstract name ("linkXXX"), and holds information about the switch it
     belongs to.
     """
 
@@ -34,7 +34,7 @@ class BoardParser:
     ------------
     [switch0]
     name = "wag200g"
-    port1 = "if0"
+    port1 = "link0"
 
     That means the port1 of the wag200g chip is the first port a cable can be
     connected to. This mapping is used to make error reporting easier.
@@ -107,7 +107,7 @@ class BoardParser:
 
     def __check_unique_interface_name(self):
         """
-        Make sure an interface name (ifX) appears only once in the configuration file
+        Make sure an interface name (linkXX) appears only once in the configuration file
         """
         ifs = [i.name for i in self.get_interface_infos(BoardParser.GROUP_ALL)]
         if len(ifs) > len(set(ifs)):

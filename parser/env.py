@@ -37,7 +37,7 @@ class Link:
 
 class EnvironmentParser:
 
-    LINK_IDENTIFIER = "if"
+    LINK_IDENTIFIER = "link"
 
     def __init__(self, env_name):
         self.config = configparser.ConfigParser()
@@ -68,13 +68,13 @@ class EnvironmentParser:
 
     def create_links(self):
         for key, val in self.config["host"].items():
-            if not key.startswith("if"):
+            if not key.startswith(self.LINK_IDENTIFIER):
                 continue
             link = self.get_link(key)
             link.set_interface_name(Link.SIDE_HOST, val)
 
         for key, val in self.config["machine"].items():
-            if not key.startswith("if"):
+            if not key.startswith(self.LINK_IDENTIFIER):
                 continue
             link = self.get_link(key)
             link.set_interface_name(Link.SIDE_MACHINE, val)
