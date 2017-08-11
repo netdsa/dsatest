@@ -1,30 +1,32 @@
 
 import unittest
 
-from squidsa.bench import Interface
+from squidsa.bench import Interface, bench
 
 class TestSanity(unittest.TestCase):
 
-    def test_hasattr_env(self):
-        self.assertTrue(hasattr(self, "env"))
+    def test_bench_is_not_none(self):
+        self.assertTrue(bench is not None)
+
+    def test_bench_setup(self):
+        self.assertTrue(bench.is_setup)
 
     def test_links_is_iterable(self):
-        self.assertTrue(iter(self.env.links))
+        self.assertTrue(iter(bench.links))
 
     def test_link_has_interfaces(self):
-        for link in self.env.links:
+        for link in bench.links:
             self.assertIsInstance(link.host_if, Interface)
             self.assertIsInstance(link.sut_if, Interface)
 
     def test_interface_member(self):
-        for link in self.env.links:
+        for link in bench.links:
             interface = link.sut_if
             self.assertIsInstance(interface.name, str)
             self.assertIsInstance(interface.port_id, str)
 
-
     def test_link_names(self):
-        links = self.env.links
+        links = bench.links
         if len(links) == 0:
             self.skipTest("Empty link list")
 
@@ -37,7 +39,7 @@ class TestSanity(unittest.TestCase):
             self.assertTrue(len(sut) > 0)
 
     def test_interface_api(self):
-        for link in self.env.links:
+        for link in bench.links:
             ifs = [ link.host_if, link.sut_if ]
             for interface in ifs:
                 self.assertTrue(hasattr(interface, "up"))
@@ -46,7 +48,7 @@ class TestSanity(unittest.TestCase):
                 self.assertTrue(hasattr(interface, "delAddress"))
 
     def test_machine_api(self):
-        machs = [ self.env.host, self.env.sut ]
+        machs = [ bench.host, bench.sut ]
         for mach in machs:
             self.assertTrue(hasattr(mach, "up"))
             self.assertTrue(hasattr(mach, "down"))

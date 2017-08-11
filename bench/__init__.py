@@ -5,3 +5,5 @@ from .env import Bench
 from .interface import Interface
 from .link import Link
 from .machine import Machine
+
+bench = Bench()

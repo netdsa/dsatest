@@ -1,11 +1,13 @@
 
 import unittest
 
+from squidsa.bench import bench
+
 class TestPing(unittest.TestCase):
 
 
     def setUp(self):
-        links = self.env.links
+        links = bench.links
 
         for i, l in enumerate(links, start=1):
             host_addr = "192.168.10.{}/24".format(str(i * 2))
@@ -16,7 +18,7 @@ class TestPing(unittest.TestCase):
 
 
     def tearDown(self):
-        links = self.env.links
+        links = bench.links
 
         for i, l in enumerate(links, start=1):
             host_addr = "192.168.10.{}/24".format(str(i * 2))
@@ -27,7 +29,7 @@ class TestPing(unittest.TestCase):
 
 
     def test_ping(self):
-        links = self.env.links
+        links = bench.links
         if len(links) == 0:
             self.skipTest("Empty link list")
 

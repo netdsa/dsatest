@@ -3,13 +3,12 @@
 import sys
 import unittest
 
-from squidsa.bench import Bench
-from squidsa.test.runner import SquidsaTextTestRunner
+from squidsa.bench import bench
 
 
 def main(env_name, test_names, dry_run):
-    env = Bench(env_name)
-    incomplete_links = env.incomplete_links
+    bench.setup(env_name)
+    incomplete_links = bench.incomplete_links
 
     for l in incomplete_links:
         print("Link {} is not connected to both ends".format(l))
@@ -26,24 +25,13 @@ def main(env_name, test_names, dry_run):
     else:
         suite = loader.discover(start_dir="squidsa.test", pattern="*.py")
 
-    runner = SquidsaTextTestRunner()
-    result = runner._makeResult()
-
-    def setupSquidsaEnvironment(test):
-        test.env = env
-
-    # setupSquidsaEnvironment is called before a test is started, with the
-    # TestCase as parameter. We use that function to inject the environment in
-    # the TestCase, thus allowing the TestCase to access information parsed
-    # from config files, ssh connection, etc. See SquidaTextTestResult.
-    result.setupSquidsaEnvironment = setupSquidsaEnvironment
-    result.customFunc = "setupSquidsaEnvironment"
+    runner = unittest.TextTestRunner()
 
     print("-"*70)
 
-    env.connect(dry_run)
+    bench.connect(dry_run)
     runner.run(suite)
-    env.disconnect(dry_run)
+    bench.disconnect(dry_run)
 
 def usage():
     print("./main.py [environment [test-names]]".format(sys.argv[0]))

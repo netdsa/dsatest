@@ -7,7 +7,10 @@ from .machine import Machine
 
 class Bench:
 
-    def __init__(self, env_name):
+    def __init__(self):
+        self.is_setup = False
+
+    def setup(self, env_name):
         env = EnvironmentParser(env_name)
         board_parser = BoardParser(env.board_name)
         host_ctrl = LocalControl()
@@ -41,6 +44,9 @@ class Bench:
 
             l = Link(link_name, host_if, sut_if)
             self.links.append(l)
+
+            self.is_setup = True
+
 
     def connect(self, dry_run=False):
         if not dry_run:
