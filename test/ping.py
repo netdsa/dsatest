@@ -33,8 +33,5 @@ class TestPing(unittest.TestCase):
 
         for i, _ in enumerate(links, start=1):
             addr = "192.168.10.{}".format(str(i * 2 + 1))
-            ping = "ping -c 1 -w 10 " + addr
-            print(ping)
-            self.env.host.exec(ping)
-            self.assertEqual(self.env.host.getLastExitCode(), 0, "Failed to ping System Under Test")
+            self.env.host.ping(addr, count=1, deadline=10)
 
