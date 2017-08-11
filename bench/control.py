@@ -23,22 +23,6 @@ class Control(object):
         self.exec(command)
         self.checkExitCode(expected_exit_code)
 
-    def up(self, interface):
-        command = "ip link set {0} up".format(interface)
-        self.execAndCheck(command)
-
-    def down(self, interface):
-        command = "ip link set {0} down".format(interface)
-        self.execAndCheck(command)
-
-    def addAddress(self, interface, address):
-        command = "ip addr add {0} dev {1}".format(address, interface)
-        self.execAndCheck(command)
-
-    def delAddress(self, interface, address):
-        command = "ip addr del {0} dev {1}".format(address, interface)
-        self.execAndCheck(command)
-
 
 class HostControl(Control):
 

@@ -19,13 +19,13 @@ class Interface:
             return "<Interface {s.machine.name} {s.name}>".format(s=self)
 
     def up(self):
-        self.machine.control.up(self.name)
+        self.machine.up(self.name)
 
     def down(self):
-        self.machine.control.down(self.name)
+        self.machine.down(self.name)
 
     def addAddress(self, address):
-        self.machine.control.addAddress(address, self.name)
+        self.machine.addAddress(self.name, address)
 
-    def delAddress(self, interface, address):
-        self.machine.control.delAddress(address, self.name)
+    def delAddress(self, address):
+        self.machine.delAddress(self.name, address)
