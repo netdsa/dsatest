@@ -9,8 +9,8 @@ class Link:
 
     def __init__(self, name, host_if, sut_if):
         self.name = name
-        self.host = host_if
-        self.sut = sut_if
+        self.host_if = host_if
+        self.sut_if = sut_if
 
     def __repr__(self):
         return "<Link {s.name}: {s.host} <-> {s.sut}>".format(s=self)

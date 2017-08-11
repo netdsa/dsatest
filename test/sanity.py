@@ -13,12 +13,12 @@ class TestSanity(unittest.TestCase):
 
     def test_link_has_interfaces(self):
         for link in self.env.links:
-            self.assertIsInstance(link.host, Interface)
-            self.assertIsInstance(link.sut, Interface)
+            self.assertIsInstance(link.host_if, Interface)
+            self.assertIsInstance(link.sut_if, Interface)
 
     def test_interface_member(self):
         for link in self.env.links:
-            interface = link.sut
+            interface = link.sut_if
             self.assertIsInstance(interface.name, str)
             self.assertIsInstance(interface.port_id, str)
 
@@ -29,8 +29,8 @@ class TestSanity(unittest.TestCase):
             self.skipTest("Empty link list")
 
         for l in links:
-            host = l.host.name
-            sut = l.sut.name
+            host = l.host_if.name
+            sut = l.sut_if.name
             self.assertIsInstance(host, str)
             self.assertIsInstance(sut, str)
             self.assertTrue(len(host) > 0)

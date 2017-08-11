@@ -11,8 +11,8 @@ class TestPing(unittest.TestCase):
             host_addr = "192.168.10.{}/24".format(str(i * 2))
             sut_addr = "192.168.10.{}/24".format(str(i * 2 + 1))
 
-            l.host.addAddress(host_addr)
-            l.sut.addAddress(sut_addr)
+            l.host_if.addAddress(host_addr)
+            l.sut_if.addAddress(sut_addr)
 
 
     def tearDown(self):
@@ -22,8 +22,8 @@ class TestPing(unittest.TestCase):
             host_addr = "192.168.10.{}/24".format(str(i * 2))
             sut_addr = "192.168.10.{}/24".format(str(i * 2 + 1))
 
-            l.host.delAddress(host_addr)
-            l.sut.delAddress(sut_addr)
+            l.host_if.delAddress(host_addr)
+            l.sut_if.delAddress(sut_addr)
 
 
     def test_ping(self):
