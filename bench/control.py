@@ -24,7 +24,7 @@ class Control(object):
         self.checkExitCode(expected_exit_code)
 
 
-class HostControl(Control):
+class LocalControl(Control):
 
     def exec(self, command):
         ret = subprocess.run(command, shell=True)
@@ -34,7 +34,7 @@ class HostControl(Control):
         return self.exit_code
 
 
-class SutControl(Control):
+class SSHControl(Control):
 
     SSH_TIMEOUT = 15
 
@@ -53,19 +53,19 @@ class SutControl(Control):
         if password is not None and keyfile is not None:
             self.ssh_client.connect(self.address, username=username,
                                     key_filename=keyfile, password=password,
-                                    timeout=SutControl.SSH_TIMEOUT)
+                                    timeout=SSHControl.SSH_TIMEOUT)
         elif keyfile is not None:
             self.ssh_client.connect(self.address, username=username,
                                     key_filename=keyfile,
-                                    timeout=SutControl.SSH_TIMEOUT)
+                                    timeout=SSHControl.SSH_TIMEOUT)
         elif password is not None:
             self.ssh_client.connect(self.address, username=username,
                                     password=password, look_for_keys=False,
-                                    timeout=SutControl.SSH_TIMEOUT)
+                                    timeout=SSHControl.SSH_TIMEOUT)
         else:
             # let's try with SSH agent, hopefully key will be not encrypted
             self.ssh_client.connect(self.address, username=username,
-                                    timeout=SutControl.SSH_TIMEOUT)
+                                    timeout=SSHControl.SSH_TIMEOUT)
 
     def disconnect(self):
         self.ssh_client.close()

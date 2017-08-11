@@ -1,6 +1,6 @@
 
 from squidsa.parser import EnvironmentParser, BoardParser
-from .control import SutControl, HostControl
+from .control import LocalControl, SSHControl
 from .interface import Interface
 from .link import Link
 from .machine import Machine
@@ -10,11 +10,11 @@ class Bench:
     def __init__(self, env_name):
         env = EnvironmentParser(env_name)
         board_parser = BoardParser(env.board_name)
-        host_ctrl = HostControl()
+        host_ctrl = LocalControl()
         username = getattr(env, "ssh_username", None)
         password = getattr(env, "ssh_password", None)
         keyfile = getattr(env, "ssh_keyfile", None)
-        sut_ctrl = SutControl(env.ssh, username=username,
+        sut_ctrl = SSHControl(env.ssh, username=username,
                               password=password, keyfile=keyfile)
 
         # Create machines involved in the test bench
