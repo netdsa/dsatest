@@ -36,3 +36,21 @@ class TestSanity(unittest.TestCase):
             self.assertTrue(len(host) > 0)
             self.assertTrue(len(sut) > 0)
 
+    def test_interface_api(self):
+        for link in self.env.links:
+            ifs = [ link.host_if, link.sut_if ]
+            for interface in ifs:
+                self.assertTrue(hasattr(interface, "up"))
+                self.assertTrue(hasattr(interface, "down"))
+                self.assertTrue(hasattr(interface, "addAddress"))
+                self.assertTrue(hasattr(interface, "delAddress"))
+
+    def test_machine_api(self):
+        machs = [ self.env.host, self.env.sut ]
+        for mach in machs:
+            self.assertTrue(hasattr(mach, "up"))
+            self.assertTrue(hasattr(mach, "down"))
+            self.assertTrue(hasattr(mach, "addAddress"))
+            self.assertTrue(hasattr(mach, "delAddress"))
+            self.assertTrue(hasattr(mach, "ping"))
+
