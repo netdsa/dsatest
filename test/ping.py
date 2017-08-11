@@ -31,7 +31,7 @@ class TestPing(unittest.TestCase):
         if len(links) == 0:
             self.skipTest("Empty link list")
 
-        for i, _ in enumerate(links, start=1):
+        for i, link in enumerate(links, start=1):
             addr = "192.168.10.{}".format(str(i * 2 + 1))
-            self.env.host.ping(addr, count=1, deadline=10)
+            link.host_if.ping(addr, count=1, deadline=10)
 
