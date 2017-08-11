@@ -49,12 +49,14 @@ class Machine:
         command = "ip addr del {0} dev {1}".format(address, interface)
         self.control.execAndCheck(command)
 
-    def ping(self, destination, count=None, deadline=None):
+    def ping(self, destination, count=None, deadline=None, from_if=None):
         cmd = "ping "
         if count is not None:
             cmd += " -c {} ".format(count)
         if deadline is not None:
             cmd += " -w {} ".format(deadline)
+        if from_if is not None:
+            cmd += " -I {} ".format(from_if)
         cmd += " {}".format(destination)
         self.control.execAndCheck(cmd)
 
