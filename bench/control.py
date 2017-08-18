@@ -26,7 +26,8 @@ class Control(object):
 class LocalControl(Control):
 
     def exec(self, command):
-        ret = subprocess.run(command, shell=True)
+        ret = subprocess.run(command, shell=True,
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         self.exit_code = ret.returncode
 
     def getLastExitCode(self):
