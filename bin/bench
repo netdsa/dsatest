@@ -5,6 +5,7 @@ import sys
 import unittest
 
 from squidsa.bench import bench
+from squidsa import settings
 
 def recurseIterSuite(suite, match, pattern):
     for s in suite:
@@ -43,6 +44,8 @@ def createTestSuite(test):
 
 
 def main(env_name, test_name, dry_run):
+    settings.conf_path = None
+
     bench.setup(env_name)
     incomplete_links = bench.incomplete_links
 

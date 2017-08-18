@@ -1,5 +1,8 @@
 
+import os
 import pkg_resources
+
+from squidsa import settings
 
 
 class Resource:
@@ -20,7 +23,6 @@ class Resource:
 
 
     def __init__(self, resource_type, name):
-        resource_package = "squidsa"
         if resource_type == Resource.SWITCH:
             t = "switch"
         elif resource_type == Resource.BOARD:
@@ -32,9 +34,14 @@ class Resource:
 
         if not name.endswith(".cfg"):
             name = '{0}.cfg'.format(name)
-        resource_path = '/'.join(('conf', t, name))
 
-        self.cfg = pkg_resources.resource_filename(resource_package, resource_path)
+        if settings.conf_path is not None:
+            self.cfg = os.path.join(settings.conf_path, t, name)
+        else:
+            resource_path = '/'.join(('conf', t, name))
+
+            resource_package = "squidsa"
+            self.cfg = pkg_resources.resource_filename(resource_package, resource_path)
 
     def get_path(self):
         return self.cfg
