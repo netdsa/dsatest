@@ -2,6 +2,7 @@
 
 import os
 import sys
+import argparse
 import unittest
 
 from squidsa.bench import bench
@@ -43,10 +44,8 @@ def createTestSuite(test):
     return matching_suite
 
 
-def main(env_name, test_name, dry_run):
-    settings.set(settings.CONF_PATH, None)
-
-    bench.setup(env_name)
+def main(bench_conf, test_name, dry_run):
+    bench.setup(bench_conf)
     incomplete_links = bench.incomplete_links
 
     for l in incomplete_links:
@@ -61,41 +60,20 @@ def main(env_name, test_name, dry_run):
     runner.run(suite)
     bench.disconnect(dry_run)
 
-def usage():
-    executable = os.path.basename(sys.argv[0])
-    print("{} [environment [test-name]]".format(executable))
-    print("{} --self-test".format(executable))
-    print()
-    print("Execute network tests between a host and a system under test (SUT)")
-    print("\tenvironment - name of the config file in conf/env/ (without the cfg extension)")
-    print("\ttest-name   - can be 'all', a filename under tests/, or a pattern")
-
-    print("If --self-test is passed, this program will not try to connect to the system")
-    print("under test but instead will run tests found in test/sanity.py using the example")
-    print("environment")
-    print()
-    print("Ex: {} zodiac-sfl ping".format(executable))
-
 
 if __name__ == "__main__":
-    if len(sys.argv) == 1:
-            usage()
-            sys.exit(0)
-    elif len(sys.argv) >= 2:
-        if sys.argv[1] == "-h" or sys.argv[1] == "--help":
-            usage()
-            sys.exit(0)
-        elif sys.argv[1] == "--self-test":
-            env_name = "env-example"
-            test_name = "sanity.py"
-            dry_run = True
-        elif len(sys.argv) == 2:
-            env_name = sys.argv[1]
-            test_name = 'all'
-            dry_run = False
-        else:
-            env_name = sys.argv[1]
-            test_name = sys.argv[2]
-            dry_run = False
+    parser = argparse.ArgumentParser(description='Control a DSA test bench')
+    parser.add_argument('-t', '--test', default='all',
+                        help='select tests to be executed (default: \"all\"')
+    parser.add_argument('-C', '--conf-dir', default=None,
+                        help='path to the configuration directory')
+    parser.add_argument('--dry-run', action='store_true', default=False,
+                        help='Skip connection to the test bench (no SSHing is done)')
+    parser.add_argument('bench_conf', help='Bench configuration')
+    args = parser.parse_args()
 
-    main(env_name, test_name, dry_run)
+    if args.conf_dir is not None:
+        path = os.path.join(os.getcwd(), args.conf_dir)
+        settings.set(settings.CONF_PATH, os.path.realpath(path))
+
+    main(args.bench_conf, args.test, args.dry_run)
