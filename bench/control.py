@@ -1,5 +1,4 @@
 
-import re
 import subprocess
 
 import paramiko
@@ -88,16 +87,9 @@ class SSHControl(Control):
     def exec(self, command):
         """Execute a command on the SUT, using SSH"""
         self.exit_code = None
-        command += '; echo exit code $? ; exit\n'
         _, stdout, stderr = self.ssh_client.exec_command(command)
-        results = str(stdout.read())
-        self.error = stderr.read()
-
-        pattern = re.compile('exit code ([a-z0-9]+)')
-        match = pattern.search(results)
-        if match:
-            self.exit_code = int(match.group(1))
-        return results
+        _, ret, _ = self.ssh_client.exec_command("echo $?")
+        self.exit_code = int(str(ret.read()))
 
     def getLastExitCode(self):
         return self.exit_code
