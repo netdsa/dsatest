@@ -6,26 +6,50 @@ import unittest
 
 from squidsa.bench import bench
 
+def recurseIterSuite(suite, match, pattern):
+    for s in suite:
+        if isinstance(s, unittest.TestCase):
+            if pattern in s._testMethodName:
+                match.addTest(s)
+        else:
+            recurseIterSuite(s, match, pattern)
 
-def main(env_name, test_names, dry_run):
+
+def createTestSuite(test):
+    """
+    Create a test suite. The parameter will be tested in the following order
+    and the matching tests will be loaded:
+      - "all", all tests found under the test/ directory will be loaded.
+      - a filename under test/. Every test in that file will be loaded.
+      - a string. Test methodes containing that string will be loaded.
+    """
+    loader = unittest.TestLoader()
+
+    if test == 'all':
+        return loader.discover(start_dir="squidsa.test", pattern="*.py")
+
+    # load test matching the filename, and let's see how many it gets
+    if test.endswith(".py"):
+        suite = loader.discover(start_dir="squidsa.test", pattern=test)
+        if suite.countTestCases() != 0:
+            return suite
+
+    # load every tests we can find and do some matching based on that
+    suite = loader.discover(start_dir="squidsa.test", pattern="*.py")
+    matching_suite = unittest.TestSuite()
+    recurseIterSuite(suite, matching_suite, test)
+
+    return matching_suite
+
+
+def main(env_name, test_name, dry_run):
     bench.setup(env_name)
     incomplete_links = bench.incomplete_links
 
     for l in incomplete_links:
         print("Link {} is not connected to both ends".format(l))
 
-    suite = None
-    loader = unittest.TestLoader()
-    if test_names:
-        for name in test_names:
-            pattern = "*{}*.py".format(name)
-            if suite is None:
-                suite = loader.discover(start_dir="squidsa.test", pattern=pattern)
-            else:
-                suite.extend(loader.discover(start_dir="squidsa.test", pattern=pattern))
-    else:
-        suite = loader.discover(start_dir="squidsa.test", pattern="*.py")
-
+    suite = createTestSuite(test_name)
     runner = unittest.TextTestRunner()
 
     print("-"*70)
@@ -36,13 +60,12 @@ def main(env_name, test_names, dry_run):
 
 def usage():
     executable = os.path.basename(sys.argv[0])
-    print("{} [environment [test-names]]".format(executable))
+    print("{} [environment [test-name]]".format(executable))
     print("{} --self-test".format(executable))
     print()
     print("Execute network tests between a host and a system under test (SUT)")
     print("\tenvironment - name of the config file in conf/env/ (without the cfg extension)")
-    print("\ttest-names  - list of python files in test/ (without the py extension) to")
-    print("\t              source tests from")
+    print("\ttest-name   - can be 'all', a filename under tests/, or a pattern")
 
     print("If --self-test is passed, this program will not try to connect to the system")
     print("under test but instead will run tests found in test/sanity.py using the example")
@@ -61,15 +84,15 @@ if __name__ == "__main__":
             sys.exit(0)
         elif sys.argv[1] == "--self-test":
             env_name = "env-example"
-            test_names = ["sanity", ]
+            test_name = "sanity.py"
             dry_run = True
         elif len(sys.argv) == 2:
             env_name = sys.argv[1]
-            test_names = None
+            test_name = 'all'
             dry_run = False
         else:
             env_name = sys.argv[1]
-            test_names = sys.argv[2:]
+            test_name = sys.argv[2]
             dry_run = False
 
-    main(env_name, test_names, dry_run)
+    main(env_name, test_name, dry_run)
