@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import os
 import sys
 import unittest
 
@@ -34,8 +35,9 @@ def main(env_name, test_names, dry_run):
     bench.disconnect(dry_run)
 
 def usage():
-    print("./main.py [environment [test-names]]".format(sys.argv[0]))
-    print("./main.py --self-test")
+    executable = os.path.basename(sys.argv[0])
+    print("{} [environment [test-names]]".format(executable))
+    print("{} --self-test".format(executable))
     print()
     print("Execute network tests between a host and a system under test (SUT)")
     print("\tenvironment - name of the config file in conf/env/ (without the cfg extension)")
@@ -46,7 +48,7 @@ def usage():
     print("under test but instead will run tests found in test/sanity.py using the example")
     print("environment")
     print()
-    print("Ex: ./main.py zodiac-sfl ping")
+    print("Ex: {} zodiac-sfl ping".format(executable))
 
 
 if __name__ == "__main__":
