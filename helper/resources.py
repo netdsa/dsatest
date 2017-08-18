@@ -35,7 +35,7 @@ class Resource:
         if not name.endswith(".cfg"):
             name = '{0}.cfg'.format(name)
 
-        if settings.conf_path is not None:
+        if settings.get(settings.CONF_PATH) is not None:
             self.cfg = os.path.join(settings.conf_path, t, name)
         else:
             resource_path = '/'.join(('conf', t, name))

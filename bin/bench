@@ -44,7 +44,7 @@ def createTestSuite(test):
 
 
 def main(env_name, test_name, dry_run):
-    settings.conf_path = None
+    settings.set(settings.CONF_PATH, None)
 
     bench.setup(env_name)
     incomplete_links = bench.incomplete_links
