@@ -1,10 +1,12 @@
 
+from .bridge import Bridge
 
 class Machine:
     """Machine being part of the benchtest"""
 
     def __init__(self, name, control):
         self.interfaces = list()
+        self.bridges = list()
         self.name = name
         self.control = control
         self.allow_bridge_creation = True
@@ -48,6 +50,20 @@ class Machine:
     def delAddress(self, interface, address):
         command = "ip addr del {0} dev {1}".format(address, interface)
         self.control.execAndCheck(command)
+
+    def addBridge(self, bridge_name):
+        if not self.allow_bridge_creation:
+            raise RuntimeError("This machine is not allowed to create bridge")
+
+        bridge = Bridge(bridge_name, self)
+        bridge.create()
+        self.bridges.append(bridge)
+
+        return bridge
+
+    def delBridge(self, bridge):
+        self.bridges.remove(bridge)
+        bridge.destroy()
 
     def ping(self, destination, count=None, deadline=None, from_if=None):
         cmd = "ping "

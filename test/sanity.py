@@ -54,6 +54,8 @@ class TestSanity(unittest.TestCase):
             self.assertTrue(hasattr(mach, "down"))
             self.assertTrue(hasattr(mach, "addAddress"))
             self.assertTrue(hasattr(mach, "delAddress"))
+            self.assertTrue(hasattr(mach, "addBridge"))
+            self.assertTrue(hasattr(mach, "delBridge"))
             self.assertTrue(hasattr(mach, "ping"))
 
     def test_bridge_api(self):
