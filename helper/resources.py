@@ -19,7 +19,6 @@ class Resource:
 
     SWITCH          = 1
     BOARD           = 2
-    ENVIRONMENT     = 3
 
 
     def __init__(self, resource_type, name):
@@ -27,8 +26,6 @@ class Resource:
             t = "switch"
         elif resource_type == Resource.BOARD:
             t = "board"
-        elif resource_type == Resource.ENVIRONMENT:
-            t = "env"
         else:
             raise ValueError("Invalid resource_type")
 
