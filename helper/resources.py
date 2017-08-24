@@ -34,11 +34,15 @@ class Resource:
 
         if settings.get(settings.CONF_PATH) is not None:
             self.cfg = os.path.join(settings.conf_path, t, name)
-        else:
-            resource_path = '/'.join(('conf', t, name))
+            if os.path.exists(self.cfg):
+                return
 
-            resource_package = "squidsa"
-            self.cfg = pkg_resources.resource_filename(resource_package, resource_path)
+        resource_path = '/'.join(('conf', t, name))
+
+        resource_package = "squidsa"
+        self.cfg = pkg_resources.resource_filename(resource_package, resource_path)
+        if not os.path.exists(self.cfg):
+            raise ValueError("Cannot find resource {} of type {}".format(name, t))
 
     def get_path(self):
         return self.cfg
