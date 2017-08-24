@@ -82,7 +82,7 @@ class BoardParser:
 
         # Make the switch name to be "model#id"
         full_switch_name = switch_name + "#" + switch_id
-        s = SwitchParser(full_switch_name)
+        s = SwitchParser(full_switch_name, switch_name)
         for i in interfaces:
             i.switch = s
         self.interfaces.extend(interfaces)
