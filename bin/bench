@@ -64,7 +64,7 @@ def main(bench_conf, test_name, dry_run):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Control a DSA test bench')
     parser.add_argument('-t', '--test', default='all',
-                        help='select tests to be executed (default: \"all\"')
+                        help='select tests to be executed (default: \"all\")')
     parser.add_argument('-C', '--conf-dir', default=None,
                         help='path to the configuration directory')
     parser.add_argument('--dry-run', action='store_true', default=False,
