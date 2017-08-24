@@ -89,8 +89,7 @@ class SSHControl(Control):
         """Execute a command on the SUT, using SSH"""
         self.exit_code = None
         _, stdout, stderr = self.ssh_client.exec_command(command)
-        _, ret, _ = self.ssh_client.exec_command("echo $?")
-        self.exit_code = int(str(ret.read()))
+        self.exit_code = stdout.channel.recv_exit_status()
 
     def getLastExitCode(self):
         return self.exit_code
