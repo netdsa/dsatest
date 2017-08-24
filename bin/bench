@@ -65,15 +65,18 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Control a DSA test bench')
     parser.add_argument('-t', '--test', default='all',
                         help='select tests to be executed (default: \"all\")')
+    parser.add_argument('-B', '--bench', default="bench.cfg",
+                        help="bench configuration file")
     parser.add_argument('-C', '--conf-dir', default=None,
                         help='path to the configuration directory')
     parser.add_argument('--dry-run', action='store_true', default=False,
                         help='Skip connection to the test bench (no SSHing is done)')
-    parser.add_argument('bench_conf', help='Bench configuration')
     args = parser.parse_args()
 
     if args.conf_dir is not None:
         path = os.path.join(os.getcwd(), args.conf_dir)
         settings.set(settings.CONF_PATH, os.path.realpath(path))
 
-    main(args.bench_conf, args.test, args.dry_run)
+    bench_cfg = os.path.join(os.getcwd(), args.bench)
+
+    main(bench_cfg, args.test, args.dry_run)

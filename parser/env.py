@@ -34,14 +34,13 @@ class EnvironmentParser:
     HOST_IDENTIFIER = "host"
     SUT_IDENTIFIER = "sut"
 
-    def __init__(self, env_name):
+    def __init__(self, bench_config_file):
         self.config = configparser.ConfigParser()
         self.links = dict()
 
-        env_cfg = Resource(Resource.ENVIRONMENT, env_name).get_path()
-        path_parsed = self.config.read(env_cfg)
+        path_parsed = self.config.read(bench_config_file)
         if (len(path_parsed) != 1):
-            error = "Invalid environment configuration file: {0}".format(env_cfg)
+            error = "Invalid environment configuration file: {0}".format(bench_config_file)
             raise ValueError(error)
 
         # TODO: improve parsing to make it more robust

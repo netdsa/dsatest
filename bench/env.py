@@ -10,8 +10,8 @@ class Bench:
     def __init__(self):
         self.is_setup = False
 
-    def setup(self, env_name):
-        env = EnvironmentParser(env_name)
+    def setup(self, bench_config_file):
+        env = EnvironmentParser(bench_config_file)
         board_parser = BoardParser(env.board_name)
         host_ctrl = LocalControl()
         username = getattr(env, "ssh_username", None)
