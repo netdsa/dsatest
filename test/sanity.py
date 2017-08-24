@@ -1,7 +1,7 @@
 
 import unittest
 
-from squidsa.bench import Interface, bench
+from squidsa.bench import Bridge, Interface, bench
 
 class TestSanity(unittest.TestCase):
 
@@ -55,4 +55,14 @@ class TestSanity(unittest.TestCase):
             self.assertTrue(hasattr(mach, "addAddress"))
             self.assertTrue(hasattr(mach, "delAddress"))
             self.assertTrue(hasattr(mach, "ping"))
+
+    def test_bridge_api(self):
+        b = Bridge("br0", None)
+        self.assertTrue(hasattr(b, "addInterface"))
+        self.assertTrue(hasattr(b, "delInterface"))
+        # it should also have the same functions as regular Interface
+        self.assertTrue(hasattr(b, "up"))
+        self.assertTrue(hasattr(b, "down"))
+        self.assertTrue(hasattr(b, "addAddress"))
+        self.assertTrue(hasattr(b, "delAddress"))
 
