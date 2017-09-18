@@ -16,8 +16,7 @@ def recurseIterSuite(suite, match, pattern):
         else:
             recurseIterSuite(s, match, pattern)
 
-
-def createTestSuite(test):
+def __createTestSuite(test_dir, test):
     """
     Create a test suite. The parameter will be tested in the following order
     and the matching tests will be loaded:
@@ -27,31 +26,51 @@ def createTestSuite(test):
     """
     loader = unittest.TestLoader()
 
+    # right-strip whitespaces and slashes, so that start_dir
+    # and top_level_dir returns the same thing if /foo/bar/ or
+    # /foo/bar is passed to this function
+    stripped_test_dir = test_dir.rstrip(" /")
+    start_dir = stripped_test_dir
+    top_level_dir = os.path.dirname(stripped_test_dir)
+
+    if len(start_dir) == 0 or len(top_level_dir) == 0:
+        raise ValueError("Invalid test directory '{}'. Aborting.".format(test_dir))
+
     if test == 'all':
-        return loader.discover(start_dir="squidsa.test", pattern="*.py")
+        return loader.discover(start_dir=start_dir, top_level_dir=top_level_dir, pattern="*.py")
 
     # load test matching the filename, and let's see how many it gets
     if test.endswith(".py"):
-        suite = loader.discover(start_dir="squidsa.test", pattern=test)
+        suite = loader.discover(start_dir=start_dir,
+                                top_level_dir=top_level_dir, pattern=test)
         if suite.countTestCases() != 0:
             return suite
 
     # load every tests we can find and do some matching based on that
-    suite = loader.discover(start_dir="squidsa.test", pattern="*.py")
+    suite = loader.discover(start_dir=start_dir, top_level_dir=top_level_dir, pattern="*.py")
     matching_suite = unittest.TestSuite()
     recurseIterSuite(suite, matching_suite, test)
 
     return matching_suite
 
 
-def main(bench_conf, test_name, dry_run):
+def createTestSuite(test_dir, test):
+    try:
+        return __createTestSuite(test_dir, test)
+    except Exception:
+        print("ERR: Unable to load test directory '{}'. Aborting.".format(test_dir))
+        print("ERR: Make sure it's an importable python package (contains __init__.py)")
+        sys.exit(1)
+
+
+def main(bench_conf, test_dir, test_name, dry_run):
     bench.setup(bench_conf)
     incomplete_links = bench.incomplete_links
 
     for l in incomplete_links:
         print("Link {} is not connected to both ends".format(l))
 
-    suite = createTestSuite(test_name)
+    suite = createTestSuite(test_dir, test_name)
     runner = unittest.TextTestRunner()
 
     print("-"*70)
@@ -62,9 +81,15 @@ def main(bench_conf, test_name, dry_run):
 
 
 if __name__ == "__main__":
+    script_path = os.path.dirname(os.path.abspath(__file__))
+    test_dir = os.path.join(script_path, "..", "test")
+    test_dir = os.path.realpath(test_dir)
+
     parser = argparse.ArgumentParser(description='Control a DSA test bench')
     parser.add_argument('-t', '--test', default='all',
                         help='select tests to be executed (default: \"all\")')
+    parser.add_argument('--test-dir', default=test_dir,
+                        help="test folder, default to squidsa's test folder")
     parser.add_argument('-B', '--bench', default="bench.cfg",
                         help="bench configuration file")
     parser.add_argument('-C', '--conf-dir', default=None,
@@ -79,4 +104,4 @@ if __name__ == "__main__":
 
     bench_cfg = os.path.join(os.getcwd(), args.bench)
 
-    main(bench_cfg, args.test, args.dry_run)
+    main(bench_cfg, args.test_dir, args.test, args.dry_run)
