@@ -7,6 +7,6 @@ ssh = localhost
 ;ssh_username = username
 ;ssh_password = password
 ;ssh_keyfile = /home/username/.ssh/id_rsa
-board = board-example
+board = linksys-wag200g
 link0 = eth8
 link1 = eth9
