@@ -25,7 +25,6 @@ class Bench:
         # prevent errors, let's add a protection to take care of that.
         self.sut = Machine("SUT", sut_ctrl)
         self.host = Machine("Host", host_ctrl)
-        self.host.setBridgeCreationAllowed(False)
 
         self.links = list()
         self.incomplete_links = list()

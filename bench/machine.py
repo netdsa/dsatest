@@ -9,13 +9,9 @@ class Machine:
         self.bridges = list()
         self.name = name
         self.control = control
-        self.allow_bridge_creation = True
 
     def __repr__(self):
         return "<Machine \"{.name}\">".format(self)
-
-    def setBridgeCreationAllowed(self, val):
-        self.allow_bridge_creation = val
 
     def addInterface(self, interface):
         self.interfaces.append(interface)
@@ -52,9 +48,6 @@ class Machine:
         self.control.execAndCheck(command)
 
     def addBridge(self, bridge_name):
-        if not self.allow_bridge_creation:
-            raise RuntimeError("This machine is not allowed to create bridge")
-
         bridge = Bridge(bridge_name, self)
         bridge.create()
         self.bridges.append(bridge)
