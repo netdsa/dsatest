@@ -1,5 +1,5 @@
 
-from squidsa.parser import EnvironmentParser, BoardParser
+from squidsa.parser import BenchParser, BoardParser
 from .control import LocalControl, SSHControl
 from .interface import Interface
 from .link import Link
@@ -11,7 +11,7 @@ class Bench:
         self.is_setup = False
 
     def setup(self, bench_config_file):
-        env = EnvironmentParser(bench_config_file)
+        env = BenchParser(bench_config_file)
         board_parser = BoardParser(env.board_name)
         host_ctrl = LocalControl()
         username = getattr(env, "ssh_username", None)

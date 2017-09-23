@@ -28,7 +28,7 @@ class LinkParser:
                 self.host, self.sut)
 
 
-class EnvironmentParser:
+class BenchParser:
 
     LINK_IDENTIFIER = "link"
     HOST_IDENTIFIER = "host"
