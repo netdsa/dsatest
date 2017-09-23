@@ -56,8 +56,3 @@ class Bench:
         if not dry_run:
             self.sut.control.disconnect()
 
-if __name__ == "__main__":
-    bench = Bench("env-example")
-    for link in bench.links:
-        print(link)
-
