@@ -18,15 +18,15 @@ A tool to run tests on a DSA test bench.
 ## Configuration files
 
 Three kind of files need to be populated in order to run tests on the bench.
-From a top-down approach:
+From a bottom-up approach:
 
+ * Switch: describe a switch and how its kernel driver exposes some
+           information. This file can be shared and used in several test
+           benches.
+ * Board: describe a board, the switches that are on it, and the interfaces
+          that the test bench will be able to use. This file can also be shared.
  * Bench: describe how the host machine and the System under Test (SUT) are
           connected to one another. This file is specific to each bench.
- * Board: describe a board, the switches that are on it, and the interfaces
-          that the test bench will be able to use. This file can be shared
-          and used in several test benches.
- * Switch: describe a switch and how its kernel driver exposes some
-           information. This file is also shareable.
 
 ### Switch
 
