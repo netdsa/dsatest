@@ -2,9 +2,9 @@
 
 class Link:
     """
-    Physical link between the Host Machine and the System Under Test
-    (SUT). This just a convenient wrapper to get access to both ends of
-    a cable and configure the correspoding interfaces.
+    Physical link between the Host Machine and the System Under Test (SUT).
+    This is just a convenient wrapper to get access to both ends of a cable and
+    configure the correspoding interfaces.
     """
 
     def __init__(self, name, host_if, sut_if):
@@ -13,4 +13,4 @@ class Link:
         self.sut_if = sut_if
 
     def __repr__(self):
-        return "<Link {s.name}: {s.host} <-> {s.sut}>".format(s=self)
+        return "<Link {s.name}: {s.host_if} <-> {s.sut_if}>".format(s=self)
