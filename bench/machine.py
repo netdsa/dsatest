@@ -47,6 +47,10 @@ class Machine:
         command = "ip addr del {0} dev {1}".format(address, interface)
         self.control.execAndCheck(command)
 
+    def flushAddresses(self, interface):
+        command = "ip addr flush dev {0}".format(interface)
+        self.control.execAndCheck(command)
+
     def addBridge(self, bridge_name):
         bridge = Bridge(bridge_name, self)
         bridge.create()

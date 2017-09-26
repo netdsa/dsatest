@@ -30,5 +30,8 @@ class Interface:
     def delAddress(self, address):
         self.machine.delAddress(self.name, address)
 
+    def flushAddresses(self):
+        self.machine.flushAddresses(self.name)
+
     def ping(self, destination, count=None, deadline=None):
         self.machine.ping(destination, from_if=self.name, count=count, deadline=deadline)
