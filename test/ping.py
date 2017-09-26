@@ -13,7 +13,9 @@ class TestPing(unittest.TestCase):
             host_addr = "192.168.10.{}/24".format(str(i * 2))
             sut_addr = "192.168.10.{}/24".format(str(i * 2 + 1))
 
+            l.host_if.flushAddresses()
             l.host_if.addAddress(host_addr)
+            l.sut_if.flushAddresses()
             l.sut_if.addAddress(sut_addr)
 
 
