@@ -30,7 +30,7 @@ class TargetParser:
     This class holds information about a target: what are the switches, and
     which ports are connected to physical connectors.
 
-    Config file (in conf/board):
+    Config file (in conf/target):
     ------------
     [switch0]
     name = "wag200g"

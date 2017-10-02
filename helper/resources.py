@@ -25,7 +25,7 @@ class Resource:
         if resource_type == Resource.SWITCH:
             t = "switch"
         elif resource_type == Resource.TARGET:
-            t = "board"
+            t = "target"
         else:
             raise ValueError("Invalid resource_type")
 

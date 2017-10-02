@@ -34,8 +34,8 @@ From a bottom-up approach:
 
 ### Board
 
-Found are under `conf/board`. They describe the hardware of the
-board being tested. For instance, consider the following situation:
+They are located in `conf/target`. They describe the hardware of the
+machine being tested. For instance, consider the following situation:
 
 ```
   +--------------------------------------------------+
@@ -57,7 +57,7 @@ front-facing connector) allows to get sensible error reporting if errors occur.
 Moreover, these files can be shared by people using the same hardware.
 
 ```
-conf/board/board-example.cfg
+conf/target/target-example.cfg
 ----------------------------
 
 [switch0]
@@ -99,8 +99,8 @@ link0 = enp0s31f6
 
 [sut]
 ssh = 192.168.0.116
-board = board-example   ; refer board configuration file
-link0 = eth8            ; Because the board is running Buildroot, it
+board = target-example  ; refer to target configuration file
+link0 = eth8            ; Because the target is running Buildroot, it
                         ; could be named enp0xxx with a distribution running
                         ; systemd
 link1 = eth9            ; can be filled in. squidsa will warn that it is
