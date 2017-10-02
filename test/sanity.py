@@ -48,7 +48,7 @@ class TestSanity(unittest.TestCase):
                 self.assertTrue(hasattr(interface, "delAddress"))
 
     def test_machine_api(self):
-        machs = [ bench.host, bench.sut ]
+        machs = [ bench.host, bench.target ]
         for mach in machs:
             self.assertTrue(hasattr(mach, "up"))
             self.assertTrue(hasattr(mach, "down"))

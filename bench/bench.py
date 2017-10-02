@@ -23,7 +23,7 @@ class Bench:
         # Create machines involved in the test bench
         # Bridging is a an operation that should only be done on the SUT. To
         # prevent errors, let's add a protection to take care of that.
-        self.sut = Machine("SUT", sut_ctrl)
+        self.target = Machine("Target", sut_ctrl)
         self.host = Machine("Host", host_ctrl)
 
         self.links = list()
@@ -36,10 +36,10 @@ class Bench:
             switch, port = target_parser.get_interface_info(link_name)
 
             host_if = Interface(link.host, self.host)
-            sut_if = Interface(link.target, self.sut, switch, port)
+            sut_if = Interface(link.target, self.target, switch, port)
 
             self.host.addInterface(host_if)
-            self.sut.addInterface(sut_if)
+            self.target.addInterface(sut_if)
 
             l = Link(link_name, host_if, sut_if)
             self.links.append(l)
@@ -49,9 +49,9 @@ class Bench:
 
     def connect(self, dry_run=False):
         if not dry_run:
-            self.sut.control.connect()
+            self.target.control.connect()
 
     def disconnect(self, dry_run=False):
         if not dry_run:
-            self.sut.control.disconnect()
+            self.target.control.disconnect()
 
