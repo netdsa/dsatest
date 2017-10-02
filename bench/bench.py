@@ -1,5 +1,5 @@
 
-from squidsa.parser import BenchParser, BoardParser
+from squidsa.parser import BenchParser, TargetParser
 from .control import LocalControl, SSHControl
 from .interface import Interface
 from .link import Link
@@ -12,7 +12,7 @@ class Bench:
 
     def setup(self, bench_config_file):
         env = BenchParser(bench_config_file)
-        board_parser = BoardParser(env.board_name)
+        target_parser = TargetParser(env.board_name)
         host_ctrl = LocalControl()
         username = getattr(env, "ssh_username", None)
         password = getattr(env, "ssh_password", None)
@@ -33,7 +33,7 @@ class Bench:
                 self.incomplete_links.append(link_name)
                 continue
 
-            switch, port = board_parser.get_interface_info(link_name)
+            switch, port = target_parser.get_interface_info(link_name)
 
             host_if = Interface(link.host, self.host)
             sut_if = Interface(link.sut, self.sut, switch, port)

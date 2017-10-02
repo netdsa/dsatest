@@ -1,6 +1,6 @@
 
-__all__ = [ 'BenchParser', 'SwitchParser', 'BoardParser' ]
+__all__ = [ 'BenchParser', 'SwitchParser', 'TargetParser' ]
 
 from .bench import BenchParser
-from .board import BoardParser
 from .switch import SwitchParser
+from .target import TargetParser

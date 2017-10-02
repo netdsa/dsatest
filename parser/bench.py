@@ -4,7 +4,7 @@ import configparser
 import paramiko
 
 from squidsa.helper.resources import Resource
-from .board import BoardParser
+from .target import TargetParser
 
 class LinkParser:
     """

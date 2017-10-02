@@ -9,7 +9,7 @@ from .switch import SwitchParser
 
 class InterfaceInfo:
     """
-    Represents an interface (a physical connector) on a board. Each interface
+    Represents an interface (a physical connector) on a target. Each interface
     has an abstract name ("linkXXX"), and holds information about the switch it
     belongs to.
     """
@@ -25,10 +25,10 @@ class InterfaceInfo:
                 self.name, self.switch.name, self.port)
 
 
-class BoardParser:
+class TargetParser:
     """
-    This class holds information about a board: what are the switches, and which
-    ports are connected to physical connectors.
+    This class holds information about a target: what are the switches, and
+    which ports are connected to physical connectors.
 
     Config file (in conf/board):
     ------------
@@ -44,15 +44,15 @@ class BoardParser:
     GROUP_BY_SWITCH    = 2
 
 
-    def __init__(self, board_name):
+    def __init__(self, target_name):
         self.interfaces = list()
         self.config = configparser.ConfigParser()
-        self.board_name = None
+        self.target_name = None
 
-        board_cfg = Resource(Resource.BOARD, board_name).get_path()
-        path_parsed = self.config.read(board_cfg)
+        target_cfg = Resource(Resource.TARGET, target_name).get_path()
+        path_parsed = self.config.read(target_cfg)
         if (len(path_parsed) != 1):
-            error = "Invalid board configuration file: {0}".format(board_cfg)
+            error = "Invalid target configuration file: {0}".format(target_cfg)
             raise ValueError(error)
 
         section_re = re.compile("^switch([\d])+$")
@@ -96,9 +96,9 @@ class BoardParser:
 
 
     def get_interface_infos(self, group=GROUP_ALL):
-        if group == BoardParser.GROUP_ALL:
+        if group == TargetParser.GROUP_ALL:
             return self.interfaces
-        elif group == BoardParser.GROUP_BY_SWITCH:
+        elif group == TargetParser.GROUP_BY_SWITCH:
             ifs = defaultdict(list)
             for i in self.interfaces:
                 ifs[i.switch].append(i)
@@ -111,6 +111,6 @@ class BoardParser:
         """
         Make sure an interface name (linkXX) appears only once in the configuration file
         """
-        ifs = [i.name for i in self.get_interface_infos(BoardParser.GROUP_ALL)]
+        ifs = [i.name for i in self.get_interface_infos(TargetParser.GROUP_ALL)]
         if len(ifs) > len(set(ifs)):
             raise ValueError("Found duplicate interface names")
