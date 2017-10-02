@@ -38,14 +38,28 @@ class SSHControl(Control):
 
     SSH_TIMEOUT = 15
 
-    def __init__(self, address, username='root', password=None, keyfile=None):
+    def __init__(self, address, bench_parser):
+        # let's search extra argument we might need
+        target_section = bench_parser.config[bench_parser.TARGET_IDENTIFIER]
+
+        keys = {
+                "username": 'root',
+                "password": None,
+                "keyfile": None,
+                }
+
+        for key, default in keys.items():
+
+            val = default
+            if key in target_section:
+                val = target_section[key]
+
+            setattr(self, key, val)
+
         self.address = address
         self.ssh_client = paramiko.SSHClient()
         self.ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self.ssh_client.load_system_host_keys()
-        self.username = username
-        self.password = password
-        self.keyfile = keyfile
 
     def connect(self):
         username, password, keyfile = self.strip_variables(

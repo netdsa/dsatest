@@ -13,12 +13,10 @@ class Bench:
     def setup(self, bench_config_file):
         bench_parser = BenchParser(bench_config_file)
         target_parser = TargetParser(bench_parser.target_name)
+
+        target_section = bench_parser.config[bench_parser.TARGET_IDENTIFIER]
         host_ctrl = LocalControl()
-        username = getattr(bench_parser, "ssh_username", None)
-        password = getattr(bench_parser, "ssh_password", None)
-        keyfile = getattr(bench_parser, "ssh_keyfile", None)
-        target_ctrl = SSHControl(bench_parser.ssh, username=username,
-                                 password=password, keyfile=keyfile)
+        target_ctrl = SSHControl(target_section["ssh"], bench_parser)
 
         # Create machines involved in the test bench
         self.target = Machine("Target", target_ctrl)

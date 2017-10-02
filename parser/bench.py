@@ -63,14 +63,6 @@ class BenchParser:
             self.target_control = None
 
         self.target_name = target_section["name"]
-        self.ssh = target_section["ssh"]
-        if "ssh_password" in target_section:
-            self.ssh_password = target_section["ssh_password"]
-        if "ssh_keyfile" in target_section:
-            self.ssh_keyfile = target_section["ssh_keyfile"]
-        if "ssh_username" in target_section:
-            self.ssh_username = target_section["ssh_username"]
-
         self.create_links()
 
 
