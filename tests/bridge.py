@@ -22,7 +22,6 @@ class TestBridge(unittest.TestCase):
 
     def test_add_interface_to_bridge(self):
         self.bridge.addInterface(self.link.target_if)
-        self.link.host_if.flushAddresses()
         self.bridge.addAddress("192.168.10.1/24")
         self.link.host_if.ping("192.168.10.1", count=1, deadline=1)
 
