@@ -8,20 +8,20 @@ class Bridge(Interface):
         self.interfaces = []
 
     def create(self):
-        command = "brctl addbr {}".format(self.name)
+        command = "ip link add name {} type bridge".format(self.name)
         self.machine.exec(command)
 
     def destroy(self):
         self.down()
-        command = "brctl delbr {}".format(self.name)
+        command = "ip link del {}".format(self.name)
         self.machine.exec(command)
 
     def addInterface(self, interface):
         self.interfaces.append(interface)
-        command = "brctl addif {} {}".format(self.name, interface.name)
+        command = "ip link set {} master {}".format(interface.name, self.name)
         self.machine.exec(command)
 
     def delInterface(self, interface):
         self.interfaces.remove(interface)
-        command = "brctl delif {} {}".format(self.name, interface.name)
+        command = "ip link set {} nomaster".format(interface.name)
         self.machine.exec(command)
