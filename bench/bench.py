@@ -11,13 +11,13 @@ class Bench:
         self.is_setup = False
 
     def setup(self, bench_config_file):
-        env = BenchParser(bench_config_file)
-        target_parser = TargetParser(env.target_name)
+        bench_parser = BenchParser(bench_config_file)
+        target_parser = TargetParser(bench_parser.target_name)
         host_ctrl = LocalControl()
-        username = getattr(env, "ssh_username", None)
-        password = getattr(env, "ssh_password", None)
-        keyfile = getattr(env, "ssh_keyfile", None)
-        sut_ctrl = SSHControl(env.ssh, username=username,
+        username = getattr(bench_parser, "ssh_username", None)
+        password = getattr(bench_parser, "ssh_password", None)
+        keyfile = getattr(bench_parser, "ssh_keyfile", None)
+        sut_ctrl = SSHControl(bench_parser.ssh, username=username,
                               password=password, keyfile=keyfile)
 
         # Create machines involved in the test bench
@@ -28,7 +28,7 @@ class Bench:
 
         self.links = list()
         self.incomplete_links = list()
-        for link_name, link in env.links.items():
+        for link_name, link in bench_parser.links.items():
             if link.is_incomplete():
                 self.incomplete_links.append(link_name)
                 continue
