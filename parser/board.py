@@ -114,16 +114,3 @@ class BoardParser:
         ifs = [i.name for i in self.get_interface_infos(BoardParser.GROUP_ALL)]
         if len(ifs) > len(set(ifs)):
             raise ValueError("Found duplicate interface names")
-
-if __name__ == "__main__":
-    b = BoardParser("board-example")
-
-    assert len(b.get_interface_infos(BoardParser.GROUP_ALL)) == 3
-    assert len(b.get_interface_infos(BoardParser.GROUP_BY_SWITCH).keys()) == 2
-    assert b.get_interface_infos() == b.get_interface_infos(BoardParser.GROUP_ALL)
-    try:
-        b.get_interface_infos("foobar")
-        assert False, "Should not reach this point"
-    except ValueError as exception:
-        pass
-    print("No assert triggered, everything went as expected")
