@@ -17,11 +17,11 @@ class TestSanity(unittest.TestCase):
     def test_link_has_interfaces(self):
         for link in bench.links:
             self.assertIsInstance(link.host_if, Interface)
-            self.assertIsInstance(link.sut_if, Interface)
+            self.assertIsInstance(link.target_if, Interface)
 
     def test_interface_member(self):
         for link in bench.links:
-            interface = link.sut_if
+            interface = link.target_if
             self.assertIsInstance(interface.name, str)
             self.assertIsInstance(interface.port_id, str)
 
@@ -32,15 +32,15 @@ class TestSanity(unittest.TestCase):
 
         for l in links:
             host = l.host_if.name
-            sut = l.sut_if.name
+            target = l.target_if.name
             self.assertIsInstance(host, str)
-            self.assertIsInstance(sut, str)
+            self.assertIsInstance(target, str)
             self.assertTrue(len(host) > 0)
-            self.assertTrue(len(sut) > 0)
+            self.assertTrue(len(target) > 0)
 
     def test_interface_api(self):
         for link in bench.links:
-            ifs = [ link.host_if, link.sut_if ]
+            ifs = [ link.host_if, link.target_if ]
             for interface in ifs:
                 self.assertTrue(hasattr(interface, "up"))
                 self.assertTrue(hasattr(interface, "down"))
