@@ -33,7 +33,7 @@ class TargetParser:
     Config file (in conf/target):
     ------------
     [switch0]
-    name = "wag200g"
+    name = "marvel-88e6060"
     port1 = "link0"
 
     That means the port1 of the wag200g chip is the first port a cable can be
