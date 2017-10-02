@@ -17,13 +17,11 @@ class Bench:
         username = getattr(bench_parser, "ssh_username", None)
         password = getattr(bench_parser, "ssh_password", None)
         keyfile = getattr(bench_parser, "ssh_keyfile", None)
-        sut_ctrl = SSHControl(bench_parser.ssh, username=username,
-                              password=password, keyfile=keyfile)
+        target_ctrl = SSHControl(bench_parser.ssh, username=username,
+                                 password=password, keyfile=keyfile)
 
         # Create machines involved in the test bench
-        # Bridging is a an operation that should only be done on the SUT. To
-        # prevent errors, let's add a protection to take care of that.
-        self.target = Machine("Target", sut_ctrl)
+        self.target = Machine("Target", target_ctrl)
         self.host = Machine("Host", host_ctrl)
 
         self.links = list()
@@ -36,12 +34,12 @@ class Bench:
             switch, port = target_parser.get_interface_info(link_name)
 
             host_if = Interface(link.host, self.host)
-            sut_if = Interface(link.target, self.target, switch, port)
+            target_if = Interface(link.target, self.target, switch, port)
 
             self.host.addInterface(host_if)
-            self.target.addInterface(sut_if)
+            self.target.addInterface(target_if)
 
-            l = Link(link_name, host_if, sut_if)
+            l = Link(link_name, host_if, target_if)
             self.links.append(l)
 
             self.is_setup = True
