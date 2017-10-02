@@ -100,7 +100,7 @@ bench.cfg
 link0 = enp0s31f6
 
 [target]
-ssh = 192.168.0.116
+control = ssh://192.168.0.116
 name = target-example   ; refer to target configuration file
 link0 = eth8            ; Because the target is running Buildroot, it
                         ; could be named enp0xxx with a distribution running

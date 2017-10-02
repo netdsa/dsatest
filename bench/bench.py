@@ -1,11 +1,17 @@
 
 from dsatest.parser import BenchParser, TargetParser
+from dsatest.helper.scheme import URI
 from .control import LocalControl, SSHControl
 from .interface import Interface
 from .link import Link
 from .machine import Machine
 
 class Bench:
+
+    controls = {
+        URI.Scheme.LOCAL:   LocalControl,
+        URI.Scheme.SSH:     SSHControl,
+    }
 
     def __init__(self):
         self.is_setup = False
@@ -14,9 +20,16 @@ class Bench:
         bench_parser = BenchParser(bench_config_file)
         target_parser = TargetParser(bench_parser.target_name)
 
-        target_section = bench_parser.config[bench_parser.TARGET_IDENTIFIER]
-        host_ctrl = LocalControl("localhost", bench_parser)
-        target_ctrl = SSHControl(target_section["ssh"], bench_parser)
+        default_scheme = URI.Scheme.LOCAL
+        host_scheme = URI(bench_parser.host_control)
+        target_scheme = URI(bench_parser.target_control)
+
+        host_ctrl = self.controls[host_scheme.getScheme(default_scheme)](
+                host_scheme.getHost(),
+                bench_parser)
+        target_ctrl = self.controls[target_scheme.getScheme(default_scheme)](
+                target_scheme.getHost(),
+                bench_parser)
 
         # Create machines involved in the test bench
         self.target = Machine("Target", target_ctrl)
