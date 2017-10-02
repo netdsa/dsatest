@@ -3,7 +3,7 @@ import configparser
 import re
 from collections import defaultdict
 
-from squidsa.helper.resources import Resource
+from dsatest.helper.resources import Resource
 
 from .switch import SwitchParser
 

@@ -3,7 +3,7 @@ import configparser
 
 import paramiko
 
-from squidsa.helper.resources import Resource
+from dsatest.helper.resources import Resource
 from .target import TargetParser
 
 class LinkParser:

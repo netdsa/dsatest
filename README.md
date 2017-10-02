@@ -1,6 +1,6 @@
-# SquiDSA
+# dsatest
 
-A tool to run tests on a DSA test bench.
+A test runner for DSA
 
 
 ## Usage
@@ -70,7 +70,7 @@ port3 = link1
 ### Bench
 
 Describe the test bench, ie. how the controlling machine (aka host), running
-squidsa, is connect to the target machine.
+dsatest, is connect to the target machine.
 
 For instance, let's create a test bench with the target defined in the previous
 section. Host and Target are connected with only one cable:
@@ -105,12 +105,12 @@ name = target-example   ; refer to target configuration file
 link0 = eth8            ; Because the target is running Buildroot, it
                         ; could be named enp0xxx with a distribution running
                         ; systemd
-link1 = eth9            ; can be filled in. squidsa will warn that it is
+link1 = eth9            ; can be filled in. dsatest will warn that it is
                         ; connected to only one end and will run tests only
                         ; using link0
 ```
 
-When a link is defined under both the host and the target section, squidsa will
+When a link is defined under both the host and the target section, dsatest will
 register that link and the corresponding interfaces so that tests will be able
 to use them. Links connected to only one end will be ignored.
 
@@ -119,7 +119,7 @@ to use them. Links connected to only one end will be ignored.
 One can use out-of-tree configuration files by using the `-C` or `--conf-dir`
 flags and specifying a directory that has the same layout as the `conf/`
 directory. Files found in this alternate directory will have precedence over the
-ones found in squidsa's `conf` directory.
+ones found in dsatest's `conf` directory.
 
 
 ## Tests
@@ -128,7 +128,7 @@ Tests are written using unittest, and must respect rules defined by this module.
 They can access the test bench instance through the following import:
 
 ```python
-from squidsa.bench import bench
+from dsatest.bench import bench
 ```
 
 API is self-documented in `test/sanity.py`. More documentation welcome!

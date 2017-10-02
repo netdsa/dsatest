@@ -1,7 +1,7 @@
 
 import unittest
 
-from squidsa.bench import bench
+from dsatest.bench import bench
 
 @unittest.skipIf(len(bench.links) == 0, "test requires at least 1 link")
 class TestBridge(unittest.TestCase):

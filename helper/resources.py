@@ -2,12 +2,12 @@
 import os
 import pkg_resources
 
-from squidsa import settings
+from dsatest import settings
 
 
 class Resource:
     """
-    This class is a helper to find configuration files within squidsa. Typical
+    This class is a helper to find configuration files within dsatest. Typical
     invocation would look like:
 
     r = Resource(Resource.TARGET, "wag200g")
@@ -39,7 +39,7 @@ class Resource:
 
         resource_path = '/'.join(('conf', t, name))
 
-        resource_package = "squidsa"
+        resource_package = "dsatest"
         self.cfg = pkg_resources.resource_filename(resource_package, resource_path)
         if not os.path.exists(self.cfg):
             raise ValueError("Cannot find resource {} of type {}".format(name, t))

@@ -1,7 +1,7 @@
 
 import unittest
 
-from squidsa.bench import Bridge, Interface, bench
+from dsatest.bench import Bridge, Interface, bench
 
 class TestSanity(unittest.TestCase):
 

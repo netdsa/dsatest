@@ -1,5 +1,5 @@
 
-from squidsa.parser import BenchParser, TargetParser
+from dsatest.parser import BenchParser, TargetParser
 from .control import LocalControl, SSHControl
 from .interface import Interface
 from .link import Link

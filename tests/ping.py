@@ -1,7 +1,7 @@
 
 import unittest
 
-from squidsa.bench import bench
+from dsatest.bench import bench
 
 class TestPing(unittest.TestCase):
 
