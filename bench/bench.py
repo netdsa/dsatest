@@ -15,7 +15,7 @@ class Bench:
         target_parser = TargetParser(bench_parser.target_name)
 
         target_section = bench_parser.config[bench_parser.TARGET_IDENTIFIER]
-        host_ctrl = LocalControl()
+        host_ctrl = LocalControl("localhost", bench_parser)
         target_ctrl = SSHControl(target_section["ssh"], bench_parser)
 
         # Create machines involved in the test bench

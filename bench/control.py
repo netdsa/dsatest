@@ -25,6 +25,9 @@ class Control(object):
 
 class LocalControl(Control):
 
+    def __init__(self, hostname, bench_parser):
+        pass
+
     def exec(self, command):
         ret = subprocess.run(command, shell=True,
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE)
