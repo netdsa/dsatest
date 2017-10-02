@@ -36,7 +36,7 @@ class Bench:
             switch, port = target_parser.get_interface_info(link_name)
 
             host_if = Interface(link.host, self.host)
-            sut_if = Interface(link.sut, self.sut, switch, port)
+            sut_if = Interface(link.target, self.sut, switch, port)
 
             self.host.addInterface(host_if)
             self.sut.addInterface(sut_if)

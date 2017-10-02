@@ -13,7 +13,7 @@ class LinkParser:
 
     def __init__(self):
         self.host = None
-        self.sut = None
+        self.target = None
 
     def set_interface_name(self, side, if_name):
         if not side in self.names.keys():
@@ -21,11 +21,11 @@ class LinkParser:
         self.names[side] = if_name
 
     def is_incomplete(self):
-        return self.host is None or self.sut is None
+        return self.host is None or self.target is None
 
     def __repr__(self):
-        return "<Link host: '{0}', sut '{1}'>".format(
-                self.host, self.sut)
+        return "<Link host: '{0}', target '{1}'>".format(
+                self.host, self.target)
 
 
 class BenchParser:
@@ -76,7 +76,7 @@ class BenchParser:
             if not key.startswith(self.LINK_IDENTIFIER):
                 continue
             link = self.get_link(key)
-            link.sut = val
+            link.target = val
 
 
     def get_link(self, link_name):
