@@ -49,7 +49,19 @@ class BenchParser:
                 not self.TARGET_IDENTIFIER in sections):
             raise ValueError("Missing sections")
 
+        host_section = self.config[self.HOST_IDENTIFIER]
         target_section = self.config[self.TARGET_IDENTIFIER]
+
+        if "control" in host_section:
+            self.storeStripped("host_control", host_section["control"])
+        else:
+            self.host_control = None
+
+        if "control" in target_section:
+            self.storeStripped("target_control", target_section["control"])
+        else:
+            self.target_control = None
+
         self.target_name = target_section["name"]
         self.ssh = target_section["ssh"]
         if "ssh_password" in target_section:
@@ -84,3 +96,5 @@ class BenchParser:
             self.links[link_name] = LinkParser()
         return self.links[link_name]
 
+    def storeStripped(self, key, arg):
+        setattr(self, key, arg.strip(" '\""))
