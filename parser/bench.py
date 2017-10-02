@@ -32,7 +32,7 @@ class BenchParser:
 
     LINK_IDENTIFIER = "link"
     HOST_IDENTIFIER = "host"
-    SUT_IDENTIFIER = "sut"
+    TARGET_IDENTIFIER = "target"
 
     def __init__(self, bench_config_file):
         self.config = configparser.ConfigParser()
@@ -46,33 +46,33 @@ class BenchParser:
         # TODO: improve parsing to make it more robust
         sections = self.config.sections()
         if (not self.HOST_IDENTIFIER in sections or
-                not self.SUT_IDENTIFIER in sections):
+                not self.TARGET_IDENTIFIER in sections):
             raise ValueError("Missing sections")
 
-        sut_section = self.config[self.SUT_IDENTIFIER]
-        self.board_name = sut_section["board"]
-        self.ssh = sut_section["ssh"]
-        if "ssh_password" in sut_section:
-            self.ssh_password = sut_section["ssh_password"]
-        if "ssh_keyfile" in sut_section:
-            self.ssh_keyfile = sut_section["ssh_keyfile"]
-        if "ssh_username" in sut_section:
-            self.ssh_username = sut_section["ssh_username"]
+        target_section = self.config[self.TARGET_IDENTIFIER]
+        self.target_name = target_section["name"]
+        self.ssh = target_section["ssh"]
+        if "ssh_password" in target_section:
+            self.ssh_password = target_section["ssh_password"]
+        if "ssh_keyfile" in target_section:
+            self.ssh_keyfile = target_section["ssh_keyfile"]
+        if "ssh_username" in target_section:
+            self.ssh_username = target_section["ssh_username"]
 
         self.create_links()
 
 
     def create_links(self):
         host_section = self.config[self.HOST_IDENTIFIER]
-        sut_section = self.config[self.SUT_IDENTIFIER]
+        target_section = self.config[self.TARGET_IDENTIFIER]
         for key, val in host_section.items():
             if not key.startswith(self.LINK_IDENTIFIER):
                 continue
             link = self.get_link(key)
             link.host = val
 
-        sut_section = self.config[self.SUT_IDENTIFIER]
-        for key, val in sut_section.items():
+        target_section = self.config[self.TARGET_IDENTIFIER]
+        for key, val in target_section.items():
             if not key.startswith(self.LINK_IDENTIFIER):
                 continue
             link = self.get_link(key)

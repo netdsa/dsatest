@@ -12,7 +12,7 @@ class Bench:
 
     def setup(self, bench_config_file):
         env = BenchParser(bench_config_file)
-        target_parser = TargetParser(env.board_name)
+        target_parser = TargetParser(env.target_name)
         host_ctrl = LocalControl()
         username = getattr(env, "ssh_username", None)
         password = getattr(env, "ssh_password", None)
