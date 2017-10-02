@@ -23,23 +23,24 @@ From a bottom-up approach:
  * Switch: describe a switch and how its kernel driver exposes some
            information. This file can be shared and used in several test
            benches.
- * Board: describe a board, the switches that are on it, and the interfaces
-          that the test bench will be able to use. This file can also be shared.
- * Bench: describe how the host machine and the System under Test (SUT) are
-          connected to one another. This file is specific to each bench.
+ * Target: describe the machine being tested, the switches that are on it, and
+           the interfaces that the test bench will be able to use. This file
+           can also be shared.
+ * Bench: describe how the host machine and the target machine are connected to
+          one another. This file is specific to each bench.
 
 ### Switch
 
 *TODO: Not used yet*
 
-### Board
+### Target
 
 They are located in `conf/target`. They describe the hardware of the
 machine being tested. For instance, consider the following situation:
 
 ```
   +--------------------------------------------------+
-  |                           Board (aka SUT)        |
+  |                           Target                 |
   |  +----------------+                              |
   |  |          port0 |----> to CPU                  |
   |  | Switch0  port1 |--------------------------[ link0 ] <-+
@@ -52,7 +53,7 @@ machine being tested. For instance, consider the following situation:
 Only port1 and port3 of switch0 are connected to front-facing connectors.
 Obviously the bench can only used these two ports to run tests.
 
-Describing the internals of the board (which switch port is connected to what
+Describing the internals of the target (which switch port is connected to what
 front-facing connector) allows to get sensible error reporting if errors occur.
 Moreover, these files can be shared by people using the same hardware.
 
@@ -69,25 +70,26 @@ port3 = link1
 ### Bench
 
 Describe the test bench, ie. how the controlling machine (aka host), running
-squidsa, is connect to the SUT.
+squidsa, is connect to the target machine.
 
-For instance, let's create a test bench with the board defined in the previous
-section. Host and SUT are connected with only one cable:
+For instance, let's create a test bench with the target defined in the previous
+section. Host and Target are connected with only one cable:
 
 ```
   +-------------+                        +---------------+
   |             |         cable          |               |
   |          [ eth8 ]<------------>[ enp0s31f6 ]         |
-  |    SUT      |         link0          |               |
+  |   TARGET    |         link0          |               |
   |          [ eth9 ]                    |      HOST     |
   |             |                        |               |
   +-------------+                        +---------------+
 ```
 
-Bench configuration file defines that link0 is eth8 on SUT side, and enp0s31f6
-on host side. eth9 is left disconnected. Names of interfaces is defined at the
-bench level because interfaces may have different names depending on the OS
-running on it, so it may vary from one test bench to another.
+Bench configuration file defines that link0 is eth8 on the target side, and
+enp0s31f6 on host side. eth9 is left disconnected. Names of interfaces is
+defined at the bench level because interfaces may have different names
+depending on the OS running on it, so it may vary from one test bench to
+another.
 
 
 ```
@@ -108,7 +110,7 @@ link1 = eth9            ; can be filled in. squidsa will warn that it is
                         ; using link0
 ```
 
-When a link is defined under both the host and the sut section, squidsa will
+When a link is defined under both the host and the target section, squidsa will
 register that link and the corresponding interfaces so that tests will be able
 to use them. Links connected to only one end will be ignored.
 

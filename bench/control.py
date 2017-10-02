@@ -86,7 +86,7 @@ class SSHControl(Control):
 
 
     def exec(self, command):
-        """Execute a command on the SUT, using SSH"""
+        """Execute a command on a machine, using SSH"""
         self.exit_code = None
         _, stdout, stderr = self.ssh_client.exec_command(command)
         self.exit_code = stdout.channel.recv_exit_status()
