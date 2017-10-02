@@ -10,7 +10,7 @@ class Resource:
     This class is a helper to find configuration files within squidsa. Typical
     invocation would look like:
 
-    r = Resource(Resource.BOARD, "wag200g")
+    r = Resource(Resource.TARGET, "wag200g")
     print(r.get_path())
 
     The benefit of using this helper is that files can be easily located even
@@ -18,13 +18,13 @@ class Resource:
     """
 
     SWITCH          = 1
-    BOARD           = 2
+    TARGET          = 2
 
 
     def __init__(self, resource_type, name):
         if resource_type == Resource.SWITCH:
             t = "switch"
-        elif resource_type == Resource.BOARD:
+        elif resource_type == Resource.TARGET:
             t = "board"
         else:
             raise ValueError("Invalid resource_type")
