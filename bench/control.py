@@ -29,7 +29,7 @@ class Control(object):
 
 class LocalControl(Control):
 
-    def __init__(self, hostname, bench_parser):
+    def __init__(self, hostname, port, bench_parser):
         pass
 
     def exec(self, command):
@@ -55,7 +55,7 @@ class SSHControl(Control):
 
     SSH_TIMEOUT = 15
 
-    def __init__(self, address, bench_parser):
+    def __init__(self, address, port, bench_parser):
         # let's search extra argument we might need
         target_section = bench_parser.config[bench_parser.TARGET_IDENTIFIER]
 
@@ -77,6 +77,7 @@ class SSHControl(Control):
         logging.getLogger("paramiko").setLevel(logging.WARNING)
 
         self.address = address
+        self.port = port
         self.ssh_client = paramiko.SSHClient()
         self.ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self.ssh_client.load_system_host_keys(self.system_host_keys)
@@ -85,20 +86,20 @@ class SSHControl(Control):
         username, password, keyfile = self.strip_variables(
                 self.username, self.password, self.keyfile)
         if password is not None and keyfile is not None:
-            self.ssh_client.connect(self.address, username=username,
+            self.ssh_client.connect(self.address, self.port, username=username,
                                     key_filename=keyfile, password=password,
                                     timeout=SSHControl.SSH_TIMEOUT)
         elif keyfile is not None:
-            self.ssh_client.connect(self.address, username=username,
+            self.ssh_client.connect(self.address, self.port, username=username,
                                     key_filename=keyfile,
                                     timeout=SSHControl.SSH_TIMEOUT)
         elif password is not None:
-            self.ssh_client.connect(self.address, username=username,
+            self.ssh_client.connect(self.address, self.port, username=username,
                                     password=password, look_for_keys=False,
                                     timeout=SSHControl.SSH_TIMEOUT)
         else:
             # let's try with SSH agent, hopefully key will be not encrypted
-            self.ssh_client.connect(self.address, username=username,
+            self.ssh_client.connect(self.address, self.port, username=username,
                                     timeout=SSHControl.SSH_TIMEOUT)
 
     def disconnect(self):
