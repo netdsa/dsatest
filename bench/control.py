@@ -1,4 +1,5 @@
 
+import logging
 import subprocess
 
 import paramiko
@@ -59,6 +60,8 @@ class SSHControl(Control):
                 val = target_section[key]
 
             setattr(self, key, val)
+
+        logging.getLogger("paramiko").setLevel(logging.WARNING)
 
         self.address = address
         self.ssh_client = paramiko.SSHClient()
