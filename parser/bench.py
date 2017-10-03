@@ -1,4 +1,5 @@
 
+from collections import OrderedDict
 import configparser
 
 import paramiko
@@ -36,7 +37,7 @@ class BenchParser:
 
     def __init__(self, bench_config_file):
         self.config = configparser.ConfigParser(inline_comment_prefixes=(';',))
-        self.links = dict()
+        self.links = OrderedDict()
 
         path_parsed = self.config.read(bench_config_file)
         if (len(path_parsed) != 1):
