@@ -3,10 +3,31 @@
 import os
 import sys
 import argparse
+import logging
 import unittest
 
 from dsatest.bench import bench
 from dsatest import settings
+
+logger = logging.getLogger('dsatest')
+
+def setupLogger(verbosity):
+    level = 0
+    if verbosity == 0:
+        level = logging.WARN
+    elif verbosity == 1:
+        level = logging.INFO
+    else:
+        level = logging.DEBUG
+
+    logger.setLevel(level)
+
+    formatter = logging.Formatter('%(levelname)s: %(message)s')
+
+    ch = logging.StreamHandler(stream=sys.stderr)
+    ch.setFormatter(formatter)
+
+    logger.addHandler(ch)
 
 def recurseIterSuite(suite, match, pattern):
     for s in suite:
@@ -96,7 +117,11 @@ if __name__ == "__main__":
                         help='path to the configuration directory')
     parser.add_argument('--dry-run', action='store_true', default=False,
                         help='Skip connection to the test bench (no SSHing is done)')
+    parser.add_argument('--verbose', '-v', action='count')
     args = parser.parse_args()
+
+    verbosity = args.verbose or 0
+    setupLogger(verbosity)
 
     if args.conf_dir is not None:
         path = os.path.join(os.getcwd(), args.conf_dir)
