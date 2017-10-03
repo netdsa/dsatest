@@ -71,7 +71,7 @@ def main(bench_conf, test_dir, test_name, dry_run):
         print("Link {} is not connected to both ends".format(l))
 
     suite = createTestSuite(test_dir, test_name)
-    runner = unittest.TextTestRunner()
+    runner = unittest.TextTestRunner(stream=sys.stdout)
 
     print("-"*70)
 
