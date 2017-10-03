@@ -7,6 +7,7 @@ control = "ssh://localhost"
 ;username = username
 ;password = password
 ;keyfile = /home/username/.ssh/id_rsa
+;system_host_keys = /dev/null ; don't use system host keys
 name = linksys-wag200g
 link0 = eth8
 link1 = eth9
