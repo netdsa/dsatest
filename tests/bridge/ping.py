@@ -7,21 +7,25 @@ from dsatest.bench import bench
 class TestBridge(unittest.TestCase):
 
     def setUp(self):
-        self.link = bench.links[0]
-        self.link.host_if.flushAddresses()
-        self.link.host_if.addAddress("192.168.10.2/24")
+        links = bench.links
+
+        for l in enumerate(links):
+            l.host_if.flushAddresses()
+
         self.bridge = bench.target.addBridge("br0")
         self.bridge.up()
-
+        self.bridge.addAddress("192.168.10.1/24")
 
     def tearDown(self):
-        self.link.host_if.delAddress("192.168.10.2/24")
         self.bridge.down()
         bench.target.delBridge(self.bridge)
 
 
-    def test_add_interface_to_bridge(self):
-        self.bridge.addInterface(self.link.target_if)
-        self.bridge.addAddress("192.168.10.1/24")
-        self.link.host_if.ping("192.168.10.1", count=1, deadline=1)
+    def test_bridge_ping_all_links(self):
+        links = bench.links
 
+        for l in enumerate(links):
+            l.host_if.addAddress("192.168.10.2/24")
+            self.bridge.addInterface(l.target_if)
+            l.host_if.ping("192.168.10.1", count=1, deadline=1)
+            l.host_if.delAddress("192.168.10.2/24")
