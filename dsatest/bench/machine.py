@@ -70,3 +70,13 @@ class Machine:
         cmd += " {}".format(destination)
         self.control.exec_and_check(cmd)
 
+    def arp_get(self, address, interface):
+        cmd = "cat /proc/net/arp"
+        _, stdout, _ = self.control.execute(cmd)
+        for line in stdout.splitlines():
+            words = line.split()
+            if len(words) > 5 and words[0] == address and words[1] == '0x1' and words[5] == interface:
+                mac = words[3]
+                return mac
+
+        return None

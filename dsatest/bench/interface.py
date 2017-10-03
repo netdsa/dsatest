@@ -36,3 +36,6 @@ class Interface(object):
 
     def ping(self, destination, count=None, deadline=None):
         self.machine.ping(destination, from_if=self.name, count=count, deadline=deadline)
+
+    def arp_get(self, address):
+        return self.machine.arp_get(address, self.name)
