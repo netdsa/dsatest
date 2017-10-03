@@ -35,7 +35,7 @@ class BenchParser:
     TARGET_IDENTIFIER = "target"
 
     def __init__(self, bench_config_file):
-        self.config = configparser.ConfigParser()
+        self.config = configparser.ConfigParser(inline_comment_prefixes=(';',))
         self.links = dict()
 
         path_parsed = self.config.read(bench_config_file)
