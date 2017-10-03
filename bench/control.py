@@ -4,6 +4,8 @@ import subprocess
 
 import paramiko
 
+logger = logging.getLogger('dsatest')
+
 
 class Control(object):
 
@@ -30,9 +32,18 @@ class LocalControl(Control):
         pass
 
     def exec(self, command):
-        ret = subprocess.run(command, shell=True,
+        logger.debug("LocalControl: Executing: {}".format(command))
+        ret = subprocess.run(command, shell=True, encoding="utf8",
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         self.exit_code = ret.returncode
+        logger.debug("LocalControl: Command returned {}".format(self.exit_code))
+        stdout, stderr = [s.strip() for s in (ret.stdout, ret.stderr)]
+        if stdout != '':
+            for l in stdout.split('\n'):
+                logger.debug("LocalControl: stdout: {}".format(l))
+        if stderr != '':
+            for l in stderr.split('\n'):
+                logger.debug("LocalControl: stderr: {}".format(l))
 
     def getLastExitCode(self):
         return self.exit_code
@@ -109,8 +120,14 @@ class SSHControl(Control):
     def exec(self, command):
         """Execute a command on a machine, using SSH"""
         self.exit_code = None
+        logger.debug("SSHControl: Executing: {}".format(command))
         _, stdout, stderr = self.ssh_client.exec_command(command)
         self.exit_code = stdout.channel.recv_exit_status()
+        logger.debug("SSHControl: Command returned {}".format(self.exit_code))
+        for l in stdout.readlines():
+            logger.debug("SSHControl: stdout: {}".format(l.strip()))
+        for l in stderr.readlines():
+            logger.debug("SSHControl: stderr: {}".format(l.strip()))
 
     def getLastExitCode(self):
         return self.exit_code
