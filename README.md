@@ -7,11 +7,11 @@ A test runner for DSA
 
 ```sh
 # run all tests containing "ping" in their test method names
-./bench.sh -t ping -B bench.cfg.example
+./dsatest -t ping -B bench.cfg.example
 
 # run all tests defined in sanity.py, using bench.cfg.example for configuration
 # --dry-run will skip the SSH connection step. This is used for self-testing.
-./bench.sh --dry-run -t sanity.py -B bench.cfg.example
+./dsatest --dry-run -t sanity.py -B bench.cfg.example
 ```
 
 
