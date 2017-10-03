@@ -49,6 +49,7 @@ class SSHControl(Control):
                 "username": 'root',
                 "password": None,
                 "keyfile": None,
+                "system_host_keys": None,
                 }
 
         for key, default in keys.items():
@@ -62,7 +63,7 @@ class SSHControl(Control):
         self.address = address
         self.ssh_client = paramiko.SSHClient()
         self.ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        self.ssh_client.load_system_host_keys()
+        self.ssh_client.load_system_host_keys(self.system_host_keys)
 
     def connect(self):
         username, password, keyfile = self.strip_variables(
