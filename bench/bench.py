@@ -1,7 +1,7 @@
 
 from dsatest.parser import BenchParser, TargetParser
 from dsatest.helper.scheme import URI
-from .control import LocalControl, SSHControl
+from .control import LocalControl, SSHControl, TelnetControl
 from .interface import Interface
 from .link import Link
 from .machine import Machine
@@ -11,6 +11,7 @@ class Bench:
     controls = {
         URI.Scheme.LOCAL:   LocalControl,
         URI.Scheme.SSH:     SSHControl,
+        URI.Scheme.TELNET:  TelnetControl,
     }
 
     def __init__(self):

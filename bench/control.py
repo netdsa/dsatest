@@ -4,6 +4,8 @@ import logging
 import subprocess
 
 import paramiko
+import telnetlib
+import re
 
 logger = logging.getLogger('dsatest')
 
@@ -135,3 +137,89 @@ class SSHControl(Control):
     def getLastExitCode(self):
         return self.exit_code
 
+
+class TelnetControl(Control):
+
+    TELNET_TIMEOUT = 15
+
+    def __init__(self, address, port, bench_parser):
+        target_section = bench_parser.config[bench_parser.TARGET_IDENTIFIER]
+
+        keys = {
+                "username": None,
+                "password": None,
+                "prompt": None,
+                }
+
+        for key, default in keys.items():
+
+            val = default
+            if key in target_section:
+                val = target_section[key]
+
+            setattr(self, key, val)
+
+        self.address = address
+        self.port = port
+        self.telnet_client = telnetlib.Telnet(address)
+        self.prompt = self.prompt.replace('"', '')
+
+    def connect(self):
+        username, password = self.strip_variables(
+                    self.username, self.password)
+        self.telnet_client.open(self.address, self.port)
+        if username is not None:
+            self.telnet_client.read_until("login: ".encode())
+            self.telnet_client.write((username + "\n").encode())
+        if password is not None:
+            self.telnet_client.read_until("Password: ".encode())
+            self.telnet_client.write((password + "\n").encode())
+
+    def disconnect(self):
+        self.telnet_client.close()
+
+    def strip_variables(self, *args):
+        """
+        Strip strings from *args from leading and trailing whitespaces,
+        single quote, and double quotes. That prevents some simple failures
+        if ssh username or password are stored quoted in the config file.
+        """
+        ret = list()
+        for arg in args:
+            if arg is not None:
+                arg = arg.strip(" '\"")
+            ret.append(arg)
+        return ret
+
+    def exec(self, command):
+        """Execute a command on a machine, using Telnet"""
+        self.exit_code = None
+        """
+        Confirm the command was correctly echoed back and then ask for
+        its return code
+        """
+        logger.debug("TelnetControl: Executing: {}".format(command))
+        self.telnet_client.write((command + "\r\n").encode())
+        resp = self.telnet_client.read_until((command + "\r\n").encode())
+        while True:
+            resp = self.telnet_client.read_until(self.prompt.encode())
+            if resp is not None:
+                break
+
+        stdout = resp.decode()
+        stderr = ""
+        self.telnet_client.write("echo $?\r\n".encode())
+        _, r, before = self.telnet_client.expect([re.compile(b'(\d+)')],
+                                        TelnetControl.TELNET_TIMEOUT)
+        self.exit_code = int(r.group(1).decode())
+        logger.debug("TelnetControl: Command returned {}".format(self.exit_code))
+
+        if self.exit_code != 0:
+            stderr = resp.decode()
+        for l in stdout.split('\n'):
+            logger.debug("TelnetControl: stdout: {}".format(l.strip()))
+        for l in stderr.split('\n'):
+            logger.debug("TelnetControl: stderr: {}".format(l.strip()))
+
+    def getLastExitCode(self):
+        return self.exit_code
