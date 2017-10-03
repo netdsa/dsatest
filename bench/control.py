@@ -49,6 +49,8 @@ class LocalControl(Control):
             for l in stderr.split('\n'):
                 logger.debug("LocalControl: stderr: {}".format(l))
 
+        return self.exit_code, stdout, stderr
+
     def getLastExitCode(self):
         return self.exit_code
 
@@ -129,10 +131,16 @@ class SSHControl(Control):
         _, stdout, stderr = self.ssh_client.exec_command(command)
         self.exit_code = stdout.channel.recv_exit_status()
         logger.debug("SSHControl: Command returned {}".format(self.exit_code))
-        for l in stdout.readlines():
-            logger.debug("SSHControl: stdout: {}".format(l.strip()))
-        for l in stderr.readlines():
-            logger.debug("SSHControl: stderr: {}".format(l.strip()))
+        stdout = stdout.read().decode().strip()
+        stderr = stderr.read().decode().strip()
+        if stdout != '':
+            for l in stdout.split('\n'):
+                logger.debug("SSHControl: stdout: {}".format(l.strip()))
+        if stderr != '':
+            for l in stderr.split('\n'):
+                logger.debug("SSHControl: stderr: {}".format(l.strip()))
+
+        return self.exit_code, stdout, stderr
 
     def getLastExitCode(self):
         return self.exit_code
@@ -220,6 +228,8 @@ class TelnetControl(Control):
             logger.debug("TelnetControl: stdout: {}".format(l.strip()))
         for l in stderr.split('\n'):
             logger.debug("TelnetControl: stderr: {}".format(l.strip()))
+
+        return self.exit_code, stdout, stderr
 
     def getLastExitCode(self):
         return self.exit_code
