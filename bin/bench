@@ -89,9 +89,12 @@ def main(bench_conf, test_dir, test_name, dry_run):
     incomplete_links = bench.incomplete_links
 
     for l in incomplete_links:
-        print("Link {} is not connected to both ends".format(l))
+        logger.warn("Link {} is not connected to both ends".format(l))
 
+    logger.info("Creating test suite. Searching for '{}' in '{}'".format(
+                    test_name, test_dir))
     suite = createTestSuite(test_dir, test_name)
+    logger.info("Found {} tests".format(suite.countTestCases()))
     runner = unittest.TextTestRunner(stream=sys.stdout)
 
     print("-"*70)
