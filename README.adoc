@@ -1,44 +1,47 @@
-# dsatest
+= dsatest
 
 A test runner for DSA
 
 
-## Usage
+== Usage
 
-```sh
+[source,sh]
+----
 # run all tests containing "ping" in their test method names
 ./dsatest -t ping -B bench.cfg.example
 
 # run all tests defined in sanity.py, using bench.cfg.example for configuration
 # --dry-run will skip the SSH connection step. This is used for self-testing.
 ./dsatest --dry-run -t sanity.py -B bench.cfg.example
-```
+----
 
 
-## Configuration files
+== Configuration files
 
 Three kind of files need to be populated in order to run tests on the bench.
 From a bottom-up approach:
 
- * Switch: describe a switch and how its kernel driver exposes some
-           information. This file can be shared and used in several test
-           benches.
- * Target: describe the machine being tested, the switches that are on it, and
-           the interfaces that the test bench will be able to use. This file
-           can also be shared.
- * Bench: describe how the host machine and the target machine are connected to
-          one another. This file is specific to each bench.
+Switch::
+describe a switch and how its kernel driver exposes some information. This file 
+can be shared and used in several test benches.
+Target::
+describe the machine being tested, the switches that are on it, and the 
+interfaces that the test bench will be able to use. This file can also be 
+shared.
+Bench::
+describe how the host machine and the target machine are connected to one 
+another. This file is specific to each bench.
 
-### Switch
+=== Switch
 
 *TODO: Not used yet*
 
-### Target
+=== Target
 
 They are located in `conf/target`. They describe the hardware of the
 machine being tested. For instance, consider the following situation:
 
-```
+----
   +--------------------------------------------------+
   |                           Target                 |
   |  +----------------+                              |
@@ -48,7 +51,7 @@ machine being tested. For instance, consider the following situation:
   |  |          port3 |--------------------------[ link1 ] <-+   (eg. RJ45)
   |  +----------------+                              |
   +--------------------------------------------------+
-```
+----
 
 Only port1 and port3 of switch0 are connected to front-facing connectors.
 Obviously the bench can only used these two ports to run tests.
@@ -57,17 +60,16 @@ Describing the internals of the target (which switch port is connected to what
 front-facing connector) allows to get sensible error reporting if errors occur.
 Moreover, these files can be shared by people using the same hardware.
 
-```
-conf/target/target-example.cfg
-----------------------------
-
+.conf/target/target-example.cfg
+[source,ini]
+----
 [switch0]
 name = wag200g
 port1 = link0
 port3 = link1
-```
+----
 
-### Bench
+=== Bench
 
 Describe the test bench, ie. how the controlling machine (aka host), running
 dsatest, is connect to the target machine.
@@ -75,7 +77,7 @@ dsatest, is connect to the target machine.
 For instance, let's create a test bench with the target defined in the previous
 section. Host and Target are connected with only one cable:
 
-```
+----
   +-------------+                        +---------------+
   |             |         cable          |               |
   |          [ eth8 ]<------------>[ enp0s31f6 ]         |
@@ -83,7 +85,7 @@ section. Host and Target are connected with only one cable:
   |          [ eth9 ]                    |      HOST     |
   |             |                        |               |
   +-------------+                        +---------------+
-```
+----
 
 Bench configuration file defines that link0 is eth8 on the target side, and
 enp0s31f6 on host side. eth9 is left disconnected. Names of interfaces is
@@ -92,10 +94,9 @@ depending on the OS running on it, so it may vary from one test bench to
 another.
 
 
-```
-bench.cfg
----------
-
+.bench.cfg
+[source,ini]
+----
 [host]
 link0 = enp0s31f6
 
@@ -108,13 +109,13 @@ link0 = eth8            ; Because the target is running Buildroot, it
 link1 = eth9            ; can be filled in. dsatest will warn that it is
                         ; connected to only one end and will run tests only
                         ; using link0
-```
+----
 
 When a link is defined under both the host and the target section, dsatest will
 register that link and the corresponding interfaces so that tests will be able
 to use them. Links connected to only one end will be ignored.
 
-### Out-of-tree configuration
+=== Out-of-tree configuration
 
 One can use out-of-tree configuration files by using the `-C` or `--conf-dir`
 flags and specifying a directory that has the same layout as the `conf/`
@@ -122,13 +123,14 @@ directory. Files found in this alternate directory will have precedence over the
 ones found in dsatest's `conf` directory.
 
 
-## Tests
+== Tests
 
 Tests are written using unittest, and must respect rules defined by this module.
 They can access the test bench instance through the following import:
 
-```python
+[source,python]
+----
 from dsatest.bench import bench
-```
+----
 
 API is self-documented in `test/sanity.py`. More documentation welcome!
