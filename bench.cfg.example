@@ -1,16 +1,14 @@
 [host]
 link0 = enp0s31f6
-;link1 = enp0s31f7
 
 [target]
+name = example-target
 control = "ssh://localhost"
-;username = username
-;password = password
+;username = root
+;password = admin
 ;keyfile = /home/username/.ssh/id_rsa
 ;system_host_keys = /dev/null ; don't use system host keys
 ; Using telnet
 ;control = "telnet://localhost"
 ;prompt = "#"
-name = linksys-wag200g
 link0 = eth8
-link1 = eth9

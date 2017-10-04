@@ -36,6 +36,19 @@ another. This file is specific to each bench.
 
 *TODO: Not used yet*
 
+An example switch may look like this:
+
+----
+  +----------------+
+  |          port0 |----> CPU port
+  | SWITCH   port1 |----> User port #0
+  |          port2 |----> User port #1
+  |          port3 |----> User port #2
+  +----------------+
+----
+
+See link:conf/switch/example-switch.cfg[].
+
 === Target
 
 They are located in `conf/target`. They describe the hardware of the
@@ -43,10 +56,10 @@ machine being tested. For instance, consider the following situation:
 
 ----
   +--------------------------------------------------+
-  |                           Target                 |
+  |                       TARGET                     |
   |  +----------------+                              |
   |  |          port0 |----> to CPU                  |
-  |  | Switch0  port1 |--------------------------[ link0 ] <-+
+  |  | switch0  port1 |--------------------------[ link0 ] <-+
   |  |          port2 |----> Non connected           |       |- connectors
   |  |          port3 |--------------------------[ link1 ] <-+   (eg. RJ45)
   |  +----------------+                              |
@@ -60,14 +73,7 @@ Describing the internals of the target (which switch port is connected to what
 front-facing connector) allows to get sensible error reporting if errors occur.
 Moreover, these files can be shared by people using the same hardware.
 
-.conf/target/target-example.cfg
-[source,ini]
-----
-[switch0]
-name = wag200g
-port1 = link0
-port3 = link1
-----
+See link:conf/target/example-target.cfg[].
 
 === Bench
 
@@ -93,23 +99,7 @@ defined at the bench level because interfaces may have different names
 depending on the OS running on it, so it may vary from one test bench to
 another.
 
-
-.bench.cfg
-[source,ini]
-----
-[host]
-link0 = enp0s31f6
-
-[target]
-control = ssh://192.168.0.116
-name = target-example   ; refer to target configuration file
-link0 = eth8            ; Because the target is running Buildroot, it
-                        ; could be named enp0xxx with a distribution running
-                        ; systemd
-link1 = eth9            ; can be filled in. dsatest will warn that it is
-                        ; connected to only one end and will run tests only
-                        ; using link0
-----
+See link:bench.cfg.example[].
 
 When a link is defined under both the host and the target section, dsatest will
 register that link and the corresponding interfaces so that tests will be able
