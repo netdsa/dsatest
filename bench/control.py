@@ -1,4 +1,5 @@
 
+import sys
 import logging
 import subprocess
 
@@ -33,11 +34,12 @@ class LocalControl(Control):
 
     def exec(self, command):
         logger.debug("LocalControl: Executing: {}".format(command))
-        ret = subprocess.run(command, shell=True, encoding="utf8",
+        ret = subprocess.run(command, shell=True,
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         self.exit_code = ret.returncode
         logger.debug("LocalControl: Command returned {}".format(self.exit_code))
-        stdout, stderr = [s.strip() for s in (ret.stdout, ret.stderr)]
+        stdout = ret.stdout.decode(sys.stdout.encoding).strip()
+        stderr = ret.stderr.decode(sys.stderr.encoding).strip()
         if stdout != '':
             for l in stdout.split('\n'):
                 logger.debug("LocalControl: stdout: {}".format(l))
