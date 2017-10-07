@@ -29,6 +29,13 @@ def setupLogger(verbosity):
 
     logger.addHandler(ch)
 
+def prettyPrintTestSuite(suite):
+    for t in suite:
+        if isinstance(t, unittest.TestCase):
+            print(t)
+        else:
+            prettyPrintTestSuite(t)
+
 def recurseIterSuite(suite, match, patterns):
     for s in suite:
         if isinstance(s, unittest.TestCase):
@@ -75,7 +82,7 @@ def createTestSuite(test_dir, test):
         sys.exit(1)
 
 
-def main(bench_conf, test_dir, test_name, dry_run):
+def main(bench_conf, test_dir, test_name, list_tests, dry_run):
     bench.setup(bench_conf)
     incomplete_links = bench.incomplete_links
 
@@ -86,6 +93,14 @@ def main(bench_conf, test_dir, test_name, dry_run):
                     test_name, test_dir))
     suite = createTestSuite(test_dir, test_name)
     logger.info("Found {} tests".format(suite.countTestCases()))
+
+    if list_tests:
+        if suite.countTestCases() == 0:
+            print("No tests found")
+        else:
+            prettyPrintTestSuite(suite)
+        sys.exit(0)
+
     runner = unittest.TextTestRunner(stream=sys.stdout)
 
     print("-"*70)
@@ -104,6 +119,8 @@ if __name__ == "__main__":
     parser.add_argument('-t', '--test', action='append', default=list(),
                         help="pick only tests whose names start with test_TEST, \
                                 this option might be passed several times")
+    parser.add_argument('-l', '--list', action='store_true',
+                        help="list tests instead of executing them")
     parser.add_argument('--test-dir', default=test_dir,
                         help="test folder, default to dsatest's test folder")
     parser.add_argument('-B', '--bench', default="bench.cfg",
@@ -124,4 +141,4 @@ if __name__ == "__main__":
 
     bench_cfg = os.path.join(os.getcwd(), args.bench)
 
-    main(bench_cfg, args.test_dir, args.test, args.dry_run)
+    main(bench_cfg, args.test_dir, args.test, args.list, args.dry_run)
