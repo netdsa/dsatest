@@ -29,21 +29,18 @@ def setupLogger(verbosity):
 
     logger.addHandler(ch)
 
-def recurseIterSuite(suite, match, pattern):
+def recurseIterSuite(suite, match, patterns):
     for s in suite:
         if isinstance(s, unittest.TestCase):
-            if pattern in s._testMethodName:
+            if any(s._testMethodName.startswith(p) for p in patterns):
                 match.addTest(s)
         else:
-            recurseIterSuite(s, match, pattern)
+            recurseIterSuite(s, match, patterns)
 
-def __createTestSuite(test_dir, test):
+def __createTestSuite(test_dir, tests):
     """
-    Create a test suite. The parameter will be tested in the following order
-    and the matching tests will be loaded:
-      - "all", all tests found under the test/ directory will be loaded.
-      - a filename under test/. Every test in that file will be loaded.
-      - a string. Test methodes containing that string will be loaded.
+    Create a test suite that contains only tests who have names starting with
+    test_TEST, TEST being any element in the list "tests".
     """
     loader = unittest.TestLoader()
 
@@ -57,20 +54,14 @@ def __createTestSuite(test_dir, test):
     if len(start_dir) == 0 or len(top_level_dir) == 0:
         raise ValueError("Invalid test directory '{}'. Aborting.".format(test_dir))
 
-    if test == 'all':
+    if len(tests) == 0:
         return loader.discover(start_dir=start_dir, top_level_dir=top_level_dir, pattern="*.py")
-
-    # load test matching the filename, and let's see how many it gets
-    if test.endswith(".py"):
-        suite = loader.discover(start_dir=start_dir,
-                                top_level_dir=top_level_dir, pattern=test)
-        if suite.countTestCases() != 0:
-            return suite
 
     # load every tests we can find and do some matching based on that
     suite = loader.discover(start_dir=start_dir, top_level_dir=top_level_dir, pattern="*.py")
     matching_suite = unittest.TestSuite()
-    recurseIterSuite(suite, matching_suite, test)
+    patterns = [ "test_{}".format(t) for t in tests ]
+    recurseIterSuite(suite, matching_suite, patterns)
 
     return matching_suite
 
@@ -110,8 +101,9 @@ if __name__ == "__main__":
     test_dir = os.path.realpath(test_dir)
 
     parser = argparse.ArgumentParser(description='Control a DSA test bench')
-    parser.add_argument('-t', '--test', default='all',
-                        help='select tests to be executed (default: \"all\")')
+    parser.add_argument('-t', '--test', action='append', default=list(),
+                        help="pick only tests whose names start with test_TEST, \
+                                this option might be passed several times")
     parser.add_argument('--test-dir', default=test_dir,
                         help="test folder, default to dsatest's test folder")
     parser.add_argument('-B', '--bench', default="bench.cfg",
