@@ -57,6 +57,7 @@ See the link:docs/conf-target.adoc[target] documentation.
 bench::
 Describe how the host machine and the target machine are connected to one another.
 This file is specific to each bench.
+See the link:docs/conf-bench.adoc[bench] documentation.
 
 NOTE: Take a look at the link:docs/conf-example.adoc[example] in the documentation for a complete test bench.
 

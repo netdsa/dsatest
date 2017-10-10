@@ -1,0 +1,39 @@
+= Bench configuration file
+
+A bench configuration file describes the test bench, i.e. how the controlling machine (aka host), running dsatest, is connected to the target machine.
+
+It must have one section describing the _host_ machine and one section describing the _target_ machine.
+
+The purpose of this configuration file is to describe the names of the host and target interfaces connected on both ends of links.
+
+An optional _control_ key is used to describe how to access a machine in the form of an URI.
+Several control protocols are available.
+
+A bench running tests on a target machine via SSH is described as follow:
+
+.bench.cfg
+[source,ini]
+----
+[host] ; <1>
+link0 = eth1
+link1 = eth2
+link2 = eth3 ; <2>
+link3 = eth4
+
+[target] ; <3>
+name = router ; <4>
+control = "ssh://target" ; <5>
+;username = foo
+;password = bar ; <6>
+link0 = lan0
+link1 = lan1
+link2 = lan2 ; <7>
+link3 = lan3
+----
+<1> Host machine section
+<2> Interface name of a link on host side
+<3> Target machine section
+<4> Refers to a `router.cfg` target configuration file
+<5> Control to access the target machine
+<6> Control specific keys
+<7> Interface name of a link on target side
