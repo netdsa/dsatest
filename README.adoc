@@ -46,6 +46,7 @@ switch::
 Describe a switch and how its kernel driver exposes some information.
 This file can be shared and used in several test benches.
 They are located in the `switch/` configuration directory.
+See the link:docs/conf-switch.adoc[switch] documentation.
 
 target::
 Describe the machine being tested, the switches that are on it, and the interfaces that the test bench will be able to use.

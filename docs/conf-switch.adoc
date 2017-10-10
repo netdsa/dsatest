@@ -1,0 +1,5 @@
+= Switch configuration file
+
+Switch configuration files are located in the `switch/` subdirectory of the configuration directory.
+
+NOTE: Switch configuration files have no properties for the moment.
