@@ -1,0 +1,29 @@
+= Target configuration file
+
+Target configuration files are located in the `target/` subdirectory of the configuration directory.
+They describe the hardware of the machine being tested.
+
+It must have one section per switch chip.
+Each indexed switch section must describe the switch model and its enabled links.
+
+A target featuring two interconnected switch chips is described as follow:
+
+.router.cfg
+[source,ini]
+----
+[switch0] ; <1>
+name = "foo-etherswitch" ; <2>
+port0 = link0
+port1 = link1
+port2 = link2
+port3 = link3
+
+[switch1]
+name = "foo-etherswitch"
+port0 = link4
+port1 = link5 ; <3>
+port2 = link6
+----
+<1> Switch section indexed from 0
+<2> Refers to a `foo-etherswitch.cfg` switch configuration file
+<3> Local switch port to global _link_ mapping

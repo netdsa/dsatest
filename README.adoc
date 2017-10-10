@@ -52,6 +52,7 @@ target::
 Describe the machine being tested, the switches that are on it, and the interfaces that the test bench will be able to use.
 This file can also be shared.
 They are located in the `target/` configuration directory.
+See the link:docs/conf-target.adoc[target] documentation.
 
 bench::
 Describe how the host machine and the target machine are connected to one another.
