@@ -1,38 +1,62 @@
-= dsatest
+= Distributed Switch Architecture testing
 
-A test runner for DSA
+dsatest is a Linux user space network testing framework for Ethernet switches driven by the kernel space DSA framework.
+It provides an extensive list of test cases, a command line to access the test bench and run the tests, as well as a Python API.
+It supports many Ethernet switch chips and target machines.
 
+== Getting started
 
-== Usage
+These instructions will get you a copy of the project up and running on your local test bench.
+
+=== Prerequisites
+
+The framework depends on `python` and `python-paramiko`.
+
+=== Installing
+
+To get the source code of the dsatest framework, follow these steps:
 
 [source,sh]
 ----
-# run all tests containing "ping" in their test method names
-./dsatest -t ping -B bench.cfg.example
-
-# run all tests defined in sanity.py, using bench.cfg.example for configuration
-# --dry-run will skip the SSH connection step. This is used for self-testing.
-./dsatest --dry-run -t sanity.py -B bench.cfg.example
+git clone git@github.com:d-k-c/dsatest.git
+cd dsatest/
 ----
 
+Ensure that the framework is functional by listing the tests and running the sanity tests:
 
-== Configuration files
+[source,sh]
+----
+./dsatest -l -B bench.cfg.example
+./dsatest --dry-run -t sanity -B bench.cfg.example
+----
 
+=== Configuring
+
+Configuration files are usually found in the `conf/` directory provided with the dsatest package.
+
+One can use out-of-tree configuration files by using the `-C` or `--conf-dir` flags from the command line.
+The specified directory must have the same layout as the default `conf/` directory.
+Files found in this alternate directory will have precedence over the default ones.
+
+All configuration files use the INI format.
 Three kind of files need to be populated in order to run tests on the bench.
 From a bottom-up approach:
 
-Switch::
-describe a switch and how its kernel driver exposes some information. This file 
-can be shared and used in several test benches.
-Target::
-describe the machine being tested, the switches that are on it, and the 
-interfaces that the test bench will be able to use. This file can also be 
-shared.
-Bench::
-describe how the host machine and the target machine are connected to one 
-another. This file is specific to each bench.
+switch::
+Describe a switch and how its kernel driver exposes some information.
+This file can be shared and used in several test benches.
+They are located in the `switch/` configuration directory.
 
-=== Switch
+target::
+Describe the machine being tested, the switches that are on it, and the interfaces that the test bench will be able to use.
+This file can also be shared.
+They are located in the `target/` configuration directory.
+
+bench::
+Describe how the host machine and the target machine are connected to one another.
+This file is specific to each bench.
+
+==== Switch
 
 *TODO: Not used yet*
 
@@ -49,10 +73,10 @@ An example switch may look like this:
 
 See link:conf/switch/example-switch.cfg[].
 
-=== Target
+==== Target
 
-They are located in `conf/target`. They describe the hardware of the
-machine being tested. For instance, consider the following situation:
+They describe the hardware of the machine being tested.
+For instance, consider the following situation:
 
 ----
   +--------------------------------------------------+
@@ -67,21 +91,19 @@ machine being tested. For instance, consider the following situation:
 ----
 
 Only port1 and port3 of switch0 are connected to front-facing connectors.
-Obviously the bench can only used these two ports to run tests.
+Obviously the bench can only use these two ports to run tests.
 
-Describing the internals of the target (which switch port is connected to what
-front-facing connector) allows to get sensible error reporting if errors occur.
+Describing the internals of the target (which switch port is connected to what front-facing connector) allows to get sensible error reporting if errors occur.
 Moreover, these files can be shared by people using the same hardware.
 
 See link:conf/target/example-target.cfg[].
 
-=== Bench
+==== Bench
 
-Describe the test bench, ie. how the controlling machine (aka host), running
-dsatest, is connect to the target machine.
+Describe the test bench, i.e. how the controlling machine (aka host), running dsatest, is connected to the target machine.
 
-For instance, let's create a test bench with the target defined in the previous
-section. Host and Target are connected with only one cable:
+For instance, let's create a test bench with the target defined in the previous section.
+Host and Target are connected with only one cable:
 
 ----
   +-------------+                        +---------------+
@@ -93,27 +115,54 @@ section. Host and Target are connected with only one cable:
   +-------------+                        +---------------+
 ----
 
-Bench configuration file defines that link0 is eth8 on the target side, and
-enp0s31f6 on host side. eth9 is left disconnected. Names of interfaces is
-defined at the bench level because interfaces may have different names
-depending on the OS running on it, so it may vary from one test bench to
-another.
+Bench configuration file defines that link0 is eth8 on the target side, and enp0s31f6 on host side.
+eth9 is left disconnected.
+Names of interfaces is defined at the bench level because interfaces may have different names depending on the OS running on it, so it may vary from one test bench to another.
 
 See link:bench.cfg.example[].
 
-When a link is defined under both the host and the target section, dsatest will
-register that link and the corresponding interfaces so that tests will be able
-to use them. Links connected to only one end will be ignored.
+When a link is defined under both the host and the target section, dsatest will register that link and the corresponding interfaces so that tests will be able to use them.
+Links connected to only one end will be ignored.
 
-=== Out-of-tree configuration
+==== Configuring the bench
 
-One can use out-of-tree configuration files by using the `-C` or `--conf-dir`
-flags and specifying a directory that has the same layout as the `conf/`
-directory. Files found in this alternate directory will have precedence over the
-ones found in dsatest's `conf` directory.
+Copy the example bench configuration file and describe your links and how to control your target.
+You may have to provide configuration files for your target and switch(es) if they don't exist yet.
 
+[source,sh]
+----
+cp bench.cfg.example bench.cfg
+# edit bench.cfg...
+----
 
-== Tests
+== Running the tests
+
+IMPORTANT: You need the `NET_CAP_ADMIN` capability in order to configure network interfaces.
+
+Test cases are usually found in the `tests/` directory provided with the dsatest package.
+
+One can use out-of-tree test files by using the `-T` or `--test-dir` flags from the command line.
+The specified directory must have the same layout as the default `tests/` directory.
+Files found in this alternate directory will have precedence over the default ones.
+
+=== From the command line
+
+By default, the `dsatest` command runs all the tests found in the test directory.
+Run all tests whose method names are prefixed with *test_port_ping*:
+
+[source,sh]
+----
+./dsatest -t port_ping
+----
+
+For details about command line options, see the help message:
+
+[source,sh]
+----
+./dsatest -h
+----
+
+=== From the Python API
 
 Tests are written using unittest, and must respect rules defined by this module.
 They can access the test bench instance through the following import:
@@ -123,4 +172,13 @@ They can access the test bench instance through the following import:
 from dsatest.bench import bench
 ----
 
-API is self-documented in `test/sanity.py`. More documentation welcome!
+API is self-documented in the `sanity.py` test file.
+
+== Authors
+
+dsatest was written by Damien Riegel and other contributors.
+It was inspired by *dsa-tests*, written by Andrew Lunn.
+
+== Resources
+
+* link:https://github.com/d-k-c/dsatest[Git source repository on GitHub]
