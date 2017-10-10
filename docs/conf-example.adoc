@@ -1,0 +1,70 @@
+= Example bench
+
+This document describes a complete test bench using a target and Ethernet switch from the *Example* manufacturer.
+The sections below explain the three switch, target and bench configuration files used in this bench.
+
+== The Ethernet switch
+
+A simple 4-port Ethernet switch looks like this:
+
+----
++----------------+
+|          port0 |----> CPU port
+| SWITCH   port1 |----> User port #0
+|          port2 |----> User port #1
+|          port3 |----> User port #2
++----------------+
+----
+
+See the link:../conf/switch/example-switch.cfg[configuration file] describing this switch.
+
+== The target machine
+
+The target describes the hardware of the machine being tested.
+For instance, consider the following situation:
+
+----
++--------------------------------------------------+
+|                       TARGET                     |
+|  +----------------+                              |
+|  |          port0 |----> to CPU                  |
+|  | switch0  port1 |--------------------------[ link0 ] <-+
+|  |          port2 |----> Non connected           |       |- connectors
+|  |          port3 |--------------------------[ link1 ] <-+   (eg. RJ45)
+|  +----------------+                              |
++--------------------------------------------------+
+----
+
+Only port1 and port3 of switch0 are connected to front-facing connectors.
+Obviously the bench can only use these two ports to run tests.
+
+Describing the internals of the target (which switch port is connected to what front-facing connector) allows to get sensible error reporting if errors occur.
+Moreover, these files can be shared by people using the same hardware.
+
+See the link:../conf/target/example-target.cfg[configuration file] describing this target.
+
+== The test bench
+
+The bench describes how the controlling machine (aka host), running dsatest, is connected to the target machine.
+
+For instance, let's create a test bench with the target defined in the previous section.
+Host and Target are connected with only one cable:
+
+----
++-------------+                        +---------------+
+|             |         cable          |               |
+|          [ eth8 ]<------------>[ enp0s31f6 ]         |
+|   TARGET    |         link0          |               |
+|          [ eth9 ]                    |      HOST     |
+|             |                        |               |
++-------------+                        +---------------+
+----
+
+The bench configuration file defines that link0 is eth8 on the target side, and enp0s31f6 on host side.
+eth9 on the target side is left disconnected.
+Names of interfaces is defined at the bench level because interfaces may have different names depending on the OS running on it, so it may vary from one test bench to another.
+
+When a link is defined under both the host and the target section, dsatest will register that link and the corresponding interfaces so that tests will be able to use them.
+Links connected to only one end will be ignored.
+
+See the link:../bench.cfg.example[configuration file] describing this bench.
