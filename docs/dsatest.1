@@ -1,0 +1,95 @@
+'\" t
+.\"     Title: dsatest
+.\"    Author: [see the "AUTHORS" section]
+.\" Generator: Asciidoctor 1.5.6.1
+.\"      Date: 2017-10-12
+.\"    Manual: \ \&
+.\"    Source: \ \&
+.\"  Language: English
+.\"
+.TH "DSATEST" "1" "2017-10-12" "\ \&" "\ \&"
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.ss \n[.ss] 0
+.nh
+.ad l
+.de URL
+\\$2 \(laURL: \\$1 \(ra\\$3
+..
+.if \n[.g] .mso www.tmac
+.LINKSTYLE blue R < >
+.SH "NAME"
+dsatest \- runs tests on DSA targets
+.SH "SYNOPSIS"
+.sp
+\fBdsatest\fP [\fIOPTION\fP]...
+.SH "DESCRIPTION"
+.sp
+The dsatest(1) command runs tests found by the DSA testing framework on the target described in the provided bench configuration file.
+.SH "OPTIONS"
+.sp
+\fB\-h\fP, \fB\-\-help\fP
+.RS 4
+Show this help message and exit.
+.RE
+.sp
+\fB\-t\fP \fITEST\fP, \fB\-\-test\fP \fITEST\fP
+.RS 4
+Restrict tests to be executed.
+This option can be cumulated.
+.RE
+.sp
+\fB\-\-test\-dir\fP \fITEST_DIR\fP
+.RS 4
+Test directory, defaults to the \fItests\fP directory of the dsatest framework.
+.RE
+.sp
+\fB\-l\fP, \fB\-\-list\fP
+.RS 4
+List tests to be executed.
+If \fB\-t\fP is passed, limit the list to the matching tests.
+.RE
+.sp
+\fB\-B\fP \fIBENCH_FILE\fP, \fB\-\-bench\fP \fIBENCH_FILE\fP
+.RS 4
+Bench configuration file, defaults to \fIbench.cfg\fP.
+.RE
+.sp
+\fB\-C\fP \fICONF_DIR\fP, \fB\-\-conf\-dir\fP \fICONF_DIR\fP
+.RS 4
+Configuration directory, default to the \fIconf\fP directory of the dsatest framework.
+.RE
+.sp
+\fB\-\-dry\-run\fP
+.RS 4
+Skip connection to the test bench (no SSH connection is established).
+.RE
+.sp
+\fB\-v\fP, \fB\-\-verbose\fP
+.RS 4
+Turn the verbose mode on.
+This option is a cumulative, so passing \fB\-vv\fP will increase the log level (up to \fB\-vvv\fP).
+.RE
+.SH "EXIT STATUS"
+.sp
+dsatest(1) returns the number of failed tests.
+A returned value of 0 means success.
+.SH "BUGS"
+.sp
+Refer to the \fBdsatest\fP issue tracker at \c
+.URL "https://github.com/d\-k\-c/dsatest/issues" "" "."
+.SH "AUTHORS"
+.sp
+\fBdsatest\fP was written by Damien Riegel and other contributors.
+It was inspired by \fBdsa\-tests\fP, written by Andrew Lunn.
+.SH "RESOURCES"
+.sp
+\fBProject web site:\fP \c
+.URL "https://github.com/d\-k\-c/dsatest" "" ""
+.sp
+\fBGit source repository on GitHub:\fP \c
+.URL "https://github.com/d\-k\-c/dsatest" "" ""
+.SH "COPYING"
+.sp
+Copyright (C) 2017 Savoir\-faire Linux Inc.
+Free use of this software is granted under the terms of the \fITBD\fP License.

@@ -1,0 +1,5 @@
+require 'asciidoctor'
+
+task :default do
+  Asciidoctor.convert_file 'dsatest.1.adoc', safe: :unsafe, backend: :manpage
+end
