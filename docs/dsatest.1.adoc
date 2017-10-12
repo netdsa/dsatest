@@ -1,0 +1,67 @@
+= dsatest(1)
+
+== NAME
+
+dsatest - runs tests on DSA targets
+
+== SYNOPSIS
+
+*dsatest* [_OPTION_]...
+
+== DESCRIPTION
+
+The dsatest(1) command runs tests found by the DSA testing framework on the target described in the provided bench configuration file.
+
+== OPTIONS
+
+*-h*, *--help*::
+Show this help message and exit.
+
+*-t* _TEST_, *--test* _TEST_::
+Restrict tests to be executed.
+This option can be cumulated.
+
+*--test-dir* _TEST_DIR_::
+Test directory, defaults to the _tests_ directory of the dsatest framework.
+
+*-l*, *--list*::
+List tests to be executed.
+If *-t* is passed, limit the list to the matching tests.
+
+*-B* _BENCH_FILE_, *--bench* _BENCH_FILE_::
+Bench configuration file, defaults to _bench.cfg_.
+
+*-C* _CONF_DIR_, *--conf-dir* _CONF_DIR_::
+Configuration directory, default to the _conf_ directory of the dsatest framework.
+
+*--dry-run*::
+Skip connection to the test bench (no SSH connection is established).
+
+*-v*, *--verbose*::
+Turn the verbose mode on.
+This option is a cumulative, so passing *-vv* will increase the log level (up to *-vvv*).
+
+== EXIT STATUS
+
+dsatest(1) returns the number of failed tests.
+A returned value of 0 means success. 
+
+== BUGS
+
+Refer to the *dsatest* issue tracker at https://github.com/d-k-c/dsatest/issues.
+
+== AUTHORS
+
+*dsatest* was written by Damien Riegel and other contributors.
+It was inspired by *dsa-tests*, written by Andrew Lunn.
+
+== RESOURCES
+
+*Project web site:* https://github.com/d-k-c/dsatest
+
+*Git source repository on GitHub:* https://github.com/d-k-c/dsatest
+
+== COPYING
+
+Copyright \(C) 2017 Savoir-faire Linux Inc.
+Free use of this software is granted under the terms of the _TBD_ License.
