@@ -1,5 +1,8 @@
 require 'asciidoctor'
 
 task :default do
+  Asciidoctor.convert_file '../README.adoc', safe: :unsafe, to_file: 'index.html', attributes: { 'toc' => 'left' }
+  Asciidoctor.convert_file 'conf-example.adoc', safe: :unsafe, to_file: 'example.html', attributes: { 'toc' => 'top' }
+  Asciidoctor.convert_file 'dsatest.1.adoc', safe: :unsafe, attributes: { 'toc' => 'left' }
   Asciidoctor.convert_file 'dsatest.1.adoc', safe: :unsafe, backend: :manpage
 end

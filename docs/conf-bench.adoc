@@ -9,9 +9,11 @@ The purpose of this configuration file is to describe the names of the host and 
 An optional _control_ key is used to describe how to access a machine in the form of an URI.
 Several control protocols are available.
 
-* link:control-local.adoc[Local control]
+ifdef::env-github[]
+* link:control-local.adoc[local control]
 * link:control-ssh.adoc[SSH control]
 * link:control-telnet.adoc[Telnet control]
+endif::env-github[]
 
 A bench running tests on a target machine via SSH is described as follow:
 
@@ -41,3 +43,15 @@ link3 = lan3
 <5> Control to access the target machine
 <6> Control specific keys
 <7> Interface name of a link on target side
+
+ifndef::env-github[]
+:leveloffset: +1
+
+include::control-local.adoc[]
+
+include::control-ssh.adoc[]
+
+include::control-telnet.adoc[]
+
+:leveloffset: -1
+endif::env-github[]

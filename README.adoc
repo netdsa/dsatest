@@ -46,22 +46,40 @@ switch::
 Describe a switch and how its kernel driver exposes some information.
 This file can be shared and used in several test benches.
 They are located in the `switch/` configuration directory.
+ifdef::env-github[]
 See the link:docs/conf-switch.adoc[switch] documentation.
+endif::env-github[]
 
 target::
 Describe the machine being tested, the switches that are on it, and the interfaces that the test bench will be able to use.
 This file can also be shared.
 They are located in the `target/` configuration directory.
+ifdef::env-github[]
 See the link:docs/conf-target.adoc[target] documentation.
+endif::env-github[]
 
 bench::
 Describe how the host machine and the target machine are connected to one another.
 This file is specific to each bench.
+ifdef::env-github[]
 See the link:docs/conf-bench.adoc[bench] documentation.
 
 NOTE: Take a look at the link:docs/conf-example.adoc[example] in the documentation for a complete test bench.
+endif::env-github[]
 
+ifndef::env-github[]
+:leveloffset: +3
 
+include::docs/conf-switch.adoc[]
+
+include::docs/conf-target.adoc[]
+
+include::docs/conf-bench.adoc[]
+
+:leveloffset: -3
+
+NOTE: Take a look at the link:example.html[example] for a complete test bench.
+endif::env-github[]
 
 Copy the example bench configuration file and describe your links and how to control your target.
 You may have to provide configuration files for your target and switch(es) if they don't exist yet.
@@ -118,6 +136,14 @@ It was inspired by *dsa-tests*, written by Andrew Lunn.
 
 == Resources
 
+* link:https://d-k-c.github.io/dsatest[Project website]
+
 * link:https://github.com/d-k-c/dsatest[Git source repository on GitHub]
 
+ifdef::env-github[]
 * link:docs/dsatest.1.adoc[`dsatest` man(ual) page]
+endif::env-github[]
+
+ifndef::env-github[]
+* link:dsatest.1.html[`dsatest` man(ual) page]
+endif::env-github[]

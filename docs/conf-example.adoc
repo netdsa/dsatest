@@ -16,7 +16,18 @@ A simple 4-port Ethernet switch looks like this:
 +----------------+
 ----
 
+ifdef::env-github[]
 See the link:../conf/switch/example-switch.cfg[configuration file] describing this switch.
+endif::env-github[]
+
+ifndef::env-github[]
+This switch is described as follow:
+
+[source,ini]
+----
+include::../conf/switch/example-switch.cfg[]
+----
+endif::env-github[]
 
 == The target machine
 
@@ -41,7 +52,18 @@ Obviously the bench can only use these two ports to run tests.
 Describing the internals of the target (which switch port is connected to what front-facing connector) allows to get sensible error reporting if errors occur.
 Moreover, these files can be shared by people using the same hardware.
 
+ifdef::env-github[]
 See the link:../conf/target/example-target.cfg[configuration file] describing this target.
+endif::env-github[]
+
+ifndef::env-github[]
+This target is described as follow:
+
+[source,ini]
+----
+include::../conf/target/example-target.cfg[]
+----
+endif::env-github[]
 
 == The test bench
 
@@ -67,4 +89,15 @@ Names of interfaces is defined at the bench level because interfaces may have di
 When a link is defined under both the host and the target section, dsatest will register that link and the corresponding interfaces so that tests will be able to use them.
 Links connected to only one end will be ignored.
 
+ifdef::env-github[]
 See the link:../bench.cfg.example[configuration file] describing this bench.
+endif::env-github[]
+
+ifndef::env-github[]
+This bench is described as follow:
+
+[source,ini]
+----
+include::../bench.cfg.example[]
+----
+endif::env-github[]
