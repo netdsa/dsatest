@@ -9,7 +9,7 @@ class TestBridge(unittest.TestCase):
     def setUp(self):
         links = bench.links
 
-        for l in enumerate(links):
+        for l in links:
             l.host_if.flushAddresses()
 
         self.bridge = bench.target.addBridge("br0")
@@ -24,7 +24,7 @@ class TestBridge(unittest.TestCase):
     def test_bridge_ping_all_links(self):
         links = bench.links
 
-        for l in enumerate(links):
+        for l in links:
             l.host_if.addAddress("192.168.10.2/24")
             self.bridge.addInterface(l.target_if)
             l.host_if.ping("192.168.10.1", count=1, deadline=1)
