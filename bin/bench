@@ -106,8 +106,14 @@ def main(bench_conf, test_dir, test_name, list_tests, dry_run):
     print("-"*70)
 
     bench.connect(dry_run)
-    runner.run(suite)
+    result = runner.run(suite)
     bench.disconnect(dry_run)
+
+    # cumulate tests which raised unexpected exceptions
+    # and tests that hadfailed assert methods
+    tests_failed = len(result.errors) + len(result.failures)
+
+    sys.exit(tests_failed)
 
 
 if __name__ == "__main__":
