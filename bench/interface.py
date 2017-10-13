@@ -1,4 +1,17 @@
 
+class Arp:
+    """
+    A small wrapper class intended to be used only by the class 'Interface', to
+    provide a clean API to do ARP operations on one interface.
+    """
+
+    def __init__(self, interface):
+        self.interface = interface
+
+    def get(self, address=None):
+        return self.interface.machine.arp.get(address, self.interface.name)
+
+
 class Interface:
     """
     Network interface on a Machine. The name must be a string on which
@@ -10,6 +23,7 @@ class Interface:
         self.machine = machine
         self.switch = switch
         self.port_id = port_id
+        self.arp = Arp(self)
 
 
     def __repr__(self):
