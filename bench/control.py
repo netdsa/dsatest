@@ -42,12 +42,21 @@ class LocalControl(Control):
 
     def execute(self, command):
         logger.debug("LocalControl: Executing: {}".format(command))
-        ret = subprocess.run(command, shell=True,
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        self.exit_code = ret.returncode
+        if sys.version_info[0] >= 3:
+            ret = subprocess.run(command, shell=True,
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            self.exit_code = ret.returncode
+            stdout = ret.stdout.decode(sys.stdout.encoding).strip()
+            stderr = ret.stderr.decode(sys.stderr.encoding).strip()
+        else:
+            ret = subprocess.Popen(command, shell=True,
+                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            ret.wait()
+            self.exit_code = ret.returncode
+            stdout = ret.stdout.read().strip()
+            stderr = ret.stderr.read().strip()
+
         logger.debug("LocalControl: Command returned {}".format(self.exit_code))
-        stdout = ret.stdout.decode(sys.stdout.encoding).strip()
-        stderr = ret.stderr.decode(sys.stderr.encoding).strip()
         if stdout != '':
             for l in stdout.split('\n'):
                 logger.debug("LocalControl: stdout: {}".format(l))
