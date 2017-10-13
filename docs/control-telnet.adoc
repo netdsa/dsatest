@@ -1,0 +1,18 @@
+= Telnet control
+
+Connects to the target machine via Telnet.
+
+This control requires the `telnet://` scheme, followed by a hostname and an optional port number.
+There is no mandatory key.
+Optional _username_, _password_, and _prompt_ keys can be used.
+
+Here's a portion of a _target_ section using the Telnet control:
+
+[source,ini]
+----
+control = "telnet://localhost"
+username = admin ; <1>
+prompt = "#" ; <2>
+----
+<1> Optional username to use
+<2> Optional prompt to use

@@ -6,7 +6,4 @@ name = example-target
 control = "ssh://localhost"
 ;username = root
 ;password = admin
-; Using telnet
-;control = "telnet://localhost"
-;prompt = "#"
 link0 = eth8

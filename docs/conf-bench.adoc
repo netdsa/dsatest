@@ -11,6 +11,7 @@ Several control protocols are available.
 
 * link:control-local.adoc[Local control]
 * link:control-ssh.adoc[SSH control]
+* link:control-telnet.adoc[Telnet control]
 
 A bench running tests on a target machine via SSH is described as follow:
 
