@@ -68,3 +68,22 @@ class TestSanity(unittest.TestCase):
         self.assertTrue(hasattr(b, "addAddress"))
         self.assertTrue(hasattr(b, "delAddress"))
 
+    def test_sanity_echo_target(self):
+        ret, stdout, stderr = bench.target.exec("echo -n 'Hello World'")
+        self.assertEqual(stdout.strip(), "Hello World")
+        self.assertEqual(stderr.strip(), "")
+
+    def test_sanity_echo_target_stderr(self):
+        ret, stdout, stderr = bench.target.exec("echo -n 'Hello World' >&2")
+        self.assertEqual(stdout.strip(), "")
+        self.assertEqual(stderr.strip(), "Hello World")
+
+    def test_sanity_echo_host(self):
+        ret, stdout, stderr = bench.host.exec("echo -n 'Hello World'")
+        self.assertEqual(stdout.strip(), "Hello World")
+        self.assertEqual(stderr.strip(), "")
+
+    def test_sanity_echo_host_stderr(self):
+        ret, stdout, stderr = bench.host.exec("echo -n 'Hello World' >&2")
+        self.assertEqual(stdout.strip(), "")
+        self.assertEqual(stderr.strip(), "Hello World")
