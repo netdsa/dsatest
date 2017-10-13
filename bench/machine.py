@@ -1,5 +1,6 @@
 
 from .bridge import Bridge
+from .arp import ArpTable
 
 class Machine:
     """Machine being part of the benchtest"""
@@ -9,6 +10,7 @@ class Machine:
         self.bridges = list()
         self.name = name
         self.control = control
+        self.arp = ArpTable(self)
 
     def __repr__(self):
         return "<Machine \"{.name}\">".format(self)
