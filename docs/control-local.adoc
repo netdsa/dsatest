@@ -1,0 +1,4 @@
+= Local control
+
+Run command on the local machine. No configuration key is necessary.
+This is the control used by the host machine, which runs the framework.

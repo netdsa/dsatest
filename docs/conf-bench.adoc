@@ -9,6 +9,8 @@ The purpose of this configuration file is to describe the names of the host and 
 An optional _control_ key is used to describe how to access a machine in the form of an URI.
 Several control protocols are available.
 
+* link:control-local.adoc[Local control]
+
 A bench running tests on a target machine via SSH is described as follow:
 
 .bench.cfg
