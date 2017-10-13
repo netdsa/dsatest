@@ -10,6 +10,7 @@ An optional _control_ key is used to describe how to access a machine in the for
 Several control protocols are available.
 
 * link:control-local.adoc[Local control]
+* link:control-ssh.adoc[SSH control]
 
 A bench running tests on a target machine via SSH is described as follow:
 

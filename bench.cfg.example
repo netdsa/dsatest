@@ -6,8 +6,6 @@ name = example-target
 control = "ssh://localhost"
 ;username = root
 ;password = admin
-;keyfile = /home/username/.ssh/id_rsa
-;system_host_keys = /dev/null ; don't use system host keys
 ; Using telnet
 ;control = "telnet://localhost"
 ;prompt = "#"

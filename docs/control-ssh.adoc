@@ -1,0 +1,22 @@
+= SSH control
+
+Connects to the target machine via SSH.
+
+This control requires the `ssh://` scheme, followed by a hostname and an optional port number.
+There is no mandatory key.
+Optional _username_, _password_, _keyfile_ and _system_host_keys_ keys can be used.
+
+Here's a portion of a _target_ section using the SSH control:
+
+[source,ini]
+----
+control = "ssh://localhost"
+username = bob ; <1>
+password = Secr3t ; <2>
+keyfile = /home/bob/.ssh/id_rsa ; <3>
+system_host_keys = /dev/null ; Don't use system host keys <4>
+----
+<1> Optional username, defaults to "root"
+<2> Optional password, defaults to empty
+<3> Optional alternative key file to use
+<4> Optional alternative host keys file to use
