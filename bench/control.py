@@ -12,7 +12,7 @@ logger = logging.getLogger('dsatest')
 
 class Control(object):
 
-    def exec(self):
+    def execute(self):
         raise NotImplementedError()
 
     def getLastExitCode(self):
@@ -28,7 +28,7 @@ class Control(object):
                 actual_exit_code, expected_exit_code))
 
     def execAndCheck(self, command, expected_exit_code=0):
-        self.exec(command)
+        self.execute(command)
         self.checkExitCode(expected_exit_code)
 
 
@@ -40,7 +40,7 @@ class LocalControl(Control):
     def isConnected(self):
         return True
 
-    def exec(self, command):
+    def execute(self, command):
         logger.debug("LocalControl: Executing: {}".format(command))
         ret = subprocess.run(command, shell=True,
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -140,7 +140,7 @@ class SSHControl(Control):
         return ret
 
 
-    def exec(self, command):
+    def execute(self, command):
         """Execute a command on a machine, using SSH"""
         self.exit_code = None
         logger.debug("SSHControl: Executing: {}".format(command))
@@ -224,7 +224,7 @@ class TelnetControl(Control):
             ret.append(arg)
         return ret
 
-    def exec(self, command):
+    def execute(self, command):
         """Execute a command on a machine, using Telnet"""
         self.exit_code = None
         """

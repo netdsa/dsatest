@@ -9,19 +9,19 @@ class Bridge(Interface):
 
     def create(self):
         command = "ip link add name {} type bridge".format(self.name)
-        self.machine.exec(command)
+        self.machine.execute(command)
 
     def destroy(self):
         self.down()
         command = "ip link del {}".format(self.name)
-        self.machine.exec(command)
+        self.machine.execute(command)
 
     def addInterface(self, interface):
         self.interfaces.append(interface)
         command = "ip link set {} master {}".format(interface.name, self.name)
-        self.machine.exec(command)
+        self.machine.execute(command)
 
     def delInterface(self, interface):
         self.interfaces.remove(interface)
         command = "ip link set {} nomaster".format(interface.name)
-        self.machine.exec(command)
+        self.machine.execute(command)

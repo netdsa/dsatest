@@ -20,8 +20,8 @@ class Machine:
     #           Wrap control functions               #
     ##################################################
 
-    def exec(self, param):
-        return self.control.exec(param)
+    def execute(self, param):
+        return self.control.execute(param)
 
     def getLastExitCode(self):
         return self.control.getLastExitCode()
