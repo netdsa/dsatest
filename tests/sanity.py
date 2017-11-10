@@ -68,11 +68,13 @@ class TestSanity(unittest.TestCase):
         self.assertTrue(hasattr(b, "addAddress"))
         self.assertTrue(hasattr(b, "delAddress"))
 
+    @unittest.skipIf(not bench.target.control.isConnected(), "Not available in dry-run mode")
     def test_sanity_echo_target(self):
         ret, stdout, stderr = bench.target.exec("echo -n 'Hello World'")
         self.assertEqual(stdout.strip(), "Hello World")
         self.assertEqual(stderr.strip(), "")
 
+    @unittest.skipIf(not bench.target.control.isConnected(), "Not available in dry-run mode")
     def test_sanity_echo_target_stderr(self):
         ret, stdout, stderr = bench.target.exec("echo -n 'Hello World' >&2")
         self.assertEqual(stdout.strip(), "")
