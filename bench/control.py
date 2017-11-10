@@ -18,6 +18,9 @@ class Control(object):
     def getLastExitCode(self):
         raise NotImplementedError()
 
+    def isConnected(self):
+        raise NotImplementedError()
+
     def checkExitCode(self, expected_exit_code):
         actual_exit_code = self.getLastExitCode()
         if actual_exit_code != expected_exit_code:
@@ -33,6 +36,9 @@ class LocalControl(Control):
 
     def __init__(self, hostname, port, bench_parser):
         pass
+
+    def isConnected(self):
+        return True
 
     def exec(self, command):
         logger.debug("LocalControl: Executing: {}".format(command))
@@ -85,6 +91,12 @@ class SSHControl(Control):
         self.ssh_client = paramiko.SSHClient()
         self.ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self.ssh_client.load_system_host_keys(self.system_host_keys)
+        self.is_connected = False
+
+
+    def isConnected(self):
+        return self.is_connected
+
 
     def connect(self):
         username, password, keyfile = self.strip_variables(
@@ -106,8 +118,12 @@ class SSHControl(Control):
             self.ssh_client.connect(self.address, self.port, username=username,
                                     timeout=SSHControl.SSH_TIMEOUT)
 
+        self.is_connected = True
+
+
     def disconnect(self):
         self.ssh_client.close()
+        self.is_connected = False
 
 
     def strip_variables(self, *args):
@@ -171,6 +187,12 @@ class TelnetControl(Control):
         self.port = port
         self.telnet_client = telnetlib.Telnet(address)
         self.prompt = self.prompt.replace('"', '')
+        self.is_connected = False
+
+
+    def isConnected(self):
+        return self.is_connected
+
 
     def connect(self):
         username, password = self.strip_variables(
@@ -182,9 +204,12 @@ class TelnetControl(Control):
         if password is not None:
             self.telnet_client.read_until("Password: ".encode())
             self.telnet_client.write((password + "\n").encode())
+        self.is_connected = True
+
 
     def disconnect(self):
         self.telnet_client.close()
+        self.is_connected = False
 
     def strip_variables(self, *args):
         """
