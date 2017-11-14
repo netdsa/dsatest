@@ -39,7 +39,7 @@ class BenchParser:
         self.links = OrderedDict()
 
         path_parsed = self.config.read(bench_config_file)
-        if (len(path_parsed) != 1):
+        if len(path_parsed) != 1:
             error = "Invalid environment configuration file: {0}".format(bench_config_file)
             raise ValueError(error)
 

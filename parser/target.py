@@ -50,7 +50,7 @@ class TargetParser:
 
         target_cfg = Resource(Resource.TARGET, target_name).get_path()
         path_parsed = self.config.read(target_cfg)
-        if (len(path_parsed) != 1):
+        if len(path_parsed) != 1:
             error = "Invalid target configuration file: {0}".format(target_cfg)
             raise ValueError(error)
 
