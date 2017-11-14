@@ -12,11 +12,8 @@ logger = logging.getLogger('dsatest')
 
 class Control(object):
 
-    def execute(self):
-        raise NotImplementedError()
-
     def getLastExitCode(self):
-        raise NotImplementedError()
+        return self.getLastExitCode
 
     def isConnected(self):
         raise NotImplementedError()
@@ -26,6 +23,29 @@ class Control(object):
         if actual_exit_code != expected_exit_code:
             raise ValueError("Exit code mismatch. Got {}, expected {}".format(
                 actual_exit_code, expected_exit_code))
+
+    def _execute(self, command):
+        raise NotImplementedError()
+
+    def execute(self, command):
+        """
+        Wrap subclasses' execute functions with a logging facility. That way,
+        logging is factorized and consistent for all of them.
+        """
+        class_name = self.__class__.__name__
+        logger.debug("%s: Executing: %s", class_name, command)
+
+        self.exit_code, stdout, stderr = self._execute(command)
+
+        logger.debug("%s: Command returned %d", class_name, self.exit_code)
+        if stdout != '':
+            for line in stdout.split('\n'):
+                logger.debug("%s: stdout: %s", class_name, line)
+        if stderr != '':
+            for line in stderr.split('\n'):
+                logger.debug("%s: stderr: %s", class_name, line)
+
+        return self.exit_code, stdout, stderr
 
     def execAndCheck(self, command, expected_exit_code=0):
         self.execute(command)
@@ -40,34 +60,22 @@ class LocalControl(Control):
     def isConnected(self):
         return True
 
-    def execute(self, command):
-        logger.debug("LocalControl: Executing: {}".format(command))
+    def _execute(self, command):
         if sys.version_info[0] >= 3:
             ret = subprocess.run(command, shell=True,
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            self.exit_code = ret.returncode
+            exit_code = ret.returncode
             stdout = ret.stdout.decode(sys.stdout.encoding).strip()
             stderr = ret.stderr.decode(sys.stderr.encoding).strip()
         else:
             ret = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE)
             ret.wait()
-            self.exit_code = ret.returncode
+            exit_code = ret.returncode
             stdout = ret.stdout.read().strip()
             stderr = ret.stderr.read().strip()
 
-        logger.debug("LocalControl: Command returned {}".format(self.exit_code))
-        if stdout != '':
-            for l in stdout.split('\n'):
-                logger.debug("LocalControl: stdout: {}".format(l))
-        if stderr != '':
-            for l in stderr.split('\n'):
-                logger.debug("LocalControl: stderr: {}".format(l))
-
-        return self.exit_code, stdout, stderr
-
-    def getLastExitCode(self):
-        return self.exit_code
+        return exit_code, stdout, stderr
 
 
 class SSHControl(Control):
@@ -149,23 +157,14 @@ class SSHControl(Control):
         return ret
 
 
-    def execute(self, command):
+    def _execute(self, command):
         """Execute a command on a machine, using SSH"""
-        self.exit_code = None
-        logger.debug("SSHControl: Executing: {}".format(command))
         _, stdout, stderr = self.ssh_client.exec_command(command)
-        self.exit_code = stdout.channel.recv_exit_status()
-        logger.debug("SSHControl: Command returned {}".format(self.exit_code))
+        exit_code = stdout.channel.recv_exit_status()
         stdout = stdout.read().decode().strip()
         stderr = stderr.read().decode().strip()
-        if stdout != '':
-            for l in stdout.split('\n'):
-                logger.debug("SSHControl: stdout: {}".format(l.strip()))
-        if stderr != '':
-            for l in stderr.split('\n'):
-                logger.debug("SSHControl: stderr: {}".format(l.strip()))
 
-        return self.exit_code, stdout, stderr
+        return exit_code, stdout, stderr
 
     def getLastExitCode(self):
         return self.exit_code
@@ -233,14 +232,12 @@ class TelnetControl(Control):
             ret.append(arg)
         return ret
 
-    def execute(self, command):
+    def _execute(self, command):
         """Execute a command on a machine, using Telnet"""
-        self.exit_code = None
         """
         Confirm the command was correctly echoed back and then ask for
         its return code
         """
-        logger.debug("TelnetControl: Executing: {}".format(command))
         self.telnet_client.write((command + "\r\n").encode())
         resp = self.telnet_client.read_until((command + "\r\n").encode())
         while True:
@@ -253,17 +250,8 @@ class TelnetControl(Control):
         self.telnet_client.write("echo $?\r\n".encode())
         _, match, _ = self.telnet_client.expect([re.compile(br'(\d+)')],
                                                 TelnetControl.TELNET_TIMEOUT)
-        self.exit_code = int(match.group(1).decode())
-        logger.debug("TelnetControl: Command returned {}".format(self.exit_code))
+        exit_code = int(match.group(1).decode())
 
-        if self.exit_code != 0:
+        if exit_code != 0:
             stderr = resp.decode()
-        for l in stdout.split('\n'):
-            logger.debug("TelnetControl: stdout: {}".format(l.strip()))
-        for l in stderr.split('\n'):
-            logger.debug("TelnetControl: stderr: {}".format(l.strip()))
-
-        return self.exit_code, stdout, stderr
-
-    def getLastExitCode(self):
-        return self.exit_code
+        return exit_code, stdout, stderr
