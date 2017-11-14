@@ -32,7 +32,7 @@ class Resource:
         if not name.endswith(".cfg"):
             name = '{0}.cfg'.format(name)
 
-        if settings.get(settings.CONF_PATH) is not None:
+        if settings.get_option(settings.CONF_PATH) is not None:
             self.cfg = os.path.join(settings.conf_path, t, name)
             if os.path.exists(self.cfg):
                 return

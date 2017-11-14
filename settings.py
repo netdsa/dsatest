@@ -7,7 +7,7 @@ options = {
         CONF_PATH: "conf_path",
     }
 
-def get(opt):
+def get_option(opt):
     current_module = sys.modules[__name__]
     if opt not in current_module.options.keys():
         return ValueError("Unexpected option")
@@ -18,7 +18,7 @@ def get(opt):
     else:
         return None
 
-def set(opt, value):
+def set_option(opt, value):
     current_module = sys.modules[__name__]
     if opt not in current_module.options.keys():
         return ValueError("Unexpected option")
