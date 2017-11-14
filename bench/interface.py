@@ -14,9 +14,10 @@ class Interface:
 
     def __repr__(self):
         if self.switch:
-            return "<Interface {s.machine.name} {s.name} {s.switch.name}.{s.port_id}>".format(s=self)
-        else:
-            return "<Interface {s.machine.name} {s.name}>".format(s=self)
+            return ("<Interface {s.machine.name} "
+                    "{s.name} {s.switch.name}.{s.port_id}>".format(s=self))
+
+        return "<Interface {s.machine.name} {s.name}>".format(s=self)
 
     def up(self):
         self.machine.up(self.name)

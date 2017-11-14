@@ -15,8 +15,8 @@ def get_option(opt):
     option_key = current_module.options[opt]
     if hasattr(current_module, option_key):
         return getattr(current_module, option_key)
-    else:
-        return None
+
+    return None
 
 def set_option(opt, value):
     current_module = sys.modules[__name__]
