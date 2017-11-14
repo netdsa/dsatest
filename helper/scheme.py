@@ -24,7 +24,7 @@ class URI:
         self.uri = uri
 
         if self.uri:
-            pattern = re.compile("^([a-z]+)://([a-z0-9.]+)(:([\d]+))?$")
+            pattern = re.compile(r"^([a-z]+)://([a-z0-9.]+)(:([\d]+))?$")
             match = pattern.match(self.uri)
             if match:
                 self.const = self.to_constants[match.group(1)]

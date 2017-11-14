@@ -54,7 +54,7 @@ class TargetParser:
             error = "Invalid target configuration file: {0}".format(target_cfg)
             raise ValueError(error)
 
-        section_re = re.compile("^switch([\d])+$")
+        section_re = re.compile(r"^switch([\d])+$")
         for section in self.config.sections():
             match = section_re.match(section)
             if match:
