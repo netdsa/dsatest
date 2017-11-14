@@ -251,8 +251,8 @@ class TelnetControl(Control):
         stdout = resp.decode()
         stderr = ""
         self.telnet_client.write("echo $?\r\n".encode())
-        _, match, before = self.telnet_client.expect([re.compile(br'(\d+)')],
-                                                     TelnetControl.TELNET_TIMEOUT)
+        _, match, _ = self.telnet_client.expect([re.compile(br'(\d+)')],
+                                                TelnetControl.TELNET_TIMEOUT)
         self.exit_code = int(match.group(1).decode())
         logger.debug("TelnetControl: Command returned {}".format(self.exit_code))
 
