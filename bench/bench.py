@@ -16,6 +16,10 @@ class Bench:
 
     def __init__(self):
         self.is_setup = False
+        self.target = None
+        self.host = None
+        self.links = None
+        self.incomplete_links = None
 
     def setup(self, bench_config_file):
         bench_parser = BenchParser(bench_config_file)
