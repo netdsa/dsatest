@@ -41,8 +41,8 @@ class BenchParser:
 
         # TODO: improve parsing to make it more robust
         sections = self.config.sections()
-        if (not self.HOST_IDENTIFIER in sections or
-                not self.TARGET_IDENTIFIER in sections):
+        if (self.HOST_IDENTIFIER not in sections or
+                self.TARGET_IDENTIFIER not in sections):
             raise ValueError("Missing sections")
 
         host_section = self.config[self.HOST_IDENTIFIER]
