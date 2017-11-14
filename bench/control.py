@@ -51,6 +51,20 @@ class Control(object):
         self.execute(command)
         self.checkExitCode(expected_exit_code)
 
+    def search_for_config(self, cfg_section, options):
+        """
+        Search in the configParser section for the listed options. Options must
+        be a dictionary. The keys will be looked up in the configuration file,
+        and attributes with the same name will be assigned either the value
+        found in the configuration file, or value associated with the key in
+        the dictionary.
+        """
+        for key, default in options.items():
+            val = default
+            if key in cfg_section:
+                val = cfg_section[key]
+            setattr(self, key, val)
+
 
 class LocalControl(Control):
 
@@ -78,6 +92,21 @@ class LocalControl(Control):
         return exit_code, stdout, stderr
 
 
+    @staticmethod
+    def strip_variables(*args):
+        """
+        Strip strings from *args from leading and trailing whitespaces,
+        single quote, and double quotes. That prevents some simple failures
+        if ssh username or password are stored quoted in the config file.
+        """
+        ret = list()
+        for arg in args:
+            if arg is not None:
+                arg = arg.strip(" '\"")
+            ret.append(arg)
+        return ret
+
+
 class SSHControl(Control):
 
     SSH_TIMEOUT = 15
@@ -86,20 +115,14 @@ class SSHControl(Control):
         # let's search extra argument we might need
         target_section = bench_parser.config[bench_parser.TARGET_IDENTIFIER]
 
-        keys = {
-            "username": 'root',
+        options = {
+            "username": "root",
             "password": None,
             "keyfile": None,
             "system_host_keys": None,
         }
 
-        for key, default in keys.items():
-
-            val = default
-            if key in target_section:
-                val = target_section[key]
-
-            setattr(self, key, val)
+        self.search_for_config(target_section, options)
 
         logging.getLogger("paramiko").setLevel(logging.WARNING)
 
@@ -116,8 +139,9 @@ class SSHControl(Control):
 
 
     def connect(self):
-        username, password, keyfile = self.strip_variables(
-            self.username, self.password, self.keyfile)
+        username, password, keyfile = Control.strip_variables(self.username,
+                                                              self.password,
+                                                              self.keyfile)
         if password is not None and keyfile is not None:
             self.ssh_client.connect(self.address, self.port, username=username,
                                     key_filename=keyfile, password=password,
@@ -143,20 +167,6 @@ class SSHControl(Control):
         self.is_connected = False
 
 
-    def strip_variables(self, *args):
-        """
-        Strip strings from *args from leading and trailing whitespaces,
-        single quote, and double quotes. That prevents some simple failures
-        if ssh username or password are stored quoted in the config file.
-        """
-        ret = list()
-        for arg in args:
-            if arg is not None:
-                arg = arg.strip(" '\"")
-            ret.append(arg)
-        return ret
-
-
     def _execute(self, command):
         """Execute a command on a machine, using SSH"""
         _, stdout, stderr = self.ssh_client.exec_command(command)
@@ -177,19 +187,13 @@ class TelnetControl(Control):
     def __init__(self, address, port, bench_parser):
         target_section = bench_parser.config[bench_parser.TARGET_IDENTIFIER]
 
-        keys = {
+        options = {
             "username": None,
             "password": None,
             "prompt": None,
         }
 
-        for key, default in keys.items():
-
-            val = default
-            if key in target_section:
-                val = target_section[key]
-
-            setattr(self, key, val)
+        self.search_for_config(target_section, options)
 
         self.address = address
         self.port = port
@@ -203,8 +207,7 @@ class TelnetControl(Control):
 
 
     def connect(self):
-        username, password = self.strip_variables(
-                    self.username, self.password)
+        username, password = Control.strip_variables(self.username, self.password)
         self.telnet_client.open(self.address, self.port)
         if username is not None:
             self.telnet_client.read_until("login: ".encode())
@@ -218,19 +221,6 @@ class TelnetControl(Control):
     def disconnect(self):
         self.telnet_client.close()
         self.is_connected = False
-
-    def strip_variables(self, *args):
-        """
-        Strip strings from *args from leading and trailing whitespaces,
-        single quote, and double quotes. That prevents some simple failures
-        if ssh username or password are stored quoted in the config file.
-        """
-        ret = list()
-        for arg in args:
-            if arg is not None:
-                arg = arg.strip(" '\"")
-            ret.append(arg)
-        return ret
 
     def _execute(self, command):
         """Execute a command on a machine, using Telnet"""
