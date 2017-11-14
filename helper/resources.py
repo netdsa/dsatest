@@ -23,9 +23,9 @@ class Resource:
 
     def __init__(self, resource_type, name):
         if resource_type == Resource.SWITCH:
-            t = "switch"
+            type_ = "switch"
         elif resource_type == Resource.TARGET:
-            t = "target"
+            type_ = "target"
         else:
             raise ValueError("Invalid resource_type")
 
@@ -34,16 +34,16 @@ class Resource:
 
         conf_path = settings.get_option(settings.CONF_PATH)
         if conf_path:
-            self.cfg = os.path.join(conf_path, t, name)
+            self.cfg = os.path.join(conf_path, type_, name)
             if os.path.exists(self.cfg):
                 return
 
-        resource_path = '/'.join(('conf', t, name))
+        resource_path = '/'.join(('conf', type_, name))
 
         resource_package = "dsatest"
         self.cfg = pkg_resources.resource_filename(resource_package, resource_path)
         if not os.path.exists(self.cfg):
-            raise ValueError("Cannot find resource {} of type {}".format(name, t))
+            raise ValueError("Cannot find resource {} of type {}".format(name, type_))
 
     def get_path(self):
         return self.cfg

@@ -56,10 +56,10 @@ class TargetParser:
             raise ValueError(error)
 
         section_re = re.compile("^switch([\d])+$")
-        for s in self.config.sections():
-            m = section_re.match(s)
-            if m:
-                self.parse_switch(s, m.group(1))
+        for section in self.config.sections():
+            match = section_re.match(section)
+            if match:
+                self.parse_switch(section, match.group(1))
 
         self.__check_unique_interface_name()
 
@@ -82,9 +82,9 @@ class TargetParser:
 
         # Make the switch name to be "model#id"
         full_switch_name = switch_name + "#" + switch_id
-        s = SwitchParser(full_switch_name, switch_name)
+        switch = SwitchParser(full_switch_name, switch_name)
         for i in interfaces:
-            i.switch = s
+            i.switch = switch
         self.interfaces.extend(interfaces)
 
 

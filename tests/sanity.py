@@ -30,9 +30,9 @@ class TestSanity(unittest.TestCase):
         if len(links) == 0:
             self.skipTest("Empty link list")
 
-        for l in links:
-            host = l.host_if.name
-            target = l.target_if.name
+        for link in links:
+            host = link.host_if.name
+            target = link.target_if.name
             self.assertIsInstance(host, str)
             self.assertIsInstance(target, str)
             self.assertTrue(len(host) > 0)
@@ -59,14 +59,14 @@ class TestSanity(unittest.TestCase):
             self.assertTrue(hasattr(mach, "ping"))
 
     def test_bridge_api(self):
-        b = Bridge("br0", None)
-        self.assertTrue(hasattr(b, "addInterface"))
-        self.assertTrue(hasattr(b, "delInterface"))
+        bridge = Bridge("br0", None)
+        self.assertTrue(hasattr(bridge, "addInterface"))
+        self.assertTrue(hasattr(bridge, "delInterface"))
         # it should also have the same functions as regular Interface
-        self.assertTrue(hasattr(b, "up"))
-        self.assertTrue(hasattr(b, "down"))
-        self.assertTrue(hasattr(b, "addAddress"))
-        self.assertTrue(hasattr(b, "delAddress"))
+        self.assertTrue(hasattr(bridge, "up"))
+        self.assertTrue(hasattr(bridge, "down"))
+        self.assertTrue(hasattr(bridge, "addAddress"))
+        self.assertTrue(hasattr(bridge, "delAddress"))
 
     @unittest.skipIf(not bench.target.control.isConnected(), "Not available in dry-run mode")
     def test_sanity_echo_target(self):

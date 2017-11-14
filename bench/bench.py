@@ -51,8 +51,8 @@ class Bench:
             self.host.addInterface(host_if)
             self.target.addInterface(target_if)
 
-            l = Link(link_name, host_if, target_if)
-            self.links.append(l)
+            new_link_instance = Link(link_name, host_if, target_if)
+            self.links.append(new_link_instance)
 
             self.is_setup = True
 

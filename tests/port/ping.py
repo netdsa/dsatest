@@ -9,25 +9,25 @@ class TestPing(unittest.TestCase):
     def setUp(self):
         links = bench.links
 
-        for i, l in enumerate(links, start=1):
+        for i, link in enumerate(links, start=1):
             host_addr = "192.168.10.{}/24".format(str(i * 2))
             target_addr = "192.168.10.{}/24".format(str(i * 2 + 1))
 
-            l.host_if.flushAddresses()
-            l.host_if.addAddress(host_addr)
-            l.target_if.flushAddresses()
-            l.target_if.addAddress(target_addr)
+            link.host_if.flushAddresses()
+            link.host_if.addAddress(host_addr)
+            link.target_if.flushAddresses()
+            link.target_if.addAddress(target_addr)
 
 
     def tearDown(self):
         links = bench.links
 
-        for i, l in enumerate(links, start=1):
+        for i, link in enumerate(links, start=1):
             host_addr = "192.168.10.{}/24".format(str(i * 2))
             target_addr = "192.168.10.{}/24".format(str(i * 2 + 1))
 
-            l.host_if.delAddress(host_addr)
-            l.target_if.delAddress(target_addr)
+            link.host_if.delAddress(host_addr)
+            link.target_if.delAddress(target_addr)
 
 
     def test_ping(self):
