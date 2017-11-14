@@ -27,7 +27,7 @@ class TestSanity(unittest.TestCase):
 
     def test_link_names(self):
         links = bench.links
-        if len(links) == 0:
+        if not links:
             self.skipTest("Empty link list")
 
         for link in links:

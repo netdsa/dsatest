@@ -76,7 +76,7 @@ class TargetParser:
                 # Pay attention, (val, key) must be inverted here
                 interfaces.append(InterfaceInfo(val, key))
 
-        if switch_name is None or len(interfaces) == 0:
+        if switch_name is None or not interfaces:
             raise ValueError("Missing switch name or port information")
 
         # Make the switch name to be "model#id"

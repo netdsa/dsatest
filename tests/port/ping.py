@@ -32,7 +32,7 @@ class TestPing(unittest.TestCase):
 
     def test_ping(self):
         links = bench.links
-        if len(links) == 0:
+        if not links:
             self.skipTest("Empty link list")
 
         for i, link in enumerate(links, start=1):
