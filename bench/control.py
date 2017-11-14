@@ -2,10 +2,10 @@
 import sys
 import logging
 import subprocess
-
-import paramiko
 import telnetlib
 import re
+
+import paramiko
 
 logger = logging.getLogger('dsatest')
 
