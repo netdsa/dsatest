@@ -1,5 +1,5 @@
 
-__all__ = [ 'Bench', 'Bridge', 'Interface', 'Link', 'Machine' ]
+__all__ = ['Bench', 'Bridge', 'Interface', 'Link', 'Machine']
 
 from .bridge import Bridge
 from .bench import Bench

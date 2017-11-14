@@ -40,7 +40,7 @@ class TestSanity(unittest.TestCase):
 
     def test_interface_api(self):
         for link in bench.links:
-            ifs = [ link.host_if, link.target_if ]
+            ifs = [link.host_if, link.target_if]
             for interface in ifs:
                 self.assertTrue(hasattr(interface, "up"))
                 self.assertTrue(hasattr(interface, "down"))
@@ -48,7 +48,7 @@ class TestSanity(unittest.TestCase):
                 self.assertTrue(hasattr(interface, "delAddress"))
 
     def test_machine_api(self):
-        machs = [ bench.host, bench.target ]
+        machs = [bench.host, bench.target]
         for mach in machs:
             self.assertTrue(hasattr(mach, "up"))
             self.assertTrue(hasattr(mach, "down"))
