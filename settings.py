@@ -4,8 +4,8 @@ import sys
 CONF_PATH = 1
 
 options = {
-        CONF_PATH: "conf_path",
-    }
+    CONF_PATH: "conf_path",
+}
 
 def get_option(opt):
     current_module = sys.modules[__name__]

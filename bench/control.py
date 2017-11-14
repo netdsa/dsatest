@@ -49,8 +49,8 @@ class LocalControl(Control):
             stdout = ret.stdout.decode(sys.stdout.encoding).strip()
             stderr = ret.stderr.decode(sys.stderr.encoding).strip()
         else:
-            ret = subprocess.Popen(command, shell=True,
-                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            ret = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE)
             ret.wait()
             self.exit_code = ret.returncode
             stdout = ret.stdout.read().strip()
@@ -79,11 +79,11 @@ class SSHControl(Control):
         target_section = bench_parser.config[bench_parser.TARGET_IDENTIFIER]
 
         keys = {
-                "username": 'root',
-                "password": None,
-                "keyfile": None,
-                "system_host_keys": None,
-                }
+            "username": 'root',
+            "password": None,
+            "keyfile": None,
+            "system_host_keys": None,
+        }
 
         for key, default in keys.items():
 
@@ -109,7 +109,7 @@ class SSHControl(Control):
 
     def connect(self):
         username, password, keyfile = self.strip_variables(
-                self.username, self.password, self.keyfile)
+            self.username, self.password, self.keyfile)
         if password is not None and keyfile is not None:
             self.ssh_client.connect(self.address, self.port, username=username,
                                     key_filename=keyfile, password=password,
@@ -179,10 +179,10 @@ class TelnetControl(Control):
         target_section = bench_parser.config[bench_parser.TARGET_IDENTIFIER]
 
         keys = {
-                "username": None,
-                "password": None,
-                "prompt": None,
-                }
+            "username": None,
+            "password": None,
+            "prompt": None,
+        }
 
         for key, default in keys.items():
 
@@ -252,7 +252,7 @@ class TelnetControl(Control):
         stderr = ""
         self.telnet_client.write("echo $?\r\n".encode())
         _, match, before = self.telnet_client.expect([re.compile(b'(\d+)')],
-                                        TelnetControl.TELNET_TIMEOUT)
+                                                     TelnetControl.TELNET_TIMEOUT)
         self.exit_code = int(match.group(1).decode())
         logger.debug("TelnetControl: Command returned {}".format(self.exit_code))
 

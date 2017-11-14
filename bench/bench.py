@@ -26,11 +26,11 @@ class Bench:
         target_scheme = URI(bench_parser.target_control)
 
         host_ctrl = self.controls[host_scheme.getScheme(default_scheme)](
-                host_scheme.getHost(), host_scheme.getPort(),
-                bench_parser)
+            host_scheme.getHost(), host_scheme.getPort(),
+            bench_parser)
         target_ctrl = self.controls[target_scheme.getScheme(default_scheme)](
-                target_scheme.getHost(), target_scheme.getPort(),
-                bench_parser)
+            target_scheme.getHost(), target_scheme.getPort(),
+            bench_parser)
 
         # Create machines involved in the test bench
         self.target = Machine("Target", target_ctrl)
@@ -64,4 +64,3 @@ class Bench:
     def disconnect(self, dry_run=False):
         if not dry_run:
             self.target.control.disconnect()
-

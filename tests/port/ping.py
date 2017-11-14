@@ -38,4 +38,3 @@ class TestPing(unittest.TestCase):
         for i, link in enumerate(links, start=1):
             addr = "192.168.10.{}".format(str(i * 2 + 1))
             link.host_if.ping(addr, count=1, deadline=10)
-

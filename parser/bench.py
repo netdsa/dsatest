@@ -25,8 +25,7 @@ class LinkParser:
         return self.host is None or self.target is None
 
     def __repr__(self):
-        return "<Link host: '{0}', target '{1}'>".format(
-                self.host, self.target)
+        return "<Link host: '{0}', target '{1}'>".format(self.host, self.target)
 
 
 class BenchParser:

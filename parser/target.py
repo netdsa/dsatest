@@ -21,8 +21,7 @@ class InterfaceInfo:
 
 
     def __repr__(self):
-        return "<InterfaceInfo {0} is switch {1}.{2}".format(
-                self.name, self.switch.name, self.port)
+        return "<InterfaceInfo {0} is switch {1}.{2}".format(self.name, self.switch.name, self.port)
 
 
 class TargetParser:
