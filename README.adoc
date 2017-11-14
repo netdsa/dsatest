@@ -11,6 +11,7 @@ These instructions will get you a copy of the project up and running on your loc
 === Prerequisites
 
 The framework depends on `python`, `python-setuptools`, and `python-paramiko`.
+dsatest might be compatible with your installation of Python 2.7 with `python-configparser` as additional dependency.
 
 === Installing
 
