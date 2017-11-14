@@ -10,7 +10,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 === Prerequisites
 
-The framework depends on `python` and `python-paramiko`.
+The framework depends on `python`, `python-setuptools`, and `python-paramiko`.
 
 === Installing
 
