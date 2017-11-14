@@ -12,11 +12,6 @@ class LinkParser:
         self.host = None
         self.target = None
 
-    def set_interface_name(self, side, if_name):
-        if not side in self.names.keys():
-            raise ValueError("Invalid side")
-        self.names[side] = if_name
-
     def is_incomplete(self):
         return self.host is None or self.target is None
 
