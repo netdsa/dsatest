@@ -2,10 +2,6 @@
 from collections import OrderedDict
 import configparser
 
-import paramiko
-
-from dsatest.helper.resources import Resource
-from .target import TargetParser
 
 class LinkParser:
     """
