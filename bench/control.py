@@ -69,12 +69,7 @@ class Control(object):
         single quote, and double quotes. That prevents some simple failures
         if ssh username or password are stored quoted in the config file.
         """
-        ret = list()
-        for arg in args:
-            if arg is not None:
-                arg = arg.strip(" '\"")
-            ret.append(arg)
-        return ret
+        return [arg.strip(" '\"") if arg is not None else arg for arg in args]
 
 
 class LocalControl(Control):
