@@ -3,7 +3,7 @@ import unittest
 
 from dsatest.bench import bench
 
-@unittest.skipIf(len(bench.links) == 0, "test requires at least 1 link")
+@unittest.skipIf(not bench.links, "test requires at least 1 link")
 class TestBridge(unittest.TestCase):
 
     def setUp(self):
