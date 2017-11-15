@@ -12,17 +12,8 @@ logger = logging.getLogger('dsatest')
 
 class Control(object):
 
-    def getLastExitCode(self):
-        return self.getLastExitCode
-
     def isConnected(self):
         raise NotImplementedError()
-
-    def checkExitCode(self, expected_exit_code):
-        actual_exit_code = self.getLastExitCode()
-        if actual_exit_code != expected_exit_code:
-            raise ValueError("Exit code mismatch. Got {}, expected {}".format(
-                actual_exit_code, expected_exit_code))
 
     def _execute(self, command):
         raise NotImplementedError()
@@ -35,9 +26,9 @@ class Control(object):
         class_name = self.__class__.__name__
         logger.debug("%s: Executing: %s", class_name, command)
 
-        self.exit_code, stdout, stderr = self._execute(command)
+        exit_code, stdout, stderr = self._execute(command)
 
-        logger.debug("%s: Command returned %d", class_name, self.exit_code)
+        logger.debug("%s: Command returned %d", class_name, exit_code)
         if stdout != '':
             for line in stdout.split('\n'):
                 logger.debug("%s: stdout: %s", class_name, line)
@@ -45,11 +36,17 @@ class Control(object):
             for line in stderr.split('\n'):
                 logger.debug("%s: stderr: %s", class_name, line)
 
-        return self.exit_code, stdout, stderr
+        return exit_code, stdout, stderr
+
+    @staticmethod
+    def _checkExitCode(exit_code, expected_exit_code):
+        if exit_code != expected_exit_code:
+            raise ValueError("Exit code mismatch. Got {}, expected {}".format(
+                exit_code, expected_exit_code))
 
     def execAndCheck(self, command, expected_exit_code=0):
-        self.execute(command)
-        self.checkExitCode(expected_exit_code)
+        exit_code, _, _ = self.execute(command)
+        self._checkExitCode(exit_code, expected_exit_code)
 
     def search_for_config(self, cfg_section, options):
         """
@@ -174,9 +171,6 @@ class SSHControl(Control):
         stderr = stderr.read().decode().strip()
 
         return exit_code, stdout, stderr
-
-    def getLastExitCode(self):
-        return self.exit_code
 
 
 class TelnetControl(Control):
