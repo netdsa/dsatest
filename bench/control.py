@@ -65,6 +65,20 @@ class Control(object):
                 val = cfg_section[key]
             setattr(self, key, val)
 
+    @staticmethod
+    def strip_variables(*args):
+        """
+        Strip strings from *args from leading and trailing whitespaces,
+        single quote, and double quotes. That prevents some simple failures
+        if ssh username or password are stored quoted in the config file.
+        """
+        ret = list()
+        for arg in args:
+            if arg is not None:
+                arg = arg.strip(" '\"")
+            ret.append(arg)
+        return ret
+
 
 class LocalControl(Control):
 
@@ -90,21 +104,6 @@ class LocalControl(Control):
             stderr = ret.stderr.read().strip()
 
         return exit_code, stdout, stderr
-
-
-    @staticmethod
-    def strip_variables(*args):
-        """
-        Strip strings from *args from leading and trailing whitespaces,
-        single quote, and double quotes. That prevents some simple failures
-        if ssh username or password are stored quoted in the config file.
-        """
-        ret = list()
-        for arg in args:
-            if arg is not None:
-                arg = arg.strip(" '\"")
-            ret.append(arg)
-        return ret
 
 
 class SSHControl(Control):
