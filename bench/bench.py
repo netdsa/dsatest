@@ -16,6 +16,7 @@ class Bench:
 
     def __init__(self):
         self.is_setup = False
+        self.dry_run = False
         self.target = None
         self.host = None
         self.links = None
@@ -61,10 +62,13 @@ class Bench:
             self.is_setup = True
 
 
-    def connect(self, dry_run=False):
-        if not dry_run:
+    def set_dry_run(self, dry_run):
+        self.dry_run = dry_run
+
+    def connect(self):
+        if not self.dry_run:
             self.target.control.connect()
 
     def disconnect(self, dry_run=False):
-        if not dry_run:
+        if not self.dry_run:
             self.target.control.disconnect()

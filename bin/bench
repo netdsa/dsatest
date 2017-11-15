@@ -84,6 +84,7 @@ def create_test_suite(test_dir, test):
 
 def main(bench_conf, test_dir, test_name, list_tests, dry_run):
     bench.setup(bench_conf)
+    bench.set_dry_run(dry_run)
     incomplete_links = bench.incomplete_links
 
     for incomplete_link in incomplete_links:
@@ -104,9 +105,9 @@ def main(bench_conf, test_dir, test_name, list_tests, dry_run):
 
     print("-"*70)
 
-    bench.connect(dry_run)
+    bench.connect()
     result = runner.run(suite)
-    bench.disconnect(dry_run)
+    bench.disconnect()
 
     # cumulate tests which raised unexpected exceptions
     # and tests that hadfailed assert methods

@@ -97,7 +97,7 @@ class TestSanity(unittest.TestCase):
         self.assertTrue(hasattr(bridge, "add_address"))
         self.assertTrue(hasattr(bridge, "del_address"))
 
-    @unittest.skipIf(not bench.target.control.is_connected(), "Not available in dry-run mode")
+    @unittest.skipIf(bench.dry_run, "Not available in dry-run mode")
     def test_sanity_machine_target_echo(self):
         """
         Verify that we can successfully execute the "echo" command on the
@@ -107,7 +107,7 @@ class TestSanity(unittest.TestCase):
         self.assertEqual(stdout.strip(), "Hello World")
         self.assertEqual(stderr.strip(), "")
 
-    @unittest.skipIf(not bench.target.control.is_connected(), "Not available in dry-run mode")
+    @unittest.skipIf(bench.dry_run, "Not available in dry-run mode")
     def test_sanity_machine_target_echo_stderr(self):
         """
         Verify that we can successfully execute the "echo" command on the

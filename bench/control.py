@@ -12,9 +12,6 @@ logger = logging.getLogger('dsatest')
 
 class Control(object):
 
-    def is_connected(self):
-        raise NotImplementedError()
-
     def _execute(self, command):
         raise NotImplementedError()
 
@@ -77,9 +74,6 @@ class LocalControl(Control):
     def __init__(self, hostname, port, bench_parser):
         pass
 
-    def is_connected(self):
-        return True
-
     def _execute(self, command):
         if sys.version_info[0] >= 3:
             ret = subprocess.run(command, shell=True,
@@ -122,11 +116,6 @@ class SSHControl(Control):
         self.ssh_client = paramiko.SSHClient()
         self.ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self.ssh_client.load_system_host_keys(self.system_host_keys)
-        self.connected = False
-
-
-    def is_connected(self):
-        return self.connected
 
 
     def connect(self):
@@ -150,12 +139,9 @@ class SSHControl(Control):
             self.ssh_client.connect(self.address, self.port, username=username,
                                     timeout=SSHControl.SSH_TIMEOUT)
 
-        self.connected = True
-
 
     def disconnect(self):
         self.ssh_client.close()
-        self.connected = False
 
 
     def _execute(self, command):
@@ -187,11 +173,6 @@ class TelnetControl(Control):
         self.port = port
         self.telnet_client = telnetlib.Telnet(address)
         self.prompt = self.prompt.replace('"', '')
-        self.connected = False
-
-
-    def is_connected(self):
-        return self.connected
 
 
     def connect(self):
@@ -203,12 +184,10 @@ class TelnetControl(Control):
         if password is not None:
             self.telnet_client.read_until("Password: ".encode())
             self.telnet_client.write((password + "\n").encode())
-        self.connected = True
 
 
     def disconnect(self):
         self.telnet_client.close()
-        self.connected = False
 
     def _execute(self, command):
         """Execute a command on a machine, using Telnet"""
