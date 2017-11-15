@@ -1,5 +1,5 @@
 
-class Interface:
+class Interface(object):
     """
     Network interface on a Machine. The name must be a string on which
     commands can be operated (like `ip link`)
