@@ -37,10 +37,10 @@ def prettyPrintTestSuite(suite):
             prettyPrintTestSuite(t)
 
 def recurseIterSuite(suite, match, patterns):
-    for s in suite:
-        if isinstance(s, unittest.TestCase):
-            if any(s._testMethodName.startswith(p) for p in patterns):
-                match.addTest(s)
+    for testcase in suite:
+        if isinstance(testcase, unittest.TestCase):
+            if any(testcase._testMethodName.startswith(p) for p in patterns):
+                match.addTest(testcase)
         else:
             recurseIterSuite(s, match, patterns)
 
@@ -67,7 +67,7 @@ def __createTestSuite(test_dir, tests):
     # load every tests we can find and do some matching based on that
     suite = loader.discover(start_dir=start_dir, top_level_dir=top_level_dir, pattern="*.py")
     matching_suite = unittest.TestSuite()
-    patterns = [ "test_{}".format(t) for t in tests ]
+    patterns = ["test_{}".format(t) for t in tests]
     recurseIterSuite(suite, matching_suite, patterns)
 
     return matching_suite
@@ -86,13 +86,12 @@ def main(bench_conf, test_dir, test_name, list_tests, dry_run):
     bench.setup(bench_conf)
     incomplete_links = bench.incomplete_links
 
-    for l in incomplete_links:
-        logger.warn("Link {} is not connected to both ends".format(l))
+    for incomplete_link in incomplete_links:
+        logger.warning("Link %s is not connected to both ends", incomplete_link)
 
-    logger.info("Creating test suite. Searching for '{}' in '{}'".format(
-                    test_name, test_dir))
+    logger.info("Creating test suite. Searching for '%s' in '%s'", test_name, test_dir)
     suite = createTestSuite(test_dir, test_name)
-    logger.info("Found {} tests".format(suite.countTestCases()))
+    logger.info("Found %d tests", suite.countTestCases())
 
     if list_tests:
         if suite.countTestCases() == 0:
