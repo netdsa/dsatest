@@ -13,10 +13,10 @@ class TestPing(unittest.TestCase):
             host_addr = "192.168.10.{}/24".format(str(i * 2))
             target_addr = "192.168.10.{}/24".format(str(i * 2 + 1))
 
-            link.host_if.flushAddresses()
-            link.host_if.addAddress(host_addr)
-            link.target_if.flushAddresses()
-            link.target_if.addAddress(target_addr)
+            link.host_if.flush_addresses()
+            link.host_if.add_address(host_addr)
+            link.target_if.flush_addresses()
+            link.target_if.add_address(target_addr)
 
 
     def tearDown(self):
@@ -26,8 +26,8 @@ class TestPing(unittest.TestCase):
             host_addr = "192.168.10.{}/24".format(str(i * 2))
             target_addr = "192.168.10.{}/24".format(str(i * 2 + 1))
 
-            link.host_if.delAddress(host_addr)
-            link.target_if.delAddress(target_addr)
+            link.host_if.del_address(host_addr)
+            link.target_if.del_address(target_addr)
 
 
     def test_ping(self):

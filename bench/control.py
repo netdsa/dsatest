@@ -12,7 +12,7 @@ logger = logging.getLogger('dsatest')
 
 class Control(object):
 
-    def isConnected(self):
+    def is_connected(self):
         raise NotImplementedError()
 
     def _execute(self, command):
@@ -39,14 +39,14 @@ class Control(object):
         return exit_code, stdout, stderr
 
     @staticmethod
-    def _checkExitCode(exit_code, expected_exit_code):
+    def _check_exit_code(exit_code, expected_exit_code):
         if exit_code != expected_exit_code:
             raise ValueError("Exit code mismatch. Got {}, expected {}".format(
                 exit_code, expected_exit_code))
 
-    def execAndCheck(self, command, expected_exit_code=0):
+    def exec_and_check(self, command, expected_exit_code=0):
         exit_code, _, _ = self.execute(command)
-        self._checkExitCode(exit_code, expected_exit_code)
+        self._check_exit_code(exit_code, expected_exit_code)
 
     def search_for_config(self, cfg_section, options):
         """
@@ -82,7 +82,7 @@ class LocalControl(Control):
     def __init__(self, hostname, port, bench_parser):
         pass
 
-    def isConnected(self):
+    def is_connected(self):
         return True
 
     def _execute(self, command):
@@ -127,11 +127,11 @@ class SSHControl(Control):
         self.ssh_client = paramiko.SSHClient()
         self.ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self.ssh_client.load_system_host_keys(self.system_host_keys)
-        self.is_connected = False
+        self.connected = False
 
 
-    def isConnected(self):
-        return self.is_connected
+    def is_connected(self):
+        return self.connected
 
 
     def connect(self):
@@ -155,12 +155,12 @@ class SSHControl(Control):
             self.ssh_client.connect(self.address, self.port, username=username,
                                     timeout=SSHControl.SSH_TIMEOUT)
 
-        self.is_connected = True
+        self.connected = True
 
 
     def disconnect(self):
         self.ssh_client.close()
-        self.is_connected = False
+        self.connected = False
 
 
     def _execute(self, command):
@@ -192,11 +192,11 @@ class TelnetControl(Control):
         self.port = port
         self.telnet_client = telnetlib.Telnet(address)
         self.prompt = self.prompt.replace('"', '')
-        self.is_connected = False
+        self.connected = False
 
 
-    def isConnected(self):
-        return self.is_connected
+    def is_connected(self):
+        return self.connected
 
 
     def connect(self):
@@ -208,12 +208,12 @@ class TelnetControl(Control):
         if password is not None:
             self.telnet_client.read_until("Password: ".encode())
             self.telnet_client.write((password + "\n").encode())
-        self.is_connected = True
+        self.connected = True
 
 
     def disconnect(self):
         self.telnet_client.close()
-        self.is_connected = False
+        self.connected = False
 
     def _execute(self, command):
         """Execute a command on a machine, using Telnet"""

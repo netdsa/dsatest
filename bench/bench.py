@@ -29,11 +29,11 @@ class Bench:
         host_scheme = URI(bench_parser.host_control)
         target_scheme = URI(bench_parser.target_control)
 
-        host_ctrl = self.controls[host_scheme.getScheme(default_scheme)](
-            host_scheme.getHost(), host_scheme.getPort(),
+        host_ctrl = self.controls[host_scheme.get_scheme(default_scheme)](
+            host_scheme.get_host(), host_scheme.get_port(),
             bench_parser)
-        target_ctrl = self.controls[target_scheme.getScheme(default_scheme)](
-            target_scheme.getHost(), target_scheme.getPort(),
+        target_ctrl = self.controls[target_scheme.get_scheme(default_scheme)](
+            target_scheme.get_host(), target_scheme.get_port(),
             bench_parser)
 
         # Create machines involved in the test bench
@@ -52,8 +52,8 @@ class Bench:
             host_if = Interface(link.host, self.host)
             target_if = Interface(link.target, self.target, switch, port)
 
-            self.host.addInterface(host_if)
-            self.target.addInterface(target_if)
+            self.host.add_interface(host_if)
+            self.target.add_interface(target_if)
 
             new_link_instance = Link(link_name, host_if, target_if)
             self.links.append(new_link_instance)

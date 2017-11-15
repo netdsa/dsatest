@@ -16,12 +16,12 @@ class Bridge(Interface):
         command = "ip link del {}".format(self.name)
         self.machine.execute(command)
 
-    def addInterface(self, interface):
+    def add_interface(self, interface):
         self.interfaces.append(interface)
         command = "ip link set {} master {}".format(interface.name, self.name)
         self.machine.execute(command)
 
-    def delInterface(self, interface):
+    def del_interface(self, interface):
         self.interfaces.remove(interface)
         command = "ip link set {} nomaster".format(interface.name)
         self.machine.execute(command)

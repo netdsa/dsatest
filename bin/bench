@@ -11,7 +11,7 @@ from dsatest import settings
 
 logger = logging.getLogger('dsatest')
 
-def setupLogger(verbosity):
+def setup_logger(verbosity):
     level = 0
     if verbosity == 0:
         level = logging.WARN
@@ -29,22 +29,22 @@ def setupLogger(verbosity):
 
     logger.addHandler(ch)
 
-def prettyPrintTestSuite(suite):
+def pretty_print_test_suite(suite):
     for t in suite:
         if isinstance(t, unittest.TestCase):
             print(t)
         else:
-            prettyPrintTestSuite(t)
+            pretty_print_test_suite(t)
 
-def recurseIterSuite(suite, match, patterns):
+def recurse_iter_suite(suite, match, patterns):
     for testcase in suite:
         if isinstance(testcase, unittest.TestCase):
             if any(testcase._testMethodName.startswith(p) for p in patterns):
                 match.addTest(testcase)
         else:
-            recurseIterSuite(s, match, patterns)
+            recurse_iter_suite(testcase, match, patterns)
 
-def __createTestSuite(test_dir, tests):
+def __create_test_suite(test_dir, tests):
     """
     Create a test suite that contains only tests who have names starting with
     test_TEST, TEST being any element in the list "tests".
@@ -58,24 +58,24 @@ def __createTestSuite(test_dir, tests):
     start_dir = stripped_test_dir
     top_level_dir = os.path.dirname(stripped_test_dir)
 
-    if len(start_dir) == 0 or len(top_level_dir) == 0:
+    if not start_dir or not top_level_dir:
         raise ValueError("Invalid test directory '{}'. Aborting.".format(test_dir))
 
-    if len(tests) == 0:
+    if not tests:
         return loader.discover(start_dir=start_dir, top_level_dir=top_level_dir, pattern="*.py")
 
     # load every tests we can find and do some matching based on that
     suite = loader.discover(start_dir=start_dir, top_level_dir=top_level_dir, pattern="*.py")
     matching_suite = unittest.TestSuite()
     patterns = ["test_{}".format(t) for t in tests]
-    recurseIterSuite(suite, matching_suite, patterns)
+    recurse_iter_suite(suite, matching_suite, patterns)
 
     return matching_suite
 
 
-def createTestSuite(test_dir, test):
+def create_test_suite(test_dir, test):
     try:
-        return __createTestSuite(test_dir, test)
+        return __create_test_suite(test_dir, test)
     except Exception:
         print("ERR: Unable to load test directory '{}'. Aborting.".format(test_dir))
         print("ERR: Make sure it's an importable python package (contains __init__.py)")
@@ -90,14 +90,14 @@ def main(bench_conf, test_dir, test_name, list_tests, dry_run):
         logger.warning("Link %s is not connected to both ends", incomplete_link)
 
     logger.info("Creating test suite. Searching for '%s' in '%s'", test_name, test_dir)
-    suite = createTestSuite(test_dir, test_name)
+    suite = create_test_suite(test_dir, test_name)
     logger.info("Found %d tests", suite.countTestCases())
 
     if list_tests:
         if suite.countTestCases() == 0:
             print("No tests found")
         else:
-            prettyPrintTestSuite(suite)
+            pretty_print_test_suite(suite)
         sys.exit(0)
 
     runner = unittest.TextTestRunner(stream=sys.stdout)
@@ -138,7 +138,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     verbosity = args.verbose or 0
-    setupLogger(verbosity)
+    setup_logger(verbosity)
 
     if args.conf_dir is not None:
         path = os.path.join(os.getcwd(), args.conf_dir)

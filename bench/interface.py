@@ -25,14 +25,14 @@ class Interface(object):
     def down(self):
         self.machine.down(self.name)
 
-    def addAddress(self, address):
-        self.machine.addAddress(self.name, address)
+    def add_address(self, address):
+        self.machine.add_address(self.name, address)
 
-    def delAddress(self, address):
-        self.machine.delAddress(self.name, address)
+    def del_address(self, address):
+        self.machine.del_address(self.name, address)
 
-    def flushAddresses(self):
-        self.machine.flushAddresses(self.name)
+    def flush_addresses(self):
+        self.machine.flush_addresses(self.name)
 
     def ping(self, destination, count=None, deadline=None):
         self.machine.ping(destination, from_if=self.name, count=count, deadline=deadline)

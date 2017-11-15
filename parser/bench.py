@@ -44,12 +44,12 @@ class BenchParser:
         target_section = self.config[self.TARGET_IDENTIFIER]
 
         if "control" in host_section:
-            self.storeStripped("host_control", host_section["control"])
+            self.store_stripped("host_control", host_section["control"])
         else:
             self.host_control = None
 
         if "control" in target_section:
-            self.storeStripped("target_control", target_section["control"])
+            self.store_stripped("target_control", target_section["control"])
         else:
             self.target_control = None
 
@@ -79,5 +79,5 @@ class BenchParser:
             self.links[link_name] = LinkParser()
         return self.links[link_name]
 
-    def storeStripped(self, key, arg):
+    def store_stripped(self, key, arg):
         setattr(self, key, arg.strip(" '\""))

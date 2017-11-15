@@ -13,7 +13,7 @@ class Machine:
     def __repr__(self):
         return "<Machine \"{.name}\">".format(self)
 
-    def addInterface(self, interface):
+    def add_interface(self, interface):
         self.interfaces.append(interface)
 
     ##################################################
@@ -23,9 +23,6 @@ class Machine:
     def execute(self, param):
         return self.control.execute(param)
 
-    def getLastExitCode(self):
-        return self.control.getLastExitCode()
-
 
     ##################################################
     # Network related functions, to be used in tests #
@@ -33,32 +30,32 @@ class Machine:
 
     def up(self, interface):
         command = "ip link set {0} up".format(interface)
-        self.control.execAndCheck(command)
+        self.control.exec_and_check(command)
 
     def down(self, interface):
         command = "ip link set {0} down".format(interface)
-        self.control.execAndCheck(command)
+        self.control.exec_and_check(command)
 
-    def addAddress(self, interface, address):
+    def add_address(self, interface, address):
         command = "ip addr add {0} dev {1}".format(address, interface)
-        self.control.execAndCheck(command)
+        self.control.exec_and_check(command)
 
-    def delAddress(self, interface, address):
+    def del_address(self, interface, address):
         command = "ip addr del {0} dev {1}".format(address, interface)
-        self.control.execAndCheck(command)
+        self.control.exec_and_check(command)
 
-    def flushAddresses(self, interface):
+    def flush_addresses(self, interface):
         command = "ip addr flush dev {0}".format(interface)
-        self.control.execAndCheck(command)
+        self.control.exec_and_check(command)
 
-    def addBridge(self, bridge_name):
+    def add_bridge(self, bridge_name):
         bridge = Bridge(bridge_name, self)
         bridge.create()
         self.bridges.append(bridge)
 
         return bridge
 
-    def delBridge(self, bridge):
+    def del_bridge(self, bridge):
         self.bridges.remove(bridge)
         bridge.destroy()
 
@@ -71,5 +68,5 @@ class Machine:
         if from_if is not None:
             cmd += " -I {} ".format(from_if)
         cmd += " {}".format(destination)
-        self.control.execAndCheck(cmd)
+        self.control.exec_and_check(cmd)
 

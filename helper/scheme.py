@@ -34,11 +34,11 @@ class URI:
                 else:
                     self.port = self.to_ports[match.group(1)]
 
-    def getScheme(self, default=None):
+    def get_scheme(self, default=None):
         return getattr(self, "const", default)
 
-    def getHost(self, default=None):
+    def get_host(self, default=None):
         return getattr(self, "host", default)
 
-    def getPort(self, default=None):
+    def get_port(self, default=None):
         return getattr(self, "port", default)
