@@ -3,8 +3,8 @@ import unittest
 
 from dsatest.bench import bench
 
+@unittest.skipIf(not bench.links, "Empty link list")
 class TestPing(unittest.TestCase):
-
 
     def setUp(self):
         links = bench.links
@@ -30,11 +30,7 @@ class TestPing(unittest.TestCase):
             link.target_if.del_address(target_addr)
 
 
-    def test_ping(self):
-        links = bench.links
-        if not links:
-            self.skipTest("Empty link list")
-
-        for i, link in enumerate(links, start=1):
+    def test_port_ping_all(self):
+        for i, link in enumerate(bench.links, start=1):
             addr = "192.168.10.{}".format(str(i * 2 + 1))
             link.host_if.ping(addr, count=1, deadline=10)
