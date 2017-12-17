@@ -48,7 +48,7 @@ A returned value of 0 means success.
 
 == BUGS
 
-Refer to the *dsatest* issue tracker at https://github.com/d-k-c/dsatest/issues.
+Refer to the *dsatest* issue tracker at https://github.com/netdsa/dsatest/issues.
 
 == AUTHORS
 
@@ -57,9 +57,9 @@ It was inspired by *dsa-tests*, written by Andrew Lunn.
 
 == RESOURCES
 
-*Project web site:* https://github.com/d-k-c/dsatest
+*Project web site:* https://github.com/netdsa/dsatest
 
-*Git source repository on GitHub:* https://github.com/d-k-c/dsatest
+*Git source repository on GitHub:* https://github.com/netdsa/dsatest
 
 == COPYING
 
