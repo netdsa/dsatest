@@ -19,7 +19,7 @@ To get the source code of the dsatest framework, follow these steps:
 
 [source,sh]
 ----
-git clone git@github.com:d-k-c/dsatest.git
+git clone git@github.com:netdsa/dsatest.git
 cd dsatest/
 ----
 
@@ -137,9 +137,9 @@ It was inspired by *dsa-tests*, written by Andrew Lunn.
 
 == Resources
 
-* link:https://d-k-c.github.io/dsatest[Project website]
+* link:https://netdsa.github.io/dsatest[Project website]
 
-* link:https://github.com/d-k-c/dsatest[Git source repository on GitHub]
+* link:https://github.com/netdsa/dsatest[Git source repository on GitHub]
 
 ifdef::env-github[]
 * link:docs/dsatest.1.adoc[`dsatest` man(ual) page]
