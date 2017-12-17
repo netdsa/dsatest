@@ -1,0 +1,7 @@
+= Frequently Asked Questions
+
+== Why `dsatest`?
+
+The main reason behind dsatest is to provide an API to write network test cases and control your bench.
+The project provides an abstraction for links which allows anyone to contribute generic configuration files for switch chips and target platforms.
+Only the bench configuration file describing how your target device is connected to your host is specific to your setup.
