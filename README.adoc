@@ -148,3 +148,11 @@ endif::env-github[]
 ifndef::env-github[]
 * link:dsatest.1.html[`dsatest` man(ual) page]
 endif::env-github[]
+
+ifdef::env-github[]
+* link:docs/faq.adoc[Frequently Asked Questions]
+endif::env-github[]
+
+ifndef::env-github[]
+* link:faq.html[Frequently Asked Questions]
+endif::env-github[]
