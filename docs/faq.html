@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.6.1">
-<title>dsatest(1)</title>
+<title>Frequently Asked Questions</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -425,143 +425,31 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 .show-for-print{display:inherit!important}}
 </style>
 </head>
-<body class="article toc2 toc-left">
+<body class="article toc2 toc-top">
 <div id="header">
-<h1>dsatest(1)</h1>
+<h1>Frequently Asked Questions</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_name">NAME</a></li>
-<li><a href="#_synopsis">SYNOPSIS</a></li>
-<li><a href="#_description">DESCRIPTION</a></li>
-<li><a href="#_options">OPTIONS</a></li>
-<li><a href="#_exit_status">EXIT STATUS</a></li>
-<li><a href="#_bugs">BUGS</a></li>
-<li><a href="#_authors">AUTHORS</a></li>
-<li><a href="#_resources">RESOURCES</a></li>
-<li><a href="#_copying">COPYING</a></li>
+<li><a href="#_why_code_dsatest_code">Why <code>dsatest</code>?</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_name">NAME</h2>
+<h2 id="_why_code_dsatest_code">Why <code>dsatest</code>?</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>dsatest - runs tests on DSA targets</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_synopsis">SYNOPSIS</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>dsatest</strong> [<em>OPTION</em>]&#8230;&#8203;</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_description">DESCRIPTION</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The dsatest(1) command runs tests found by the DSA testing framework on the target described in the provided bench configuration file.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_options">OPTIONS</h2>
-<div class="sectionbody">
-<div class="dlist">
-<dl>
-<dt class="hdlist1"><strong>-h</strong>, <strong>--help</strong></dt>
-<dd>
-<p>Show this help message and exit.</p>
-</dd>
-<dt class="hdlist1"><strong>-t</strong> <em>TEST</em>, <strong>--test</strong> <em>TEST</em></dt>
-<dd>
-<p>Restrict tests to be executed.
-This option can be cumulated.</p>
-</dd>
-<dt class="hdlist1"><strong>--test-dir</strong> <em>TEST_DIR</em></dt>
-<dd>
-<p>Test directory, defaults to the <em>tests</em> directory of the dsatest framework.</p>
-</dd>
-<dt class="hdlist1"><strong>-l</strong>, <strong>--list</strong></dt>
-<dd>
-<p>List tests to be executed.
-If <strong>-t</strong> is passed, limit the list to the matching tests.</p>
-</dd>
-<dt class="hdlist1"><strong>-B</strong> <em>BENCH_FILE</em>, <strong>--bench</strong> <em>BENCH_FILE</em></dt>
-<dd>
-<p>Bench configuration file, defaults to <em>bench.cfg</em>.</p>
-</dd>
-<dt class="hdlist1"><strong>-C</strong> <em>CONF_DIR</em>, <strong>--conf-dir</strong> <em>CONF_DIR</em></dt>
-<dd>
-<p>Configuration directory, default to the <em>conf</em> directory of the dsatest framework.</p>
-</dd>
-<dt class="hdlist1"><strong>--dry-run</strong></dt>
-<dd>
-<p>Skip connection to the test bench (no SSH connection is established).</p>
-</dd>
-<dt class="hdlist1"><strong>-v</strong>, <strong>--verbose</strong></dt>
-<dd>
-<p>Turn the verbose mode on.
-This option is a cumulative, so passing <strong>-vv</strong> will increase the log level (up to <strong>-vvv</strong>).</p>
-</dd>
-</dl>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_exit_status">EXIT STATUS</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>dsatest(1) returns the number of failed tests.
-A returned value of 0 means success.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_bugs">BUGS</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Refer to the <strong>dsatest</strong> issue tracker at <a href="https://github.com/netdsa/dsatest/issues" class="bare">https://github.com/netdsa/dsatest/issues</a>.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_authors">AUTHORS</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>dsatest</strong> was written by Damien Riegel and other contributors.
-It was inspired by <strong>dsa-tests</strong>, written by Andrew Lunn.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_resources">RESOURCES</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>Project web site:</strong> <a href="https://github.com/netdsa/dsatest" class="bare">https://github.com/netdsa/dsatest</a></p>
-</div>
-<div class="paragraph">
-<p><strong>Git source repository on GitHub:</strong> <a href="https://github.com/netdsa/dsatest" class="bare">https://github.com/netdsa/dsatest</a></p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_copying">COPYING</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Copyright (C) 2017 Savoir-faire Linux Inc.
-Free use of this software is granted under the terms of the <em>TBD</em> License.</p>
+<p>The main reason behind dsatest is to provide an API to write network test cases and control your bench.
+The project provides an abstraction for links which allows anyone to contribute generic configuration files for switch chips and target platforms.
+Only the bench configuration file describing how your target device is connected to your host is specific to your setup.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-12-17 14:49:29 EST
+Last updated 2017-12-17 15:20:18 EST
 </div>
 </div>
 </body>

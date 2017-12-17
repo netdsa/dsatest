@@ -468,7 +468,8 @@ It supports many Ethernet switch chips and target machines.</p>
 <div class="sect2">
 <h3 id="_prerequisites">Prerequisites</h3>
 <div class="paragraph">
-<p>The framework depends on <code>python</code> and <code>python-paramiko</code>.</p>
+<p>The framework depends on <code>python</code>, <code>python-setuptools</code>, and <code>python-paramiko</code>.
+dsatest might be compatible with your installation of Python 2.7 with <code>python-configparser</code> as additional dependency.</p>
 </div>
 </div>
 <div class="sect2">
@@ -478,7 +479,7 @@ It supports many Ethernet switch chips and target machines.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-sh" data-lang="sh">git clone git@github.com:d-k-c/dsatest.git
+<pre class="highlight"><code class="language-sh" data-lang="sh">git clone git@github.com:netdsa/dsatest.git
 cd dsatest/</code></pre>
 </div>
 </div>
@@ -562,8 +563,8 @@ Each indexed switch section must describe the switch model and its enabled links
 <div class="listingblock">
 <div class="title">router.cfg</div>
 <div class="content">
-<pre class="highlight"><code class="language-ini" data-lang="ini">[switch0] <b class="conum">(1)</b>
-name = "foo-etherswitch" <b class="conum">(2)</b>
+<pre class="highlight"><code class="language-ini" data-lang="ini">[switch0] ; <b class="conum">(1)</b>
+name = "foo-etherswitch" ; <b class="conum">(2)</b>
 port0 = link0
 port1 = link1
 port2 = link2
@@ -572,7 +573,7 @@ port3 = link3
 [switch1]
 name = "foo-etherswitch"
 port0 = link4
-port1 = link5 <b class="conum">(3)</b>
+port1 = link5 ; <b class="conum">(3)</b>
 port2 = link6</code></pre>
 </div>
 </div>
@@ -611,20 +612,20 @@ Several control protocols are available.</p>
 <div class="listingblock">
 <div class="title">bench.cfg</div>
 <div class="content">
-<pre class="highlight"><code class="language-ini" data-lang="ini">[host] <b class="conum">(1)</b>
+<pre class="highlight"><code class="language-ini" data-lang="ini">[host] ; <b class="conum">(1)</b>
 link0 = eth1
 link1 = eth2
-link2 = eth3 <b class="conum">(2)</b>
+link2 = eth3 ; <b class="conum">(2)</b>
 link3 = eth4
 
-[target] <b class="conum">(3)</b>
-name = router <b class="conum">(4)</b>
-control = "ssh://target" <b class="conum">(5)</b>
+[target] ; <b class="conum">(3)</b>
+name = router ; <b class="conum">(4)</b>
+control = "ssh://target" ; <b class="conum">(5)</b>
 ;username = foo
-;password = bar <b class="conum">(6)</b>
+;password = bar ; <b class="conum">(6)</b>
 link0 = lan0
 link1 = lan1
-link2 = lan2 <b class="conum">(7)</b>
+link2 = lan2 ; <b class="conum">(7)</b>
 link3 = lan3</code></pre>
 </div>
 </div>
@@ -831,13 +832,16 @@ It was inspired by <strong>dsa-tests</strong>, written by Andrew Lunn.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://d-k-c.github.io/dsatest">Project website</a></p>
+<p><a href="https://netdsa.github.io/dsatest">Project website</a></p>
 </li>
 <li>
-<p><a href="https://github.com/d-k-c/dsatest">Git source repository on GitHub</a></p>
+<p><a href="https://github.com/netdsa/dsatest">Git source repository on GitHub</a></p>
 </li>
 <li>
 <p><a href="dsatest.1.html"><code>dsatest</code> man(ual) page</a></p>
+</li>
+<li>
+<p><a href="faq.html">Frequently Asked Questions</a></p>
 </li>
 </ul>
 </div>
@@ -846,7 +850,7 @@ It was inspired by <strong>dsa-tests</strong>, written by Andrew Lunn.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-10-12 22:20:00 EDT
+Last updated 2017-12-17 14:48:42 EST
 </div>
 </div>
 </body>
