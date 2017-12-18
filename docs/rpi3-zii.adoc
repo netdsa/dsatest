@@ -1,0 +1,115 @@
+= Running tests on a ZII Dev Rev B board
+
+This article presents how to run dsatest from a RasberryPi host, connected to 
+a ZII Dev Rev B board.
+
+TODO add photo
+
+== The target
+
+The ZII Dev Rev B board is supported by link:https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm/boot/dts/vf610-zii-dev-rev-b.dts[mainline] Linux kernel.
+It features three interconnected Marvell Ethernet switch chips,
+including two 7-port link:https://github.com/netdsa/dsatest/blob/master/conf/switch/marvell-88e6352.cfg[88E6352],
+and one 10-port link:https://github.com/netdsa/dsatest/blob/master/conf/switch/marvell-88e6185.cfg[88E6185].
+
+The switches are interconnected as below:
+
+[source]
+----
+   {   switch0   }   {   switch1   }   {      switch2      }
+
+                      lan4                 lan6
+    CPU (eth1)            |  lan5         |  lan7
+              |           | |             | |
+   [0 1 2 3 4 6 5]---[6 0 1 2 3 4 5]---[9 0 1 2 3 4 5 6 7 8]
+    | | |               |                     | | |
+lan0  |  lan2       lan3                  lan8  |  optical4
+       lan1                                      optical3
+----
+
+11 user interfaces are exposed by the DTS, enumerated lan0 to lan8 and optical3 to optical4.
+
+This target is already described in its dsatest link:https://github.com/netdsa/dsatest/blob/master/conf/target/zii-dev-rev-b.cfg[configuration file].
+
+To simplify things up, this article provides a Buildroot configuration for this target.
+The network is up and running and SSH is configured with the *root* login and *zii* password.
+
+To build an SD card image for the ZII Dev Reb B board, use the following instructions:
+
+[source]
+----
+git clone -b dsatest/zii git@github.com:netdsa/buildroot.git
+cd buildroot/
+make zii_vf610dev_sdcard_defconfig
+make
+----
+
+Once the build is complete, an sdcard.img file is available in `output/images/`.
+
+== The host
+
+To run the tests on the target, this article uses a RaspberryPi as the host, connected to four user ports through USB to Ethernet adapters.
+
+To simplify the deployment, dsatest uses Buildroot and provides a pre-configured setup to embed the framework on a RaspberryPi3.
+
+To build an SD card image for dsatest on RaspberryPi3, use the following instructions:
+
+[source]
+----
+git clone -b dsatest/rpi3 git@github.com:netdsa/buildroot.git
+cd buildroot/
+make raspberrypi3_dsatest_defconfig
+make
+----
+
+Once the build is complete, an sdcard.img file is available in `output/images/`.
+
+== The bench
+
+The RaspberryPi3 offers four USB ports, that we use to connect our USB Ethernet dongles.
+We will use one of them to control the target through its eth1 management port, and the three others to connected to respectively lan0, lan1, lan3 and lan4.
+
+The dongles are enumerated in a deterministic order, respectively eth0, eth1, eth2, eth3.
+
+Thus we can describe our bench with the following configuration file:
+
+.rpi.cfg
+[source,ini]
+----
+[host] ; <1>
+link0 = eth0 ; <2>
+link1 = eth1
+link2 = eth2
+link3 = eth3
+
+[target] ; <3>
+name = zii-dev-rev-b ; <4>
+control = "ssh://10.0.0.11" ; <5>
+;username = root
+;password = zii ; <6>
+link0 = lan0 ; <7>
+link1 = lan1
+link2 = lan2
+link3 = lan3
+----
+<1> Host machine section, our RaspberryPi3
+<2> Interface name of the first link on host side
+<3> Target machine section, our ZII Dev Rev B board
+<4> Refers to the `zii-dev-rev-b.cfg` target configuration file
+<5> Control to access the target machine, preconfigured with SSH
+<6> SSH credentials
+<7> Interface name of the first link on target side
+
+For convenience, this file is already included in the RaspberryPi build.
+
+== Running the tests
+
+To run dsatest, connect to the host and run:
+
+[source]
+----
+dsatest
+<PASTE OUPUT>
+----
+
+TODO details some test cases
