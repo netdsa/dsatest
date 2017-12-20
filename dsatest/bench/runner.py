@@ -116,7 +116,7 @@ def start_bench(bench_conf, test_dir, test_name, list_tests, dry_run):
     # and tests that hadfailed assert methods
     tests_failed = len(result.errors) + len(result.failures)
 
-    sys.exit(tests_failed)
+    return tests_failed
 
 
 def main():
@@ -148,8 +148,8 @@ def main():
 
     bench_cfg = os.path.join(os.getcwd(), args.bench)
 
-    start_bench(bench_cfg, args.test_dir, args.test, args.list, args.dry_run)
+    return start_bench(bench_cfg, args.test_dir, args.test, args.list, args.dry_run)
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
