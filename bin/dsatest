@@ -1,4 +1,6 @@
 #! /usr/bin/env python
+#
+# Startup from system-wide installation
 
 import os
 import sys
@@ -8,6 +10,7 @@ import unittest
 
 from dsatest.bench import bench
 from dsatest import settings
+from dsatest import tests as our_tests
 
 logger = logging.getLogger('dsatest')
 
@@ -117,9 +120,7 @@ def main(bench_conf, test_dir, test_name, list_tests, dry_run):
 
 
 if __name__ == "__main__":
-    script_path = os.path.dirname(os.path.abspath(__file__))
-    test_dir = os.path.join(script_path, "..", "tests")
-    test_dir = os.path.realpath(test_dir)
+    test_dir = os.path.dirname(our_tests.__file__)
 
     parser = argparse.ArgumentParser(description='Control a DSA test bench')
     parser.add_argument('-t', '--test', action='append', default=list(),
