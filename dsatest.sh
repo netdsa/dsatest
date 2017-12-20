@@ -6,4 +6,4 @@
 DSATEST_REALPATH=$(dirname $(realpath $0))
 DSATEST_PARENT_REALPATH=$(dirname ${DSATEST_REALPATH})/dsatest/
 
-PYTHONPATH=${DSATEST_PARENT_REALPATH} ${DSATEST_REALPATH}/bin/dsatest $@
+PYTHONPATH=${DSATEST_PARENT_REALPATH} python -m dsatest.bench.runner $@

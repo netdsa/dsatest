@@ -85,7 +85,7 @@ def create_test_suite(test_dir, test):
         sys.exit(1)
 
 
-def main(bench_conf, test_dir, test_name, list_tests, dry_run):
+def start_bench(bench_conf, test_dir, test_name, list_tests, dry_run):
     bench.setup(bench_conf)
     bench.set_dry_run(dry_run)
     incomplete_links = bench.incomplete_links
@@ -119,7 +119,7 @@ def main(bench_conf, test_dir, test_name, list_tests, dry_run):
     sys.exit(tests_failed)
 
 
-if __name__ == "__main__":
+def main():
     test_dir = os.path.dirname(our_tests.__file__)
 
     parser = argparse.ArgumentParser(description='Control a DSA test bench')
@@ -148,4 +148,8 @@ if __name__ == "__main__":
 
     bench_cfg = os.path.join(os.getcwd(), args.bench)
 
-    main(bench_cfg, args.test_dir, args.test, args.list, args.dry_run)
+    start_bench(bench_cfg, args.test_dir, args.test, args.list, args.dry_run)
+
+
+if __name__ == "__main__":
+    main()
