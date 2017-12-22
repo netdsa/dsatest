@@ -8,6 +8,8 @@ class TestBridge(unittest.TestCase):
 
     def setUp(self):
         self.link = bench.links[0]
+        self.link.host_if.up()
+        self.link.target_if.up()
         self.link.host_if.flush_addresses()
         self.link.host_if.add_address("192.168.10.2/24")
         self.bridge = bench.target.add_bridge("br0")
@@ -18,6 +20,8 @@ class TestBridge(unittest.TestCase):
         self.link.host_if.del_address("192.168.10.2/24")
         self.bridge.down()
         bench.target.del_bridge(self.bridge)
+        self.link.host_if.down()
+        self.link.target_if.down()
 
 
     def test_bridge_ping_one(self):
