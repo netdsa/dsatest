@@ -171,7 +171,7 @@ class TelnetControl(Control):
 
         self.address = address
         self.port = port
-        self.telnet_client = telnetlib.Telnet(address)
+        self.telnet_client = telnetlib.Telnet(address, port)
         self.prompt = self.prompt.replace('"', '')
 
 
