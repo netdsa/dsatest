@@ -36,3 +36,26 @@ class TestBridge(unittest.TestCase):
             link.target_if.down()
         bridge.down()
         bench.target.del_bridge(bridge)
+
+
+    def test_bridge_ping_one_bridge_per_interface(self):
+        bridges = []
+        for i, link in enumerate(bench.links):
+            bridge = bench.target.add_bridge("br{}".format(i))
+            bridges.append(bridge)
+            bridge.add_address("192.168.{}.1/24".format(str(10 + i)))
+            bridge.add_interface(link.target_if)
+            up_and_wait([bridge, link.host_if])
+
+        for i, link in enumerate(bench.links):
+            host_addr = "192.168.{}.2/24".format(str(10 + i))
+            link.host_if.flush_addresses()
+            link.host_if.add_address(host_addr)
+            link.host_if.ping("192.168.{}.1".format(str(10 + i)), count=1, deadline=1)
+            link.host_if.flush_addresses()
+
+        for i, link in enumerate(bench.links):
+            bridge = bridges[i]
+            bridge.del_interface(link.target_if)
+            bridge.down()
+            bench.target.del_bridge(bridge)
