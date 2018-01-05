@@ -2,6 +2,7 @@
 import unittest
 
 from dsatest.bench import bench
+from dsatest.tests.helpers import up_and_wait
 
 @unittest.skipIf(not bench.links, "Empty link list")
 class TestPing(unittest.TestCase):
@@ -25,8 +26,7 @@ class TestPing(unittest.TestCase):
         links = bench.links
 
         for i, link in enumerate(links):
-            link.host_if.up()
-            link.target_if.up()
+            up_and_wait(link)
             link.host_if.flush_addresses()
             link.host_if.add_address(self.get_address(i, "host", 24))
             link.target_if.flush_addresses()
