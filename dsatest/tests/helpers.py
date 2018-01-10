@@ -52,4 +52,4 @@ def up_and_wait(up_interfaces, monitored=None, expand=True):
         time.sleep(1)
         timeout = timeout - 1
 
-    raise TimeoutError("some interfaces did not up within alloted period")
+    raise RuntimeError("some interfaces did not up within alloted period")
