@@ -1,6 +1,8 @@
 
 import unittest
 
+import six
+
 from dsatest.bench import Bridge, Interface, bench
 
 class TestSanity(unittest.TestCase):
@@ -39,8 +41,8 @@ class TestSanity(unittest.TestCase):
         """
         for link in bench.links:
             interface = link.target_if
-            self.assertIsInstance(interface.name, str)
-            self.assertIsInstance(interface.port_id, str)
+            self.assertIsInstance(interface.name, six.string_types)
+            self.assertIsInstance(interface.port_id, six.string_types)
 
     def test_sanity_interface_check_name_is_set(self):
         """
@@ -50,8 +52,8 @@ class TestSanity(unittest.TestCase):
         for link in bench.links:
             host = link.host_if.name
             target = link.target_if.name
-            self.assertIsInstance(host, str)
-            self.assertIsInstance(target, str)
+            self.assertIsInstance(host, six.string_types)
+            self.assertIsInstance(target, six.string_types)
             self.assertTrue(host)
             self.assertTrue(target)
 
