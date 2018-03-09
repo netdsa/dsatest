@@ -128,7 +128,7 @@ def main():
                                 this option might be passed several times")
     parser.add_argument('-l', '--list', action='store_true',
                         help="list tests instead of executing them")
-    parser.add_argument('--test-dir', default=test_dir,
+    parser.add_argument('-T', '--test-dir', default=test_dir,
                         help="test folder, default to dsatest's test folder")
     parser.add_argument('-B', '--bench', default="bench.cfg",
                         help="bench configuration file")

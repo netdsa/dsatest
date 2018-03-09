@@ -21,7 +21,7 @@ Show this help message and exit.
 Restrict tests to be executed.
 This option can be cumulated.
 
-*--test-dir* _TEST_DIR_::
+*-T* _TEST_DIR_, *--test-dir* _TEST_DIR_::
 Test directory, defaults to the _tests_ directory of the dsatest framework.
 
 *-l*, *--list*::
