@@ -17,7 +17,7 @@ A simple 4-port Ethernet switch looks like this:
 ----
 
 ifdef::env-github[]
-See the link:../conf/switch/example-switch.cfg[configuration file] describing this switch.
+See the link:../dsatest/conf/switch/example-switch.cfg[configuration file] describing this switch.
 endif::env-github[]
 
 ifndef::env-github[]
@@ -25,7 +25,7 @@ This switch is described as follow:
 
 [source,ini]
 ----
-include::../conf/switch/example-switch.cfg[]
+include::../dsatest/conf/switch/example-switch.cfg[]
 ----
 endif::env-github[]
 
@@ -53,7 +53,7 @@ Describing the internals of the target (which switch port is connected to what f
 Moreover, these files can be shared by people using the same hardware.
 
 ifdef::env-github[]
-See the link:../conf/target/example-target.cfg[configuration file] describing this target.
+See the link:../dsatest/conf/target/example-target.cfg[configuration file] describing this target.
 endif::env-github[]
 
 ifndef::env-github[]
@@ -61,7 +61,7 @@ This target is described as follow:
 
 [source,ini]
 ----
-include::../conf/target/example-target.cfg[]
+include::../dsatest/conf/target/example-target.cfg[]
 ----
 endif::env-github[]
 
