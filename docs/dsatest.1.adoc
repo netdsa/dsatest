@@ -28,7 +28,7 @@ Test directory, defaults to the _tests_ directory of the dsatest framework.
 List tests to be executed.
 If *-t* is passed, limit the list to the matching tests.
 
-*-B* _BENCH_FILE_, *--bench* _BENCH_FILE_::
+*-f* _FILE_, *--file* _FILE_::
 Bench configuration file, defaults to _bench.cfg_.
 
 *-C* _CONF_DIR_, *--conf-dir* _CONF_DIR_::

@@ -130,7 +130,7 @@ def main():
                         help="list tests instead of executing them")
     parser.add_argument('-T', '--test-dir', default=test_dir,
                         help="test folder, default to dsatest's test folder")
-    parser.add_argument('-B', '--bench', default="bench.cfg",
+    parser.add_argument('-f', '--file', default="bench.cfg",
                         help="bench configuration file")
     parser.add_argument('-C', '--conf-dir', default=None,
                         help='path to the configuration directory')
@@ -146,7 +146,7 @@ def main():
         path = os.path.join(os.getcwd(), args.conf_dir)
         settings.set_option(settings.CONF_PATH, os.path.realpath(path))
 
-    bench_cfg = os.path.join(os.getcwd(), args.bench)
+    bench_cfg = os.path.join(os.getcwd(), args.file)
 
     return start_bench(bench_cfg, args.test_dir, args.test, args.list, args.dry_run)
 

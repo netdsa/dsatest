@@ -27,8 +27,8 @@ Ensure that the framework is functional by listing the tests and running the san
 
 [source,sh]
 ----
-./dsatest -l -B bench.cfg.example
-./dsatest --dry-run -t sanity -B bench.cfg.example
+./dsatest -l -f bench.cfg.example
+./dsatest --dry-run -t sanity -f bench.cfg.example
 ----
 
 === Configuring
