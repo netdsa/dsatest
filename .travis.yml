@@ -1,0 +1,20 @@
+language: ruby
+rvm:
+  - 2.2
+
+branches:
+  only:
+    master
+
+install: gem install asciidoctor
+
+script: cd docs && rake
+
+deploy:
+  provider: pages
+  local-dir: docs
+  repo: netdsa/netdsa.github.io
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  keep-history: true
+  target-branch: master
